@@ -12,5 +12,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //connected to firebase in new repo
         System.out.println("testing branch");
+        System.out.println("testing branch2");
     }
 }
