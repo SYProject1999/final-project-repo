@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/todo"
+        android:icon="@drawable/ic_baseline_checklist_rtl_24"
+        android:id="@+id/todo"/>
+    <item android:title="@string/habits"
+        android:icon="@drawable/ic_baseline_accessibility_new_24"
+        android:id="@+id/habits"/>
+    <item android:title="@string/diary"
+        android:icon="@drawable/ic_baseline_note_alt_24"
+        android:id="@+id/diary"/>
+    <item android:title="@string/timer"
+        android:icon="@drawable/ic_baseline_timer_24"
+        android:id="@+id/timer"/>
+</menu>
