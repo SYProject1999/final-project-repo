@@ -129,12 +129,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         Toast.makeText(RegisterActivity.this, "User has been registered successfully", Toast.LENGTH_LONG).show();
                                         startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                                     } else {
-                                        Toast.makeText(RegisterActivity.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(RegisterActivity.this, "Failed to register! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
                         } else {
-                            Toast.makeText(RegisterActivity.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(RegisterActivity.this, "Failed to register! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
