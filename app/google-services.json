@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "40698533748",
-    "project_id": "dailyplanner-aef0f",
-    "storage_bucket": "dailyplanner-aef0f.appspot.com"
+    "project_number": "336143806034",
+    "project_id": "finalproject-365df",
+    "storage_bucket": "finalproject-365df.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:40698533748:android:bd5e5acf02e941350f3e21",
+        "mobilesdk_app_id": "1:336143806034:android:b5f68d9f10242d2357798b",
         "android_client_info": {
           "package_name": "com.example.finalproject"
         }
       },
       "oauth_client": [
         {
-          "client_id": "40698533748-kp892objpmri1si325ulsuigbhbdpbq4.apps.googleusercontent.com",
+          "client_id": "336143806034-h3fum9g5bd7ajeqk1iljhaaakcbkgd6o.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCoQ7_IRTngObdUDb9dCXX9hW7DMBPxY-E"
+          "current_key": "AIzaSyB-HjtRo5Lwp1l3ZRp7x-J5hEU2j2hF1UQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "40698533748-kp892objpmri1si325ulsuigbhbdpbq4.apps.googleusercontent.com",
+              "client_id": "336143806034-h3fum9g5bd7ajeqk1iljhaaakcbkgd6o.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
