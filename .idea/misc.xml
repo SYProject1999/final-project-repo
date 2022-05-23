@@ -8,11 +8,12 @@
         <entry key="app/src/main/res/layout/activity_bottom_navigation_bar.xml" value="0.15579710144927536" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_register.xml" value="0.23052536231884058" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.14628623188405798" />
         <entry key="app/src/main/res/layout/fragment_diary.xml" value="0.15579710144927536" />
         <entry key="app/src/main/res/layout/fragment_habits.xml" value="0.15579710144927536" />
         <entry key="app/src/main/res/layout/fragment_timer.xml" value="0.15579710144927536" />
-        <entry key="app/src/main/res/layout/fragment_todolist.xml" value="0.15579710144927536" />
+        <entry key="app/src/main/res/layout/fragment_todolist.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/toolbar.xml" value="0.12386478304742685" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.24166666666666667" />
       </map>
     </option>

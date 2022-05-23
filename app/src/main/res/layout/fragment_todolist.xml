@@ -3,8 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/teal_200"
     tools:context=".TodolistFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#30ffffff"
+        android:padding="14dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/ic_baseline_person_24"
+            tools:ignore="MissingClass" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:textSize="20sp"
+            android:text="Yosef Rammal"/>
+
+    </RelativeLayout>
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -14,13 +35,13 @@
         android:textSize="26dp"
         android:layout_gravity="center"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/logoutBtn"
-        android:text="LOGOUT"
-        android:backgroundTint="@color/design_default_color_secondary"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="20dp" />
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/logoutBtn"-->
+<!--        android:text="LOGOUT"-->
+<!--        android:backgroundTint="@color/design_default_color_secondary"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_margin="20dp" />-->
 
 </FrameLayout>

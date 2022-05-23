@@ -101,18 +101,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-//        mAuth.createUserWithEmailAndPassword(emailRegEt.getText().toString(), passwordRegEt.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//            @Override
-//            public void onComplete(@NonNull Task<AuthResult> task) {
-//                if (task.isSuccessful()) {
-//                    Toast.makeText(RegisterActivity.this, "Good", Toast.LENGTH_LONG).show();
-//                } else {
-//                    Toast.makeText(RegisterActivity.this, "Failed to Register" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-//                    System.out.println(task.getException().getMessage());
-//                }
-//            }
-//        });
-
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
