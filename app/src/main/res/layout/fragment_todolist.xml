@@ -14,4 +14,13 @@
         android:textSize="26dp"
         android:layout_gravity="center"/>
 
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/logoutBtn"
+        android:text="LOGOUT"
+        android:backgroundTint="@color/design_default_color_secondary"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp" />
+
 </FrameLayout>

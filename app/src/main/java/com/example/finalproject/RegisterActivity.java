@@ -47,17 +47,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
 
         if (view == signUpBtn) {
-            mAuth.createUserWithEmailAndPassword(emailRegEt.getText().toString(), passwordRegEt.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(RegisterActivity.this, "Good", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(RegisterActivity.this, "Failed to Register" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                        System.out.println(task.getException().getMessage());
-                    }
-                }
-            });
+            registerUser();
         }
 
     }
@@ -110,6 +100,44 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             repasswordRegEt.requestFocus();
             return;
         }
+
+//        mAuth.createUserWithEmailAndPassword(emailRegEt.getText().toString(), passwordRegEt.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//            @Override
+//            public void onComplete(@NonNull Task<AuthResult> task) {
+//                if (task.isSuccessful()) {
+//                    Toast.makeText(RegisterActivity.this, "Good", Toast.LENGTH_LONG).show();
+//                } else {
+//                    Toast.makeText(RegisterActivity.this, "Failed to Register" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+//                    System.out.println(task.getException().getMessage());
+//                }
+//            }
+//        });
+
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            User user = new User(fullname, email);
+
+                            FirebaseDatabase.getInstance().getReference("Users")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(RegisterActivity.this, "User has been registered successfully", Toast.LENGTH_LONG).show();
+                                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                                    } else {
+                                        Toast.makeText(RegisterActivity.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+                        } else {
+                            Toast.makeText(RegisterActivity.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
 
     }
 }
