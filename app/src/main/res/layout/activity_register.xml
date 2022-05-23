@@ -27,23 +27,26 @@
         android:layout_margin="20dp"/>
 
     <EditText
+        android:id="@+id/fullname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/fullname"
         android:layout_below="@id/signuptitle"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:background="#30ffffff"
-        android:hint="Full Name"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
-        android:layout_margin="10dp"
-        android:padding="20dp"
         android:drawableLeft="@drawable/ic_baseline_person_24"
-        android:drawablePadding="20dp"/>
+        android:drawablePadding="20dp"
+        android:hint="Full Name"
+        android:padding="20dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/email"
+        android:id="@+id/emailRegEt"
         android:layout_below="@id/fullname"
         android:background="#30ffffff"
         android:hint="Email"
@@ -56,8 +59,8 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/password"
-        android:layout_below="@id/email"
+        android:id="@+id/passwordRegEt"
+        android:layout_below="@id/emailRegEt"
         android:background="#30ffffff"
         android:hint="Password"
         android:textColorHint="@color/white"
@@ -71,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/repassword"
-        android:layout_below="@id/password"
+        android:layout_below="@id/passwordRegEt"
         android:background="#30ffffff"
         android:hint="Re-Password"
         android:textColorHint="@color/white"
@@ -83,15 +86,18 @@
         android:inputType="textPassword"/>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/signupbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/signupbtn"
-        android:text="REGISTER"
-        android:textSize="25dp"
         android:layout_below="@id/repassword"
         android:layout_centerHorizontal="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
         android:backgroundTint="@color/design_default_color_secondary"
-        android:layout_margin="15dp"/>
+        android:text="REGISTER"
+        android:textSize="25dp" />
 
     <TextView
         android:layout_width="wrap_content"
