@@ -9,6 +9,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,7 +21,8 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     EditText emailLogEt, passwordLogEt;
-    Button loginBtn, registerBtn;
+    Button loginBtn;
+    TextView registerBtn;
     FirebaseAuth mAuth;
 
     @Override
@@ -98,6 +100,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                     }
                 });
-
     }
 }

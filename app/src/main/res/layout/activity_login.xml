@@ -51,32 +51,36 @@
         android:inputType="textPassword"/>
 
     <com.google.android.material.button.MaterialButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/loginbtn"
-        android:layout_below="@id/passwordLogEt"
-        android:text="LOGIN"
-        android:backgroundTint="@color/design_default_color_secondary"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="20dp" />
-
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/registerbtn"
-        android:layout_below="@id/loginbtn"
-        android:text="REGISTER"
+        android:layout_below="@id/forgotPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:backgroundTint="@color/design_default_color_secondary"
-        android:layout_centerHorizontal="true" />
+        android:text="LOGIN" />
 
     <TextView
+        android:id="@+id/registerbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/forgotpass"
-        android:layout_below="@id/registerbtn"
-        android:text="Forgot password?"
-        android:textColor="@color/white"
+        android:layout_below="@id/loginbtn"
         android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:clickable="true"
+        android:text="Create New Account?" />
+
+    <TextView
+        android:id="@+id/forgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/passwordLogEt"
+        android:text="Forgot Password?"
+        android:textColor="@color/white"
+        android:layout_alignParentEnd="true"
         android:layout_margin="10dp"/>
 
     <TextView
