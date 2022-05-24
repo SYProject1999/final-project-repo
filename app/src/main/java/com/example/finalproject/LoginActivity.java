@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     EditText emailLogEt, passwordLogEt;
     Button loginBtn;
-    TextView registerBtn;
+    TextView registerBtn, forgotPassword;
     FirebaseAuth mAuth;
 
     @Override
@@ -34,14 +34,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         passwordLogEt = findViewById(R.id.passwordLogEt);
         registerBtn = findViewById(R.id.registerbtn);
         loginBtn = findViewById(R.id.loginbtn);
+        forgotPassword = findViewById(R.id.forgotPassword);
         mAuth = FirebaseAuth.getInstance();
 
         loginBtn.setOnClickListener(this);
         registerBtn.setOnClickListener(this);
+        forgotPassword.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
+
+        if (view == forgotPassword) {
+            Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+            startActivity(intent);
+        }
 
         if (view == registerBtn) {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);

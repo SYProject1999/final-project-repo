@@ -6,6 +6,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_calendar_month_24.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/ic_baseline_note_alt_24.xml" value="0.2085" />
         <entry key="app/src/main/res/layout/activity_bottom_navigation_bar.xml" value="0.15579710144927536" />
+        <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.25" />
