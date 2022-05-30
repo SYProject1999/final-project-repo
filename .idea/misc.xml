@@ -5,6 +5,8 @@
       <map>
         <entry key="app/src/main/res/drawable/ic_baseline_calendar_month_24.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/ic_baseline_note_alt_24.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/onboarding_indicator_active.xml" value="0.1875" />
+        <entry key="app/src/main/res/drawable/onboarding_indicator_inactive.xml" value="0.1875" />
         <entry key="app/src/main/res/layout/activity_bottom_navigation_bar.xml" value="0.15579710144927536" />
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
@@ -16,6 +18,7 @@
         <entry key="app/src/main/res/layout/fragment_splash.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/fragment_timer.xml" value="0.15579710144927536" />
         <entry key="app/src/main/res/layout/fragment_todolist.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/item_container_onboarding.xml" value="0.2557291666666667" />
         <entry key="app/src/main/res/layout/slider_layout.xml" value="0.25" />
         <entry key="app/src/main/res/layout/toolbar.xml" value="0.12386478304742685" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.24166666666666667" />
