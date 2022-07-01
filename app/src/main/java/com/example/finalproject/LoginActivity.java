@@ -102,7 +102,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 Toast.makeText(LoginActivity.this, "User logged in successfully", Toast.LENGTH_LONG).show();
                                 startActivity(new Intent(LoginActivity.this, OnboardingScreensActivity.class));
                             } else {
-                                user.sendEmailVerification();
                                 Toast.makeText(LoginActivity.this, "Verify your email", Toast.LENGTH_LONG).show();
                             }
                         } else {

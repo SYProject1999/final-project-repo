@@ -16,12 +16,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     ImageView back;
-    EditText fullnameRegEt, emailRegEt, passwordRegEt, repasswordRegEt;
+    EditText fullNameRegEt, emailRegEt, passwordRegEt, repasswordRegEt;
     Button signUpBtn;
 
     FirebaseAuth mAuth;
@@ -32,7 +33,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_register);
 
         mAuth = FirebaseAuth.getInstance();
-        fullnameRegEt = findViewById(R.id.fullname);
+        fullNameRegEt = findViewById(R.id.fullname);
         emailRegEt = findViewById(R.id.emailRegEt);
         passwordRegEt = findViewById(R.id.passwordRegEt);
         repasswordRegEt = findViewById(R.id.repassword);
@@ -54,14 +55,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void registerUser() {
 
-        String fullname = fullnameRegEt.getText().toString().trim();
+        String fullName = fullNameRegEt.getText().toString().trim();
         String email = emailRegEt.getText().toString().trim();
         String password = passwordRegEt.getText().toString().trim();
         String rePassword = repasswordRegEt.getText().toString().trim();
 
-        if (fullname.isEmpty()) {
-            fullnameRegEt.setError("Full Name is Required");
-            fullnameRegEt.requestFocus();
+        if (fullName.isEmpty()) {
+            fullNameRegEt.setError("Full Name is Required");
+            fullNameRegEt.requestFocus();
             return;
         }
 
@@ -102,19 +103,22 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
 
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            User user = new User(fullname, email, false);
+
+                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                            User user = new User(fullName, email, false);
 
                             FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    .child(firebaseUser.getUid()).setValue(user)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(RegisterActivity.this, "User has been registered successfully", Toast.LENGTH_LONG).show();
+                                        firebaseUser.sendEmailVerification();
+                                        Toast.makeText(RegisterActivity.this, "User has been registered successfully. Please verify your email", Toast.LENGTH_LONG).show();
                                         startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                                     } else {
                                         Toast.makeText(RegisterActivity.this, "Failed to register! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();

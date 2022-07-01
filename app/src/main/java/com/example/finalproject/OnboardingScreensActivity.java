@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class OnboardingScreensActivity extends AppCompatActivity {
@@ -29,36 +31,23 @@ public class OnboardingScreensActivity extends AppCompatActivity {
     private OnboardingAdapter onboardingAdapter;
     private LinearLayout layoutOnboardingIndicators;
     private MaterialButton buttonOnboardingAction;
-    private boolean alreadyUsedTheApp;
 
-    FirebaseDatabase database;
-    DatabaseReference databaseReference;
+    private FirebaseUser user;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_onboarding_screens);
 
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Users");
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
-                alreadyUsedTheApp = user.alreadyUsedTheApp;
-                System.out.println(alreadyUsedTheApp);
-                if (alreadyUsedTheApp) {
-                    startActivity(new Intent(OnboardingScreensActivity.this, BottomNavigationBarActivity.class));
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("loadPost:onCancelled", error.toException());
-            }
-        });
-
+        userID = user.getUid();
 
         layoutOnboardingIndicators = findViewById(R.id.layoutOnboardingIndicators);
         buttonOnboardingAction = findViewById(R.id.buttonOnboardingAction);
@@ -80,6 +69,7 @@ public class OnboardingScreensActivity extends AppCompatActivity {
             if (onboardingViewPager.getCurrentItem() + 1 < onboardingAdapter.getItemCount()) {
                 onboardingViewPager.setCurrentItem(onboardingViewPager.getCurrentItem() + 1);
             } else {
+                databaseReference.child(userID).child("alreadyUsedTheApp").setValue(true);
                 startActivity(new Intent(getApplicationContext(), BottomNavigationBarActivity.class));
                 finish();
             }

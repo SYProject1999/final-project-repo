@@ -36,19 +36,22 @@
         android:textColorHint="@color/white" />
 
     <EditText
+        android:id="@+id/passwordLogEt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/passwordLogEt"
         android:layout_below="@id/emailLogEt"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:background="#30ffffff"
-        android:hint="Password"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
-        android:layout_margin="10dp"
-        android:padding="20dp"
         android:drawableLeft="@drawable/ic_baseline_lock_24"
         android:drawablePadding="20dp"
-        android:inputType="textPassword"/>
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:padding="20dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/loginbtn"
@@ -91,34 +94,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/others"
-        android:layout_above="@id/socialicons"
+        android:layout_above="@id/socialIcons"
         android:text="or sign in with"
         android:layout_centerHorizontal="true"/>
 
 
     <LinearLayout
+
+        android:id="@+id/socialIcons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/socialicons"
         android:layout_alignParentBottom="true"
         android:gravity="center">
 
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="20dp"
+            android:src="@drawable/google" />
 
         <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="20dp"
-            android:src="@drawable/google"/>
+            android:src="@drawable/fb" />
+
         <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="20dp"
-            android:src="@drawable/fb"/>
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_margin="20dp"
-            android:src="@drawable/twitter"/>
+            android:src="@drawable/twitter" />
 
     </LinearLayout>
 

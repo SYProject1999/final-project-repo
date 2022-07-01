@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -18,7 +20,11 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
+    private FirebaseUser user;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,16 +32,47 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference("Users");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         } else {
-            startActivity(new Intent(MainActivity.this, OnboardingScreensActivity.class));
+            userID = user.getUid();
+            checkFirstTime(new FirebaseCallBack() {
+                @Override
+                public void onCallback(String alreadyUsedTheApp) {
+                    if (alreadyUsedTheApp.equals("true")) {
+                        startActivity(new Intent(MainActivity.this, BottomNavigationBarActivity.class));
+                    } else {
+                        startActivity(new Intent(MainActivity.this, OnboardingScreensActivity.class));
+                    }
+                }
+            });
         }
+    }
+
+    void checkFirstTime(FirebaseCallBack firebaseCallBack) {
+        databaseReference.child(userID).child("alreadyUsedTheApp").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String alreadyUsedTheApp = String.valueOf(snapshot.getValue(Boolean.class));
+                firebaseCallBack.onCallback(alreadyUsedTheApp);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    interface FirebaseCallBack {
+        void onCallback(String alreadyUsedTheApp);
     }
 }
