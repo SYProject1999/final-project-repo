@@ -2,16 +2,16 @@ package com.example.finalproject;
 
 public class TaskModel {
 
-    private String taskTitle, TaskDescription, TaskId, TaskDate;
+    private String taskTitle, taskDescription, taskId, taskDate;
 
     public TaskModel() {
     }
 
     public TaskModel(String taskTitle, String taskDescription, String taskId, String taskDate) {
         this.taskTitle = taskTitle;
-        TaskDescription = taskDescription;
-        TaskId = taskId;
-        TaskDate = taskDate;
+        this.taskDescription = taskDescription;
+        this.taskId = taskId;
+        this.taskDate = taskDate;
     }
 
     public String getTaskTitle() {
@@ -23,26 +23,26 @@ public class TaskModel {
     }
 
     public String getTaskDescription() {
-        return TaskDescription;
+        return taskDescription;
     }
 
     public void setTaskDescription(String taskDescription) {
-        TaskDescription = taskDescription;
+        this.taskDescription = taskDescription;
     }
 
     public String getTaskId() {
-        return TaskId;
+        return taskId;
     }
 
     public void setTaskId(String taskId) {
-        TaskId = taskId;
+        this.taskId = taskId;
     }
 
     public String getTaskDate() {
-        return TaskDate;
+        return taskDate;
     }
 
     public void setTaskDate(String taskDate) {
-        TaskDate = taskDate;
+        this.taskDate = taskDate;
     }
 }

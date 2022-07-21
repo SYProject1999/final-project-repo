@@ -5,17 +5,16 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/layoutTitle"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="10dp"
-        android:text="Add a Task"
+        android:text="Update Task"
         android:gravity="center"
         android:background="@drawable/background2"
-        android:padding="10dp"
         android:textColor="#fff"
-        android:textStyle="bold"
-        android:textSize="20sp" />
+        android:padding="10dp"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,17 +28,13 @@
             android:layout_weight="2">
 
             <TextView
-                android:id="@+id/taskTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
                 android:text="Task"
+                android:textStyle="bold"
                 android:textColor="#000"
-                android:textColorHint="#000"
-                android:textStyle="bold" />
+                android:layout_margin="10dp"/>
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -48,18 +43,18 @@
             android:layout_weight="4">
 
             <EditText
-                android:id="@+id/task"
+                android:id="@+id/updateTaskTitleET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#000"
-                android:textColorHint="#000"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:hint="Task Title"
-                android:minHeight="48dp"
+                android:textColor="#000"
+                android:textColorHint="#000"
                 android:textStyle="bold" />
+
         </RelativeLayout>
 
     </LinearLayout>
@@ -76,14 +71,13 @@
             android:layout_weight="2">
 
             <TextView
-                android:id="@+id/descriptionTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#000"
-                android:textColorHint="#000"
                 android:text="Description"
                 android:textStyle="bold"
-                android:layout_margin="10dp" />
+                android:textColor="#000"
+                android:layout_margin="10dp"/>
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -92,18 +86,15 @@
             android:layout_weight="4">
 
             <EditText
-                android:id="@+id/description"
+                android:id="@+id/updateTaskDescriptionET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
                 android:hint="Task Description"
-                android:minHeight="48dp"
+                android:textStyle="bold"
                 android:textColor="#000"
                 android:textColorHint="#000"
-                android:textStyle="bold" />
+                android:layout_margin="10dp"/>
+
         </RelativeLayout>
 
     </LinearLayout>
@@ -111,6 +102,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -119,16 +111,15 @@
             android:layout_weight="2">
 
             <Button
-                android:id="@+id/cancelBtn"
+                android:id="@+id/deleteBtn"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="Cancel"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Delete"
                 android:textAllCaps="false"
                 android:textColor="#fff"
-                android:background="@drawable/background2"
-                android:layout_margin="10dp"
-                android:textStyle="bold"
-                android:textSize="18sp" />
+                android:textSize="17dp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
@@ -138,16 +129,18 @@
             android:layout_weight="2">
 
             <Button
-                android:id="@+id/saveBtn"
+                android:id="@+id/updateBtn"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="Save"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Update"
                 android:textAllCaps="false"
                 android:textColor="#fff"
-                android:background="@drawable/background2"
-                android:layout_margin="10dp"
-                android:textStyle="bold"
-                android:textSize="18sp" />
+                android:textSize="17dp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 

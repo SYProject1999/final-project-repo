@@ -1,17 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/teal_700"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#1F1B2E"
     tools:context=".TimerFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Timer Fragment"
-        android:textSize="26dp"
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_baseline_library_music_24"
+        android:background="#5454C2"
+        android:layout_margin="25dp"
+        android:layout_gravity="top|end"/>
+
+        <TextView
+            android:id="@+id/task_text"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="Task: blah blah blah blah"
+            android:textStyle="italic"
+            android:textSize="20sp"
+            android:padding="6dp"
+            android:backgroundTint="#6C4EB3"
+            android:layout_marginTop="130dp"
+            android:gravity="center"
+            android:layout_gravity="center|top"
+            android:background="@drawable/rounded_edges"
+            android:textColor="#FFF" />
+
+    <ProgressBar
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:indeterminateOnly="false"
+        android:progressDrawable="@drawable/circle"
+        android:progress="100"
+        android:layout_marginBottom="80dp"
         android:layout_gravity="center"/>
 
-</FrameLayout>
+    <ProgressBar
+        android:id="@+id/timer_progress_bar"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:indeterminateOnly="false"
+        android:progressDrawable="@drawable/determinate_circle"
+        android:progress="100"
+        android:layout_marginBottom="80dp"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/textView_countdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="10:00"
+        android:textSize="30sp"
+        android:layout_marginBottom="80dp"
+        android:layout_gravity="center"
+        android:textColor="#FFF"/>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="64dp"
+        android:backgroundTint="#664EFF"
+        android:src="@drawable/ic_baseline_stop_24"
+        android:visibility="invisible"
+        app:maxImageSize="35dp"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabCustomSize="90dp"
+        android:layout_gravity="bottom|center"
+        android:layout_margin="64dp"
+        android:backgroundTint="#664EFF"
+        android:src="@drawable/ic_baseline_play_arrow_24"
+        app:maxImageSize="70dp"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

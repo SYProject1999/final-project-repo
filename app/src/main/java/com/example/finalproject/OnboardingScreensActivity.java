@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
@@ -125,7 +126,7 @@ public class OnboardingScreensActivity extends AppCompatActivity {
             layoutOnboardingIndicators.addView(indicators[i]);
         }
     }
-
+    
     private void setCurrentOnboardingIndicator(int index) {
 
         int childCount = layoutOnboardingIndicators.getChildCount();
