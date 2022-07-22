@@ -7,4 +7,38 @@
     <string name="diary">Diary</string>
     <string name="timer">Timer</string>
     <string name="bottomnav">BottomNav</string>
+
+    <string-array name="focusTime">
+        <item>25 min</item>
+        <item>30 min</item>
+        <item>40 min</item>
+        <item>50 min</item>
+        <item>60 min</item>
+        <item>90 min</item>
+        <item>120 min</item>
+        <item>150 min</item>
+        <item>180 min</item>
+    </string-array>
+
+    <string-array name="shortBreak">
+        <item>3 min</item>
+        <item>5 min</item>
+        <item>8 min</item>
+        <item>10 min</item>
+    </string-array>
+
+    <string-array name="longBreak">
+        <item>15 min</item>
+        <item>20 min</item>
+        <item>25 min</item>
+        <item>30 min</item>
+    </string-array>
+
+    <string-array name="Sections">
+        <item>2 intervals</item>
+        <item>3 intervals</item>
+        <item>4 intervals</item>
+        <item>5 intervals</item>
+        <item>6 intervals</item>
+    </string-array>
 </resources>

@@ -1,11 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/Theme.Material3.DayNight"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#1F1B2E"
     tools:context=".SetTimerFragment">
 
 
+<!--    <ImageView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/back"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_marginTop="23dp"-->
+<!--        android:src="@drawable/ic_baseline_arrow_back_24" />-->
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/setTimerTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="Add new Timer"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:id="@+id/focusTimeTextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:boxBackgroundColor="#545068"
+        app:boxStrokeColor="#545068"
+        app:endIconTint="@color/white"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/setTimerTitle">
+
+        <AutoCompleteTextView
+            android:id="@+id/focusTimeAutoCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="none"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:text="Focus time"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:id="@+id/shortBreakTextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:boxBackgroundColor="#545068"
+        app:boxStrokeColor="#545068"
+        app:endIconTint="@color/white"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/focusTimeTextInputLayout">
+
+        <AutoCompleteTextView
+            android:id="@+id/shortBreakAutoCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="none"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:text="Short break"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:id="@+id/longBreakTextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:boxBackgroundColor="#545068"
+        app:boxStrokeColor="#545068"
+        app:endIconTint="@color/white"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/shortBreakTextInputLayout">
+
+        <AutoCompleteTextView
+            android:id="@+id/longBreakAutoCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="none"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:text="Long break"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:id="@+id/sectionsTextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:boxBackgroundColor="#545068"
+        app:boxStrokeColor="#545068"
+        app:endIconTint="@color/white"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/longBreakTextInputLayout">
+
+        <AutoCompleteTextView
+            android:id="@+id/sectionsAutoCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="none"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:text="Sections"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/saveTimerBtn"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:text="Save"
+        android:textSize="20sp"
+        app:icon="@drawable/ic_baseline_check_24" />
+
+    <Button
+        android:id="@+id/cancelTimerBtn"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginStart="20dp"
+        android:backgroundTint="#1F1B2E"
+        android:gravity="center"
+        android:text="Cancel"
+        android:textSize="20sp"
+        app:icon="@drawable/ic_baseline_cancel_24" />
+
+</RelativeLayout>

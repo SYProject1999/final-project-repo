@@ -34,7 +34,7 @@ public class BottomNavigationBarActivity extends AppCompatActivity {
                     replaceFragment(new DiaryFragment());
                     break;
                 case R.id.timer:
-                    replaceFragment(new TimerFragment());
+                    replaceFragment(new SetTimerFragment());
                     break;
             }
 
