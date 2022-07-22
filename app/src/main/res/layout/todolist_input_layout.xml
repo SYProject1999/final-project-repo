@@ -122,13 +122,16 @@
                 android:id="@+id/cancelBtn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/background2"
                 android:text="Cancel"
                 android:textAllCaps="false"
                 android:textColor="#fff"
-                android:background="@drawable/background2"
-                android:layout_margin="10dp"
-                android:textStyle="bold"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 

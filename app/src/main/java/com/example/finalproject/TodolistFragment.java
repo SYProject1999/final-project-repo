@@ -36,6 +36,7 @@ public class TodolistFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private FloatingActionButton floatingActionButton;
+    private Button logoutBtn;
 
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
@@ -63,6 +64,7 @@ public class TodolistFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         userID = mUser.getUid();
+        logoutBtn = view.findViewById(R.id.logoutBtn);
         reference = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("Tasks");
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
@@ -77,10 +79,10 @@ public class TodolistFragment extends Fragment {
 
         floatingActionButton.setOnClickListener((v) -> { addTask(); });
 
-//        logoutBtn.setOnClickListener(v -> {
-//            mAuth.signOut();
-//            moveToLoginActivity();
-//        });
+        logoutBtn.setOnClickListener(v -> {
+            mAuth.signOut();
+            moveToLoginActivity();
+        });
         return view;
     }
 

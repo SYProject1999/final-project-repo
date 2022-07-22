@@ -9,7 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <!-- TextInputLayoutColors -->
-    <color name="mtrl_textinput_default_box_stroke_color" tools:ignore="PrivateResource">#545068</color>
+    <color name="mtrl_textinput_default_box_stroke_color" tools:ignore="PrivateResource">#FFFFFF</color>
 
     <color name="colorPrimary">#2196F3</color>
     <color name="colorPrimaryDark">#1976D2</color>
