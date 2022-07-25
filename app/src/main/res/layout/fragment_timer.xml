@@ -15,20 +15,47 @@
         android:layout_margin="25dp"
         android:layout_gravity="top|end"/>
 
+    <LinearLayout
+        android:id="@+id/break_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center"
+        android:layout_marginTop="125dp"
+        android:visibility="invisible"
+        android:clickable="false"
+        android:gravity="center">
+
         <TextView
-            android:id="@+id/task_text"
-            android:layout_width="300dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Task: blah blah blah blah"
-            android:textStyle="italic"
-            android:textSize="20sp"
-            android:padding="6dp"
-            android:backgroundTint="#6C4EB3"
-            android:layout_marginTop="130dp"
-            android:gravity="center"
-            android:layout_gravity="center|top"
-            android:background="@drawable/rounded_edges"
-            android:textColor="#FFF" />
+            android:text="Break Time: "
+            android:textSize="30sp"
+            android:textColor="#FFFFFF"/>
+
+        <Chronometer
+            android:id="@+id/break_chronometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
+<!--        <TextView-->
+<!--            android:id="@+id/task_text"-->
+<!--            android:layout_width="300dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Task: blah blah blah blah"-->
+<!--            android:textStyle="italic"-->
+<!--            android:textSize="20sp"-->
+<!--            android:padding="6dp"-->
+<!--            android:backgroundTint="#6C4EB3"-->
+<!--            android:layout_marginTop="130dp"-->
+<!--            android:gravity="center"-->
+<!--            android:layout_gravity="center|top"-->
+<!--            android:background="@drawable/rounded_edges"-->
+<!--            android:textColor="#FFF" />-->
 
     <ProgressBar
         android:layout_width="200dp"
@@ -48,16 +75,6 @@
         android:progress="100"
         android:layout_marginBottom="80dp"
         android:layout_gravity="center"/>
-
-<!--    <TextView-->
-<!--        android:id="@+id/textView_countdown"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        tools:text="10:00"-->
-<!--        android:textSize="30sp"-->
-<!--        android:layout_marginBottom="80dp"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:textColor="#FFF"/>-->
 
     <Chronometer
         android:id="@+id/chronometer"

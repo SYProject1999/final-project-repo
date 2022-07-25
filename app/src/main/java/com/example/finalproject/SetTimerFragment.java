@@ -74,7 +74,7 @@ public class SetTimerFragment extends Fragment {
             timer.putLong("focusTime", Long.parseLong(focusTime));
             timer.putLong("shortBreak", Long.parseLong(shortBreak));
             timer.putLong("longBreak", Long.parseLong(longBreak));
-            timer.putLong("sections", Long.parseLong(sections));
+            timer.putInt("sections", Integer.parseInt(sections));
 
             getParentFragmentManager().setFragmentResult("timerSettings", timer);
             replaceFragment(new TimerFragment());
