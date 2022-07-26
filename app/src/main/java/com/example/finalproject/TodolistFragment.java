@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.finalproject.models.TaskModel;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,15 +48,6 @@ public class TodolistFragment extends Fragment {
     private String task;
     private String description;
 
-    public TodolistFragment() {
-        // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -77,7 +69,7 @@ public class TodolistFragment extends Fragment {
 
         floatingActionButton = view.findViewById(R.id.fab);
 
-        floatingActionButton.setOnClickListener((v) -> { addTask(); });
+        floatingActionButton.setOnClickListener((v) -> addTask());
 
         logoutBtn.setOnClickListener(v -> {
             mAuth.signOut();
@@ -161,7 +153,6 @@ public class TodolistFragment extends Fragment {
                         updateTask();
                     }
                 });
-
             }
 
             @NonNull

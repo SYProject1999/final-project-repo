@@ -5,13 +5,19 @@
       <map>
         <entry key="app/src/main/res/drawable/circle.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/determinate_circle.xml" value="0.1875" />
+        <entry key="app/src/main/res/drawable/fastfood_selected.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/ic_baseline_calendar_month_24.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/ic_baseline_note_alt_24.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/ic_baseline_smoking_rooms_24.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/ic_baseline_stop_24.xml" value="0.1875" />
+        <entry key="app/src/main/res/drawable/ic_outline_smoking_rooms_24.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/onboarding_indicator_active.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/onboarding_indicator_inactive.xml" value="0.1875" />
+        <entry key="app/src/main/res/drawable/round_button.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/rounded_edges.xml" value="0.1875" />
+        <entry key="app/src/main/res/drawable/smocking_selected.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/start_pause_btn.xml" value="0.1875" />
+        <entry key="app/src/main/res/drawable/tea_selected.xml" value="0.1875" />
         <entry key="app/src/main/res/layout/activity_bottom_navigation_bar.xml" value="0.15579710144927536" />
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
@@ -26,7 +32,10 @@
         <entry key="app/src/main/res/layout/fragment_splash.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/fragment_timer.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_todolist.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/habits_input_layout.xml" value="0.21875" />
+        <entry key="app/src/main/res/layout/habits_update_layout.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/item_container_onboarding.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/layout/recycler_habit_item.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/retrieved_layout.xml" value="0.2557291666666667" />
         <entry key="app/src/main/res/layout/slider_layout.xml" value="0.25" />
         <entry key="app/src/main/res/layout/todolist_input_layout.xml" value="0.2557291666666667" />
