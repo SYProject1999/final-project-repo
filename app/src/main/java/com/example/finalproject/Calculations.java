@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 
 public class Calculations {
 
-    private String calculateTimeBetweenDates(String startDate) {
+    String calculateTimeBetweenDates(String startDate) {
         String endDate = timeStampToString(System.currentTimeMillis());
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date date1 = null;

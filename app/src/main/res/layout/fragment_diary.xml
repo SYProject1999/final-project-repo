@@ -46,12 +46,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:ignore="HardcodedText,RtlHardcoded" />
-
-
-<<<<<<< HEAD
-
-</FrameLayout>
-=======
     <TextView
         android:id="@+id/totalPhoto"
         android:layout_width="match_parent"
@@ -73,4 +67,3 @@
         />
 
 </LinearLayout>
->>>>>>> e1d17ce0b0d791a6935375ab238e837ba85fc784

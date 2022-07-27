@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,17 +37,11 @@ import java.util.Date;
 public class TodolistFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private FloatingActionButton floatingActionButton;
-    private Button logoutBtn;
 
     private FirebaseAuth mAuth;
-    private FirebaseUser mUser;
     private DatabaseReference reference;
-    private String userID;
 
-    private String key = "";
-    private String task;
-    private String description;
+    private String key = "", task = "", description = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,10 +49,13 @@ public class TodolistFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_todolist, container, false);
 
         mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-        userID = mUser.getUid();
-        logoutBtn = view.findViewById(R.id.logoutBtn);
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("Tasks");
+        FirebaseUser mUser = mAuth.getCurrentUser();
+        String userID = mUser.getUid();
+        Button logoutBtn = view.findViewById(R.id.logoutBtn);
+        TextView username = view.findViewById(R.id.username);
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+        username.setText(reference.child("fullName").toString());
+
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -67,7 +65,7 @@ public class TodolistFragment extends Fragment {
         recyclerView.setAdapter(recyclerView.getAdapter());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        floatingActionButton = view.findViewById(R.id.fab);
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.fab);
 
         floatingActionButton.setOnClickListener((v) -> addTask());
 
@@ -83,24 +81,24 @@ public class TodolistFragment extends Fragment {
         AlertDialog.Builder myDialog = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
-        View view = inflater.inflate(R.layout.todolist_input_layout, null);
-        myDialog.setView(view);
+        View dialogView = inflater.inflate(R.layout.todolist_input_layout, null);
+        myDialog.setView(dialogView);
 
         AlertDialog alertDialog = myDialog.create();
         alertDialog.setCancelable(false);
 
-        final EditText taskEditText = view.findViewById(R.id.task);
-        final EditText descriptionEditText = view.findViewById(R.id.description);
-        Button saveTask = view.findViewById(R.id.saveBtn);
-        Button cancelTask = view.findViewById(R.id.cancelBtn);
+        final EditText taskEditText = dialogView.findViewById(R.id.task);
+        final EditText descriptionEditText = dialogView.findViewById(R.id.description);
+        Button saveTask = dialogView.findViewById(R.id.saveBtn);
+        Button cancelTask = dialogView.findViewById(R.id.cancelBtn);
 
-        cancelTask.setOnClickListener((v) -> { alertDialog.dismiss(); });
+        cancelTask.setOnClickListener((v) ->  alertDialog.dismiss());
 
         saveTask.setOnClickListener((v) -> {
 
             String taskTitle = taskEditText.getText().toString().trim();
             String taskDescription = descriptionEditText.getText().toString().trim();
-            String id = reference.push().getKey();
+            String id = reference.child("Task").push().getKey();
             String date = DateFormat.getDateInstance().format(new Date());
 
             if (TextUtils.isEmpty(taskTitle)) {
@@ -112,9 +110,8 @@ public class TodolistFragment extends Fragment {
                 descriptionEditText.requestFocus();
                 return;
             } else {
-
                 TaskModel taskModel = new TaskModel(taskTitle, taskDescription, id, date);
-                reference.child(id).setValue(taskModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                reference.child("Task").child(id).setValue(taskModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -221,7 +218,7 @@ public class TodolistFragment extends Fragment {
                 String date = DateFormat.getDateInstance().format(new Date());
                 TaskModel taskModel = new TaskModel(task, description, key, date);
 
-                reference.child(key).setValue(taskModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                reference.child("Task").child(key).setValue(taskModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -239,14 +236,14 @@ public class TodolistFragment extends Fragment {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                reference.child(key).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                reference.child("Task").child(key).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(getContext(), "Task Has Been Deleted Successfully", Toast.LENGTH_LONG).show();
                         } else {
                             String error = task.getException().toString();
-                            Toast.makeText(getContext(), "Update Failed " + error, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Delete Failed " + error, Toast.LENGTH_LONG).show();
                         }
                     }
                 });

@@ -2,11 +2,12 @@ package com.example.finalproject.models;
 
 public class HabitsModel {
 
-    private String habitId, habitTitle, habitDescription, habitStartTime, imageId;
+    private String habitId, habitTitle, habitDescription, habitStartTime;
+    private int imageId;
 
     public HabitsModel() { }
 
-    public HabitsModel(String habitId, String habitTitle, String habitDescription, String habitStartTime, String imageId) {
+    public HabitsModel(String habitId, String habitTitle, String habitDescription, String habitStartTime, int imageId) {
         this.habitId = habitId;
         this.habitTitle = habitTitle;
         this.habitDescription = habitDescription;
@@ -46,11 +47,11 @@ public class HabitsModel {
         this.habitStartTime = habitStartTime;
     }
 
-    public String getImageId() {
+    public int getImageId() {
         return imageId;
     }
 
-    public void setImageId(String imageId) {
+    public void setImageId(int imageId) {
         this.imageId = imageId;
     }
 }
