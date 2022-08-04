@@ -27,8 +27,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -37,8 +40,10 @@ public class TodolistFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
+    private TextView username;
     private FirebaseAuth mAuth;
     private DatabaseReference reference;
+    private DatabaseReference fullNameReference;
 
     private String key = "", task = "", description = "";
 
@@ -49,11 +54,12 @@ public class TodolistFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser mUser = mAuth.getCurrentUser();
+        assert mUser != null;
         String userID = mUser.getUid();
         Button logoutBtn = view.findViewById(R.id.logoutBtn);
-        TextView username = view.findViewById(R.id.username);
+        username = view.findViewById(R.id.username);
         reference = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("Tasks");
-//        username.setText(reference.child("fullName").toString());
+        fullNameReference = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("fullName");
 
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
@@ -129,6 +135,18 @@ public class TodolistFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        fullNameReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                username.setText(snapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         FirebaseRecyclerOptions<TaskModel> options = new FirebaseRecyclerOptions.Builder<TaskModel>()
                 .setQuery(reference, TaskModel.class).build();

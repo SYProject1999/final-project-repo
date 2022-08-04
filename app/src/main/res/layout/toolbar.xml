@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/purple_500">
@@ -13,23 +15,27 @@
             android:id="@+id/userProfile"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
             android:src="@drawable/ic_baseline_person_24"
+            app:tint="#FFFFFF" />
 
-            android:layout_alignParentEnd="true"/>
         <TextView
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textSize="25sp"
-            android:text="username"/>
+            android:text="username"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/logoutBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/logoutBtn"
+            android:backgroundTint="@color/design_default_color_secondary"
             android:text="LOGOUT"
-            android:backgroundTint="@color/design_default_color_secondary" />
+            android:textColor="#5E35B1"
+            tools:ignore="TextContrastCheck" />
 
     </RelativeLayout>
 

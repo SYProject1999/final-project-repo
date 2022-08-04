@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             checkFirstTime(new FirebaseCallBack() {
                 @Override
                 public void onCallback(String alreadyUsedTheApp) {
-                    if (alreadyUsedTheApp.equals("false")) {
+                    if (alreadyUsedTheApp.equals("true")) {
                         startActivity(new Intent(MainActivity.this, BottomNavigationBarActivity.class));
                     } else {
                         startActivity(new Intent(MainActivity.this, OnBoardingScreensActivity.class));
@@ -58,7 +58,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String alreadyUsedTheApp = String.valueOf(snapshot.getValue(Boolean.class));
-                firebaseCallBack.onCallback(alreadyUsedTheApp);
+//                firebaseCallBack.onCallback(alreadyUsedTheApp);
+                if (alreadyUsedTheApp.equals("true")) {
+                    startActivity(new Intent(MainActivity.this, BottomNavigationBarActivity.class));
+                } else {
+                    startActivity(new Intent(MainActivity.this, OnBoardingScreensActivity.class));
+                }
             }
 
             @Override
