@@ -115,7 +115,7 @@ public class HabitsFragment extends Fragment implements TimePickerDialog.OnTimeS
         habitsAdapter.startListening();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         View holderView;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -135,7 +135,7 @@ public class HabitsFragment extends Fragment implements TimePickerDialog.OnTimeS
 
         public void setTimeElapsed(String timeElapsed) {
             TextView tv_timeElapsed = (TextView) holderView.findViewById(R.id.tv_timeElapsed);
-            tv_timeElapsed.setText(calculations.calculateTimeBetweenDates(timeElapsed));
+            tv_timeElapsed.setText(timeElapsed);
         }
 
         public void setCreatedDate(String createdDate) {

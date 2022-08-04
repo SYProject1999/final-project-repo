@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ViewGroup;
@@ -19,15 +20,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OnboardingScreensActivity extends AppCompatActivity {
+public class OnBoardingScreensActivity extends AppCompatActivity {
 
     private OnboardingAdapter onboardingAdapter;
-    private LinearLayout layoutOnboardingIndicators;
-    private MaterialButton buttonOnboardingAction;
+    private LinearLayout layoutOnBoardingIndicators;
+    private MaterialButton buttonOnBoardingAction;
 
-    private FirebaseUser user;
-    private FirebaseAuth mAuth;
-    private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private String userID;
 
@@ -36,31 +34,32 @@ public class OnboardingScreensActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_onboarding_screens);
 
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-        database = FirebaseDatabase.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Users");
+        assert user != null;
         userID = user.getUid();
 
-        layoutOnboardingIndicators = findViewById(R.id.layoutOnboardingIndicators);
-        buttonOnboardingAction = findViewById(R.id.buttonOnboardingAction);
+        layoutOnBoardingIndicators = findViewById(R.id.layoutOnboardingIndicators);
+        buttonOnBoardingAction = findViewById(R.id.buttonOnboardingAction);
 
-        setOnboardingAdapter();
-        ViewPager2 onboardingViewPager = findViewById(R.id.onboardingViewPager);
-        onboardingViewPager.setAdapter(onboardingAdapter);
-        setLayoutOnboardingIndicators();
-        setCurrentOnboardingIndicator(0);
-        onboardingViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        setOnBoardingAdapter();
+        ViewPager2 onBoardingViewPager = findViewById(R.id.onboardingViewPager);
+        onBoardingViewPager.setAdapter(onboardingAdapter);
+        setLayoutOnBoardingIndicators();
+        setCurrentOnBoardingIndicator(0);
+        onBoardingViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                setCurrentOnboardingIndicator(position);
+                setCurrentOnBoardingIndicator(position);
             }
         });
 
-        buttonOnboardingAction.setOnClickListener(view -> {
-            if (onboardingViewPager.getCurrentItem() + 1 < onboardingAdapter.getItemCount()) {
-                onboardingViewPager.setCurrentItem(onboardingViewPager.getCurrentItem() + 1);
+        buttonOnBoardingAction.setOnClickListener(view -> {
+            if (onBoardingViewPager.getCurrentItem() + 1 < onboardingAdapter.getItemCount()) {
+                onBoardingViewPager.setCurrentItem(onBoardingViewPager.getCurrentItem() + 1);
             } else {
                 databaseReference.child(userID).child("alreadyUsedTheApp").setValue(true);
                 startActivity(new Intent(getApplicationContext(), BottomNavigationBarActivity.class));
@@ -69,9 +68,9 @@ public class OnboardingScreensActivity extends AppCompatActivity {
         });
     }
 
-    private void setOnboardingAdapter() {
+    private void setOnBoardingAdapter() {
 
-        List<OnboardingItem> onboardingItems = new ArrayList<>();
+        List<OnboardingItem> onBoardingItems = new ArrayList<>();
 
         OnboardingItem itemPayOnline = new OnboardingItem();
         itemPayOnline.setTitle("Pay Your");
@@ -93,15 +92,15 @@ public class OnboardingScreensActivity extends AppCompatActivity {
         itemPayOnline4.setDescription("Electric bill");
         itemPayOnline4.setImage(R.drawable.timer);
 
-        onboardingItems.add(itemPayOnline);
-        onboardingItems.add(itemPayOnline2);
-        onboardingItems.add(itemPayOnline3);
-        onboardingItems.add(itemPayOnline4);
+        onBoardingItems.add(itemPayOnline);
+        onBoardingItems.add(itemPayOnline2);
+        onBoardingItems.add(itemPayOnline3);
+        onBoardingItems.add(itemPayOnline4);
 
-        onboardingAdapter = new OnboardingAdapter(onboardingItems);
+        onboardingAdapter = new OnboardingAdapter(onBoardingItems);
     }
 
-    private void setLayoutOnboardingIndicators() {
+    private void setLayoutOnBoardingIndicators() {
 
         ImageView[] indicators = new ImageView[onboardingAdapter.getItemCount()];
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -115,15 +114,16 @@ public class OnboardingScreensActivity extends AppCompatActivity {
                     R.drawable.onboarding_indicator_inactive
             ));
             indicators[i].setLayoutParams(layoutParams);
-            layoutOnboardingIndicators.addView(indicators[i]);
+            layoutOnBoardingIndicators.addView(indicators[i]);
         }
     }
     
-    private void setCurrentOnboardingIndicator(int index) {
+    @SuppressLint("SetTextI18n")
+    private void setCurrentOnBoardingIndicator(int index) {
 
-        int childCount = layoutOnboardingIndicators.getChildCount();
+        int childCount = layoutOnBoardingIndicators.getChildCount();
         for (int i = 0; i < childCount; i++) {
-            ImageView imageView = (ImageView) layoutOnboardingIndicators.getChildAt(i);
+            ImageView imageView = (ImageView) layoutOnBoardingIndicators.getChildAt(i);
             if (i == index) {
                 imageView.setImageDrawable(
                         ContextCompat.getDrawable(getApplicationContext(), R.drawable.onboarding_indicator_active)
@@ -136,9 +136,9 @@ public class OnboardingScreensActivity extends AppCompatActivity {
         }
 
         if (index == onboardingAdapter.getItemCount() - 1) {
-            buttonOnboardingAction.setText("Start");
+            buttonOnBoardingAction.setText("Start");
         } else {
-            buttonOnboardingAction.setText("Next");
+            buttonOnBoardingAction.setText("Next");
         }
     }
 }

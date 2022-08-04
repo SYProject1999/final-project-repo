@@ -17,8 +17,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -100,7 +98,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user.isEmailVerified()) {
                                 Toast.makeText(LoginActivity.this, "User logged in successfully", Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(LoginActivity.this, OnboardingScreensActivity.class));
+                                startActivity(new Intent(LoginActivity.this, OnBoardingScreensActivity.class));
                             } else {
                                 Toast.makeText(LoginActivity.this, "Verify your email", Toast.LENGTH_LONG).show();
                             }

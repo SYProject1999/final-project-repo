@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,8 +52,8 @@ public class TodolistFragment extends Fragment {
         String userID = mUser.getUid();
         Button logoutBtn = view.findViewById(R.id.logoutBtn);
         TextView username = view.findViewById(R.id.username);
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
-        username.setText(reference.child("fullName").toString());
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("Tasks");
+//        username.setText(reference.child("fullName").toString());
 
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
@@ -98,7 +97,7 @@ public class TodolistFragment extends Fragment {
 
             String taskTitle = taskEditText.getText().toString().trim();
             String taskDescription = descriptionEditText.getText().toString().trim();
-            String id = reference.child("Task").push().getKey();
+            String id = reference.push().getKey();
             String date = DateFormat.getDateInstance().format(new Date());
 
             if (TextUtils.isEmpty(taskTitle)) {
@@ -111,7 +110,7 @@ public class TodolistFragment extends Fragment {
                 return;
             } else {
                 TaskModel taskModel = new TaskModel(taskTitle, taskDescription, id, date);
-                reference.child("Task").child(id).setValue(taskModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                reference.child(id).setValue(taskModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -218,7 +217,7 @@ public class TodolistFragment extends Fragment {
                 String date = DateFormat.getDateInstance().format(new Date());
                 TaskModel taskModel = new TaskModel(task, description, key, date);
 
-                reference.child("Task").child(key).setValue(taskModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                reference.child(key).setValue(taskModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -236,7 +235,7 @@ public class TodolistFragment extends Fragment {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                reference.child("Task").child(key).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                reference.child(key).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {

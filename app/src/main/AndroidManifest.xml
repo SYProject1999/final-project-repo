@@ -20,7 +20,7 @@
             android:name=".addDiary"
             android:exported="false" />
         <activity
-            android:name=".OnboardingScreensActivity"
+            android:name=".OnBoardingScreensActivity"
             android:exported="false" />
         <activity
             android:name=".ForgotPasswordActivity"
