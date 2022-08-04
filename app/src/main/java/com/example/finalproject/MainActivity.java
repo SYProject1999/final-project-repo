@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             checkFirstTime(new FirebaseCallBack() {
                 @Override
                 public void onCallback(String alreadyUsedTheApp) {
-                    if (alreadyUsedTheApp.equals("false")) {
+                    if (alreadyUsedTheApp.equals("true")) {
                         startActivity(new Intent(MainActivity.this, BottomNavigationBarActivity.class));
                     } else {
                         startActivity(new Intent(MainActivity.this, OnBoardingScreensActivity.class));
