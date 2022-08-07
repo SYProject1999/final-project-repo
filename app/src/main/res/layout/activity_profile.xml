@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileActivity"
+    android:background="@drawable/background2">
+
+    <RelativeLayout
+        android:id="@+id/profileToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16sp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Profile"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/editProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="Edit"
+            android:textColor="#03DAC6"
+            android:textSize="24sp" />
+
+    </RelativeLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profileImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@id/profileToolbar"
+        android:src="@drawable/ic_baseline_person_24"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        app:civ_circle_background_color="@color/white"
+        app:civ_border_width="3dp"
+        app:civ_border_color="#000"/>
+
+    <TextView
+        android:id="@+id/usernameProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/profileImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Username"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/email_profile_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/usernameProfile"
+        android:layout_marginStart="40sp"
+        android:layout_marginTop="20dp"
+        android:drawableStart="@drawable/ic_baseline_email_24"
+        android:drawablePadding="20sp"
+        android:text="User Email"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        tools:ignore="UseCompatTextViewDrawableXml" />
+
+    <TextView
+        android:id="@+id/dateOfBirth_profile_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/email_profile_tv"
+        android:layout_marginStart="40sp"
+        android:layout_marginTop="20dp"
+        android:drawableStart="@drawable/ic_baseline_calendar_month_24"
+        android:drawablePadding="20sp"
+        android:text="Date of Birth"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        tools:ignore="UseCompatTextViewDrawableXml" />
+
+    <TextView
+        android:id="@+id/gender_profile_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dateOfBirth_profile_tv"
+        android:layout_marginStart="40sp"
+        android:layout_marginTop="20dp"
+        android:drawableStart="@drawable/ic_baseline_people_24"
+        android:drawablePadding="20sp"
+        android:text="Gender"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        tools:ignore="UseCompatTextViewDrawableXml" />
+
+    <LinearLayout
+        android:id="@+id/password_profile_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/gender_profile_tv"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.6">
+
+            <TextView
+                android:id="@+id/password_profile_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40sp"
+                android:layout_marginTop="20dp"
+                android:drawableStart="@drawable/ic_baseline_password_24"
+                android:drawablePadding="20sp"
+                android:text="Password"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                tools:ignore="UseCompatTextViewDrawableXml" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2">
+
+            <TextView
+                android:id="@+id/changePassword_profile_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40sp"
+                android:layout_marginTop="20dp"
+                android:clickable="true"
+                android:text="Change Password"
+                android:textColor="#03DAC6"
+                android:textSize="20sp"
+                tools:ignore="UseCompatTextViewDrawableXml,TouchTargetSizeCheck" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/logoutBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/design_default_color_secondary"
+        android:text="LOGOUT"
+        android:textColor="#5E35B1"
+        android:layout_below="@id/password_profile_layout"
+        android:layout_marginTop="20dp"
+        tools:ignore="TextContrastCheck" />
+
+
+
+</RelativeLayout>

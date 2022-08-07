@@ -12,7 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ImageView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SetTimerFragment extends Fragment {
 
@@ -26,6 +27,7 @@ public class SetTimerFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_set_timer, container, false);
 
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
         focusTimeAutoCompleteTextView = view.findViewById(R.id.focusTimeAutoCompleteTextView);
         shortBreakAutoCompleteTextView = view.findViewById(R.id.shortBreakAutoCompleteTextView);
         longBreakAutoCompleteTextView = view.findViewById(R.id.longBreakAutoCompleteTextView);
@@ -34,7 +36,7 @@ public class SetTimerFragment extends Fragment {
 
         // Focus time dropdown menu
         String[] focusTimeArray = getResources().getStringArray(R.array.focusTime);
-        ArrayAdapter<String> focusTimeAdapter = new ArrayAdapter(requireContext(), R.layout.dropdown_item, focusTimeArray);
+        ArrayAdapter<String> focusTimeAdapter = new ArrayAdapter<>(requireContext(), R.layout.dropdown_item, focusTimeArray);
         focusTimeAutoCompleteTextView.setAdapter(focusTimeAdapter);
 
         // Short break dropdown menu
@@ -76,6 +78,8 @@ public class SetTimerFragment extends Fragment {
             timer.putLong("longBreak", Long.parseLong(longBreak));
             timer.putInt("sections", Integer.parseInt(sections));
 
+            bottomNavigationView.setVisibility(View.GONE);
+
             getParentFragmentManager().setFragmentResult("timerSettings", timer);
             replaceFragment(new TimerFragment());
         });
@@ -91,5 +95,4 @@ public class SetTimerFragment extends Fragment {
         fragmentTransaction.commit();
 
     }
-
 }

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,8 +43,7 @@ public class TodolistFragment extends Fragment {
 
     private TextView username;
     private FirebaseAuth mAuth;
-    private DatabaseReference reference;
-    private DatabaseReference fullNameReference;
+    private DatabaseReference reference, fullNameReference;
 
     private String key = "", task = "", description = "";
 
@@ -52,15 +52,17 @@ public class TodolistFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_todolist, container, false);
 
+        ImageView profile_iv = view.findViewById(R.id.userProfile);
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser mUser = mAuth.getCurrentUser();
         assert mUser != null;
         String userID = mUser.getUid();
-        Button logoutBtn = view.findViewById(R.id.logoutBtn);
+
         username = view.findViewById(R.id.username);
         reference = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("Tasks");
         fullNameReference = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("fullName");
 
+        profile_iv.setOnClickListener(v -> startActivity(new Intent(getActivity(), ProfileActivity.class)));
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -74,10 +76,6 @@ public class TodolistFragment extends Fragment {
 
         floatingActionButton.setOnClickListener((v) -> addTask());
 
-        logoutBtn.setOnClickListener(v -> {
-            mAuth.signOut();
-            moveToLoginActivity();
-        });
         return view;
     }
 
@@ -116,6 +114,7 @@ public class TodolistFragment extends Fragment {
                 return;
             } else {
                 TaskModel taskModel = new TaskModel(taskTitle, taskDescription, id, date);
+                assert id != null;
                 reference.child(id).setValue(taskModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -269,13 +268,5 @@ public class TodolistFragment extends Fragment {
         });
 
         alertDialog.show();
-    }
-
-    private void moveToLoginActivity () {
-
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        startActivity(intent);
-        ((Activity) getActivity()).overridePendingTransition(0, 0);
-
     }
 }

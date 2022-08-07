@@ -4,10 +4,13 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.CountDownTimer;
 import android.os.SystemClock;
@@ -19,9 +22,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.Objects;
 
 public class TimerFragment extends Fragment {
 
@@ -41,6 +43,13 @@ public class TimerFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_timer, container, false);
 
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() { }
+        });
+
+        BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationView);
         breakLayout = view.findViewById(R.id.break_time);
         timerProgressBar = view.findViewById(R.id.timer_progress_bar);
         breakChronometer = view.findViewById(R.id.break_chronometer);
@@ -57,7 +66,6 @@ public class TimerFragment extends Fragment {
                 shortBreak = result.getLong("shortBreak");
                 longBreak = result.getLong("longBreak");
                 sections = result.getInt("sections");
-                shortLongBreaks();
                 time = result.getLong("focusTime");
                 time *= 60000;
                 shortBreak *= 60000;
@@ -99,7 +107,6 @@ public class TimerFragment extends Fragment {
                             public void onFinish() {
                                 Toast.makeText(getContext(), "Timer Finished Good Work", Toast.LENGTH_LONG).show();
                                 chronometer.stop();
-                                getParentFragmentManager().popBackStack();
                             }
                         }.start();
                     } else {
@@ -110,7 +117,8 @@ public class TimerFragment extends Fragment {
         });
 
         fabStop.setOnClickListener(v -> {
-            getParentFragmentManager().popBackStack();
+            replaceFragment(new SetTimerFragment());
+            bottomNavigationView.setVisibility(View.VISIBLE);
         });
 
         return view;
@@ -120,22 +128,13 @@ public class TimerFragment extends Fragment {
         timerProgressBar.setProgress(progr);
     }
 
-    private void shortLongBreaks() {
-        if (sections == 2) {
-            shortBreakCount = 1;
-            longBreakCount = 1;
-        } else if (sections == 3) {
-            shortBreakCount = 2;
-            longBreakCount = 1;
-        } else if (sections == 4) {
-            shortBreakCount = 3;
-            longBreakCount = 1;
-        } else if (sections == 5) {
-            shortBreakCount = 3;
-            longBreakCount = 2;
-        } else {
-            shortBreakCount = 4;
-            longBreakCount = 2;
-        }
+    private void replaceFragment(Fragment fragment) {
+
+        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+
     }
+
 }

@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/bg_calendar.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/circle.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/determinate_circle.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/fastfood_selected.xml" value="0.1875" />
@@ -23,7 +24,9 @@
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_onboarding_screens.xml" value="0.21875" />
+        <entry key="app/src/main/res/layout/activity_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/change_password_layout.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/dropdown_item.xml" value="0.2557291666666667" />
         <entry key="app/src/main/res/layout/fragment_diary.xml" value="0.15579710144927536" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.21875" />

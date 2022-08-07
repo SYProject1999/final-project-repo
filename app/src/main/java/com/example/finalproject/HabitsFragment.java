@@ -58,6 +58,7 @@ public class HabitsFragment extends Fragment implements TimePickerDialog.OnTimeS
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser mUser = mAuth.getCurrentUser();
+        assert mUser != null;
         String userID = mUser.getUid();
         reference = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("Habits");
 
@@ -138,6 +139,7 @@ public class HabitsFragment extends Fragment implements TimePickerDialog.OnTimeS
             tv_timeElapsed.setText(timeElapsed);
         }
 
+        @SuppressLint("SetTextI18n")
         public void setCreatedDate(String createdDate) {
             TextView tv_item_createdTimeStamp = (TextView) holderView.findViewById(R.id.tv_item_createdTimeStamp);
             tv_item_createdTimeStamp.setText("Since: " + createdDate);
