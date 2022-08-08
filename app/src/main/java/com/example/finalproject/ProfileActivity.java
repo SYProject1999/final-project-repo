@@ -3,9 +3,9 @@ package com.example.finalproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -26,13 +26,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
-
     private DatabaseReference userReference;
+
+    private CircleImageView circleImageView;
 
     private TextView changePasswordTV, editProfileTV, usernameTV, userEmailTV, userDateOfBirthTV, userGenderTV;
 
@@ -54,6 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
         userGenderTV = findViewById(R.id.gender_profile_tv);
         editProfileTV = findViewById(R.id.editProfile);
         changePasswordTV = findViewById(R.id.changePassword_profile_tv);
+        circleImageView = findViewById(R.id.profileImage);
         Button logoutBtn = findViewById(R.id.logoutBtn);
 
         changePasswordTV.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +139,11 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        editProfileTV.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplication(), EditProfileActivity.class);
+            startActivity(intent);
+        });
+
         logoutBtn.setOnClickListener(v -> {
             mAuth.signOut();
             moveToLoginActivity();
@@ -155,6 +165,9 @@ public class ProfileActivity extends AppCompatActivity {
                 if (snapshot.child("Gender").getValue() != null) {
                     userGenderTV.setText(snapshot.child("Gender").getValue(String.class));
                 }
+                if (snapshot.child("imageUrl").getValue() != null) {
+                    Picasso.with(ProfileActivity.this).load(snapshot.child("imageUrl").getValue(Uri.class)).into(circleImageView);
+                }
             }
 
             @Override
@@ -165,6 +178,5 @@ public class ProfileActivity extends AppCompatActivity {
     private void moveToLoginActivity () {
         Intent intent = new Intent(getApplication(), MainActivity.class);
         startActivity(intent);
-        ((Activity) ProfileActivity.this).overridePendingTransition(0, 0);
     }
 }

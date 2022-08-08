@@ -1,4 +1,4 @@
-package com.example.finalproject;
+package com.example.finalproject.Onboarding;
 
 public class OnboardingItem {
 

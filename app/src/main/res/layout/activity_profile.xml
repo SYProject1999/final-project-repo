@@ -38,12 +38,12 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_below="@id/profileToolbar"
-        android:src="@drawable/ic_baseline_person_24"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        app:civ_circle_background_color="@color/white"
+        android:src="@drawable/ic_baseline_person_24"
+        app:civ_border_color="#000"
         app:civ_border_width="3dp"
-        app:civ_border_color="#000"/>
+        app:civ_circle_background_color="@color/white" />
 
     <TextView
         android:id="@+id/usernameProfile"
@@ -151,12 +151,12 @@
         android:id="@+id/logoutBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/password_profile_layout"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:backgroundTint="@color/design_default_color_secondary"
         android:text="LOGOUT"
         android:textColor="#5E35B1"
-        android:layout_below="@id/password_profile_layout"
-        android:layout_marginTop="20dp"
         tools:ignore="TextContrastCheck" />
 
 
