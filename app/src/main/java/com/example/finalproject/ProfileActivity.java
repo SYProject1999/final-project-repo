@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.finalproject.models.ProfileImageModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -26,7 +27,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -35,6 +41,7 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private DatabaseReference userReference;
+    private StorageReference storageReference;
 
     private CircleImageView circleImageView;
 
@@ -51,6 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
         String userID = user.getUid();
 
         userReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+        storageReference = FirebaseStorage.getInstance().getReference("Users").child(userID);
 
         usernameTV = findViewById(R.id.usernameProfile);
         userEmailTV = findViewById(R.id.email_profile_tv);
@@ -164,9 +172,6 @@ public class ProfileActivity extends AppCompatActivity {
                 }
                 if (snapshot.child("Gender").getValue() != null) {
                     userGenderTV.setText(snapshot.child("Gender").getValue(String.class));
-                }
-                if (snapshot.child("imageUrl").getValue() != null) {
-                    Picasso.with(ProfileActivity.this).load(snapshot.child("imageUrl").getValue(Uri.class)).into(circleImageView);
                 }
             }
 
