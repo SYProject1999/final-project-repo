@@ -71,10 +71,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/loginbtn"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/white"
-        android:textSize="20sp"
         android:clickable="true"
-        android:text="Create New Account?" />
+        android:minHeight="48dp"
+        android:text="Create New Account?"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/forgotPassword"
@@ -86,8 +87,9 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:text="Forgot Password?"
         android:clickable="true"
+        android:minHeight="48dp"
+        android:text="Forgot Password?"
         android:textColor="@color/white" />
 
     <TextView
@@ -112,18 +114,6 @@
             android:layout_height="48dp"
             android:layout_margin="20dp"
             android:src="@drawable/google" />
-
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_margin="20dp"
-            android:src="@drawable/fb" />
-
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_margin="20dp"
-            android:src="@drawable/twitter" />
 
     </LinearLayout>
 
