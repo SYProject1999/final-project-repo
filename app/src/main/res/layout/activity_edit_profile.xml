@@ -65,6 +65,7 @@
         android:backgroundTint="#26A69A"
         android:hint="Full Name"
         android:inputType="text"
+        android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
         android:textSize="20sp" />
 
@@ -80,6 +81,7 @@
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:textColorHint="#FFFFFF"
+        android:textColor="#FFFFFF"
         android:textSize="20sp" />
 
     <RelativeLayout
@@ -125,6 +127,7 @@
         android:hint="Gender"
         android:inputType="text"
         android:textColorHint="#FFFFFF"
+        android:textColor="#FFFFFF"
         android:textSize="20sp" />
 
     <com.google.android.material.button.MaterialButton

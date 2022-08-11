@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,7 +14,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.finalproject.models.ProfileImageModel;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -27,12 +28,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
-
-import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -173,10 +170,16 @@ public class ProfileActivity extends AppCompatActivity {
                 if (snapshot.child("Gender").getValue() != null) {
                     userGenderTV.setText(snapshot.child("Gender").getValue(String.class));
                 }
+                if (snapshot.child("imageUrl").getValue() != null) {
+                    GlideApp.with(ProfileActivity.this).load(storageReference.child(snapshot.child("imageUrl").getValue(String.class))).into(circleImageView);
+                }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println(error);
+                Toast.makeText(ProfileActivity.this, "Error Loading Image", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -185,3 +188,4 @@ public class ProfileActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
+
