@@ -6,11 +6,17 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,12 +37,15 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.Calendar;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    private static final int PICK_IMAGE_REQUEST = 1;
+    private int day = 0, month = 0, year = 0;
 
+    private DatePickerDialog datePickerDialog;
     private CircleImageView profileImage;
     private TextView dateOfBirthTV;
     private Button changeImageBtn, dateOfBirthBtn, saveBtn;
@@ -82,6 +91,9 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+        initDatePicker();
+        dateOfBirthBtn.setOnClickListener(this::openDatePicker);
+
         changeImageBtn.setOnClickListener(view -> getContent.launch("image/*"));
 
         saveBtn.setOnClickListener(view -> {
@@ -100,21 +112,30 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void saveChanges() {
-        String fullName = fullNameET.getText().toString();
-        String email = emailET.getText().toString();
-        String gender = genderET.getText().toString();
-        String dateOfBirth = dateOfBirthTV.toString();
+        String fullName = fullNameET.getText().toString().trim();
+        String email = emailET.getText().toString().trim();
+        String gender = genderET.getText().toString().trim();
+        String dateOfBirth = (String) dateOfBirthTV.getText();
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                if (!fullName.equals(snapshot.child("fullName").getValue()) && !fullName.isEmpty()) {
+                    databaseReference.child("fullName").setValue(fullName);
+                }
+                if (!email.equals(user.getEmail()) && !email.isEmpty()) {
+                    user.updateEmail(email);
+                }
+                if (!gender.equals(snapshot.child("Gender").getValue()) && !gender.isEmpty()) {
+                    databaseReference.child("Gender").setValue(gender);
+                }
+                if (!dateOfBirth.equals(snapshot.child("DateOfBirth").getValue())) {
+                    databaseReference.child("DateOfBirth").setValue(dateOfBirth);
+                }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) { }
         });
 
         if (imageUri != null) {
@@ -146,6 +167,9 @@ public class EditProfileActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.child("imageUrl").getValue() != null) {
+                    GlideApp.with(EditProfileActivity.this).load(storageReference.child(snapshot.child("imageUrl").getValue(String.class))).into(profileImage);
+                }
                 fullNameET.setText(snapshot.child("fullName").getValue(String.class));
                 if (snapshot.child("DateOfBirth").getValue() != null) {
                     dateOfBirthTV.setText(snapshot.child("DateOfBirth").getValue(String.class));
@@ -153,15 +177,76 @@ public class EditProfileActivity extends AppCompatActivity {
                 if (snapshot.child("Gender").getValue() != null) {
                     genderET.setText(snapshot.child("Gender").getValue(String.class));
                 }
-                if (snapshot.child("imageUrl").getValue() != null) {
-                    GlideApp.with(EditProfileActivity.this).load(storageReference.child(snapshot.child("imageUrl").getValue(String.class))).into(profileImage);
-                }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) { }
         });
+    }
+
+    private void initDatePicker()
+    {
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
+        {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day)
+            {
+                month = month + 1;
+                String date = makeDateString(day, month, year);
+                dateOfBirthTV.setText(date);
+            }
+        };
+
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        int style = AlertDialog.THEME_HOLO_LIGHT;
+
+        datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+
+    }
+
+    private String makeDateString(int day, int month, int year)
+    {
+        return getMonthFormat(month) + " " + day + " " + year;
+    }
+
+    private String getMonthFormat(int month)
+    {
+        if(month == 1)
+            return "JAN";
+        if(month == 2)
+            return "FEB";
+        if(month == 3)
+            return "MAR";
+        if(month == 4)
+            return "APR";
+        if(month == 5)
+            return "MAY";
+        if(month == 6)
+            return "JUN";
+        if(month == 7)
+            return "JUL";
+        if(month == 8)
+            return "AUG";
+        if(month == 9)
+            return "SEP";
+        if(month == 10)
+            return "OCT";
+        if(month == 11)
+            return "NOV";
+        if(month == 12)
+            return "DEC";
+
+        //default should never happen
+        return "JAN";
+    }
+
+    public void openDatePicker(View view)
+    {
+        datePickerDialog.show();
     }
 }
