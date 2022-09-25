@@ -73,7 +73,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:inputType="none"
-            android:text="3 minutes"
+            android:text="5 minutes"
             android:textColor="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -128,7 +128,7 @@
             android:inputType="none"
             android:layout_weight="1"
             android:textColor="@color/white"
-            android:text="2 intervals"/>
+            android:text="3 intervals"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button

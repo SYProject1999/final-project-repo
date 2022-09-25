@@ -20,13 +20,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
-                android:text="Update Task"
-                android:gravity="center"
                 android:background="@drawable/background2"
-                android:textColor="#fff"
+                android:gravity="center"
                 android:padding="10dp"
+                android:text="Update Task"
+                android:textColor="#fff"
                 android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/et_habitTitle_update"

@@ -16,13 +16,9 @@
         <item>50 minutes</item>
         <item>60 minutes</item>
         <item>90 minutes</item>
-        <item>120 minutes</item>
-        <item>150 minutes</item>
-        <item>180 minutes</item>
     </string-array>
 
     <string-array name="shortBreak">
-        <item>3 minutes</item>
         <item>5 minutes</item>
         <item>8 minutes</item>
         <item>10 minutes</item>
@@ -36,7 +32,6 @@
     </string-array>
 
     <string-array name="Sections">
-        <item>2 intervals</item>
         <item>3 intervals</item>
         <item>4 intervals</item>
         <item>5 intervals</item>

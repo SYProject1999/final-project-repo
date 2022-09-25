@@ -1,6 +1,5 @@
 package com.example.finalproject;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,8 +22,6 @@ import android.widget.Toast;
 import com.example.finalproject.models.TaskModel;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,13 +33,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 public class TodolistFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
     private TextView username;
-    private FirebaseAuth mAuth;
     private DatabaseReference reference, fullNameReference;
 
     private String key = "", task = "", description = "";
@@ -53,7 +50,7 @@ public class TodolistFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_todolist, container, false);
 
         ImageView profile_iv = view.findViewById(R.id.userProfile);
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser mUser = mAuth.getCurrentUser();
         assert mUser != null;
         String userID = mUser.getUid();
@@ -64,7 +61,7 @@ public class TodolistFragment extends Fragment {
 
         profile_iv.setOnClickListener(v -> startActivity(new Intent(getActivity(), ProfileActivity.class)));
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
@@ -73,7 +70,6 @@ public class TodolistFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         FloatingActionButton floatingActionButton = view.findViewById(R.id.fab);
-
         floatingActionButton.setOnClickListener((v) -> addTask());
 
         return view;
@@ -115,14 +111,11 @@ public class TodolistFragment extends Fragment {
             } else {
                 TaskModel taskModel = new TaskModel(taskTitle, taskDescription, id, date);
                 assert id != null;
-                reference.child(id).setValue(taskModel).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getContext(), "Task Has Been Inserted Successfully", Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(getContext(), "Failed: " + task.getException().toString(), Toast.LENGTH_LONG).show();
-                        }
+                reference.child(id).setValue(taskModel).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getContext(), "Task Has Been Inserted Successfully", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getContext(), "Failed: " + Objects.requireNonNull(task.getException()), Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -157,14 +150,11 @@ public class TodolistFragment extends Fragment {
                 holder.setTask(model.getTaskTitle());
                 holder.setDescription(model.getTaskDescription());
 
-                holder.view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        key = getRef(holder.getAbsoluteAdapterPosition()).getKey();
-                        task = model.getTaskTitle();
-                        description = model.getTaskDescription();
-                        updateTask();
-                    }
+                holder.holderView.setOnClickListener(view -> {
+                    key = getRef(holder.getAbsoluteAdapterPosition()).getKey();
+                    task = model.getTaskTitle();
+                    description = model.getTaskDescription();
+                    updateTask();
                 });
             }
 
@@ -182,25 +172,25 @@ public class TodolistFragment extends Fragment {
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        View view;
+        View holderView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            view = itemView;
+            holderView = itemView;
         }
 
         public void setTask(String task) {
-            TextView taskTextView = view.findViewById(R.id.taskLayoutTV);
+            TextView taskTextView = holderView.findViewById(R.id.taskLayoutTV);
             taskTextView.setText(task);
         }
 
         public void setDescription(String description) {
-            TextView descriptionTextView = view.findViewById(R.id.descriptionLayoutTV);
+            TextView descriptionTextView = holderView.findViewById(R.id.descriptionLayoutTV);
             descriptionTextView.setText(description);
         }
 
         public void setDate(String date) {
-            TextView dateTextView = view.findViewById(R.id.dateLayoutTV);
+            TextView dateTextView = holderView.findViewById(R.id.dateLayoutTV);
             dateTextView.setText(date);
         }
     }
@@ -226,45 +216,33 @@ public class TodolistFragment extends Fragment {
         Button deleteBtn = view.findViewById(R.id.deleteBtn);
         Button updateBtn = view.findViewById(R.id.updateBtn);
 
-        updateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                task = taskTitleEditText.getText().toString().trim();
-                description = taskDescriptionEditText.getText().toString().trim();
-                String date = DateFormat.getDateInstance().format(new Date());
-                TaskModel taskModel = new TaskModel(task, description, key, date);
+        updateBtn.setOnClickListener(view1 -> {
+            task = taskTitleEditText.getText().toString().trim();
+            description = taskDescriptionEditText.getText().toString().trim();
+            String date = DateFormat.getDateInstance().format(new Date());
+            TaskModel taskModel = new TaskModel(task, description, key, date);
 
-                reference.child(key).setValue(taskModel).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getContext(), "Task Has Been Updated Successfully", Toast.LENGTH_LONG).show();
-                        } else {
-                            String error = task.getException().toString();
-                            Toast.makeText(getContext(), "Update Failed " + error, Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-                alertDialog.dismiss();
-            }
+            reference.child(key).setValue(taskModel).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getContext(), "Task Has Been Updated Successfully", Toast.LENGTH_LONG).show();
+                } else {
+                    String error = Objects.requireNonNull(task.getException()).toString();
+                    Toast.makeText(getContext(), "Update Failed " + error, Toast.LENGTH_LONG).show();
+                }
+            });
+            alertDialog.dismiss();
         });
 
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                reference.child(key).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getContext(), "Task Has Been Deleted Successfully", Toast.LENGTH_LONG).show();
-                        } else {
-                            String error = task.getException().toString();
-                            Toast.makeText(getContext(), "Delete Failed " + error, Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-                alertDialog.dismiss();
-            }
+        deleteBtn.setOnClickListener(view2 -> {
+            reference.child(key).removeValue().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getContext(), "Task Has Been Deleted Successfully", Toast.LENGTH_LONG).show();
+                } else {
+                    String error = Objects.requireNonNull(task.getException()).toString();
+                    Toast.makeText(getContext(), "Delete Failed " + error, Toast.LENGTH_LONG).show();
+                }
+            });
+            alertDialog.dismiss();
         });
 
         alertDialog.show();
