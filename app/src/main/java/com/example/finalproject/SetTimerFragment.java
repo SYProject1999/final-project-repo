@@ -88,11 +88,9 @@ public class SetTimerFragment extends Fragment {
     }
 
     private void replaceFragment(Fragment fragment) {
-
         FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment).addToBackStack(null);
         fragmentTransaction.commit();
-
     }
 }

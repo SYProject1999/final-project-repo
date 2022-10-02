@@ -95,7 +95,6 @@
         android:layout_margin="64dp"
         android:backgroundTint="#664EFF"
         android:src="@drawable/ic_baseline_stop_24"
-        android:visibility="invisible"
         app:maxImageSize="35dp"
         tools:ignore="SpeakableTextPresentCheck" />
 
