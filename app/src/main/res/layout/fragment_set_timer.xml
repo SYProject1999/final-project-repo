@@ -6,7 +6,7 @@
     android:theme="@style/Theme.Material3.DayNight"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#1F1B2E"
-    tools:context=".SetTimerFragment">
+    tools:context=".timer.SetTimerFragment">
 
     <TextView
         android:id="@+id/setTimerTitle"

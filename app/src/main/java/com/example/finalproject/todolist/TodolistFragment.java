@@ -1,4 +1,4 @@
-package com.example.finalproject;
+package com.example.finalproject.todolist;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.finalproject.profile.ProfileActivity;
+import com.example.finalproject.R;
 import com.example.finalproject.models.TaskModel;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;

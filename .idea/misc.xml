@@ -9,9 +9,11 @@
         <entry key="app/src/main/res/drawable/fastfood_selected.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/ic_baseline_calendar_month_24.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/ic_baseline_fastfood_24.xml" value="0.193" />
+        <entry key="app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.1055" />
         <entry key="app/src/main/res/drawable/ic_baseline_note_alt_24.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/ic_baseline_smoking_rooms_24.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/ic_baseline_stop_24.xml" value="0.1875" />
+        <entry key="app/src/main/res/drawable/ic_baseline_wb_sunny_24.xml" value="0.193" />
         <entry key="app/src/main/res/drawable/ic_outline_fastfood_24.xml" value="0.193" />
         <entry key="app/src/main/res/drawable/ic_outline_smoking_rooms_24.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/onboarding_indicator_active.xml" value="0.1875" />
@@ -23,35 +25,49 @@
         <entry key="app/src/main/res/drawable/tea_selected.xml" value="0.1875" />
         <entry key="app/src/main/res/font/poppins.xml" value="0.2942708333333333" />
         <entry key="app/src/main/res/font/poppins_bold.xml" value="0.2942708333333333" />
+        <entry key="app/src/main/res/layout/activity_add_diary.xml" value="0.2296195652173913" />
         <entry key="app/src/main/res/layout/activity_bottom_navigation_bar.xml" value="0.15579710144927536" />
+        <entry key="app/src/main/res/layout/activity_create_note.xml" value="0.2296195652173913" />
+        <entry key="app/src/main/res/layout/activity_edit_note.xml" value="0.11944444444444445" />
         <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_group_chat.xml" value="0.11629667003027246" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_onboarding_screens.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/app_bar_layout.xml" value="0.11944444444444445" />
         <entry key="app/src/main/res/layout/change_password_layout.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/custom_single_image.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/dropdown_item.xml" value="0.2557291666666667" />
-        <entry key="app/src/main/res/layout/fragment_diary.xml" value="0.15579710144927536" />
+        <entry key="app/src/main/res/layout/fragment_chats.xml" value="0.2296195652173913" />
+        <entry key="app/src/main/res/layout/fragment_contacts.xml" value="0.2296195652173913" />
+        <entry key="app/src/main/res/layout/fragment_diary.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.21875" />
+        <entry key="app/src/main/res/layout/fragment_groups.xml" value="0.2296195652173913" />
+        <entry key="app/src/main/res/layout/fragment_groups_chats.xml" value="0.2296195652173913" />
         <entry key="app/src/main/res/layout/fragment_habits.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/fragment_set_timer.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_splash.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/fragment_timer.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_todolist.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_todolist_menu.xml" value="0.25" />
         <entry key="app/src/main/res/layout/habits_input_layout.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/habits_update_layout.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/item_container_onboarding.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/layout/list_row.xml" value="0.2296195652173913" />
+        <entry key="app/src/main/res/layout/notes_layout.xml" value="0.2296195652173913" />
         <entry key="app/src/main/res/layout/recycler_habit_item.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/retrieved_layout.xml" value="0.2557291666666667" />
         <entry key="app/src/main/res/layout/slider_layout.xml" value="0.25" />
         <entry key="app/src/main/res/layout/todolist_input_layout.xml" value="0.2557291666666667" />
         <entry key="app/src/main/res/layout/todolist_update_layout.xml" value="0.2557291666666667" />
         <entry key="app/src/main/res/layout/toolbar.xml" value="0.25" />
+        <entry key="app/src/main/res/menu-v26/options_menu.xml" value="0.2557291666666667" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.24166666666666667" />
+        <entry key="app/src/main/res/menu/options_menu.xml" value="0.2557291666666667" />
       </map>
     </option>
   </component>

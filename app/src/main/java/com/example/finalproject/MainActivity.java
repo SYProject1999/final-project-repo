@@ -40,42 +40,27 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         } else {
             userID = user.getUid();
-            checkFirstTime(new FirebaseCallBack() {
+
+            databaseReference.child(userID).child("alreadyUsedTheApp").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onCallback(String alreadyUsedTheApp) {
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String alreadyUsedTheApp = String.valueOf(snapshot.getValue(Boolean.class));
+
                     if (alreadyUsedTheApp.equals("true")) {
+                        System.out.println(alreadyUsedTheApp);
                         finish();
                         startActivity(new Intent(MainActivity.this, BottomNavigationBarActivity.class));
                     } else {
+                        System.out.println(alreadyUsedTheApp);
                         finish();
                         startActivity(new Intent(MainActivity.this, OnBoardingScreensActivity.class));
                     }
                 }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
             });
         }
-    }
-
-    void checkFirstTime(FirebaseCallBack firebaseCallBack) {
-        databaseReference.child(userID).child("alreadyUsedTheApp").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String alreadyUsedTheApp = String.valueOf(snapshot.getValue(Boolean.class));
-                //firebaseCallBack.onCallback(alreadyUsedTheApp);
-                if (alreadyUsedTheApp.equals("true")) {
-                    startActivity(new Intent(MainActivity.this, BottomNavigationBarActivity.class));
-                } else {
-                    startActivity(new Intent(MainActivity.this, OnBoardingScreensActivity.class));
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    interface FirebaseCallBack {
-        void onCallback(String alreadyUsedTheApp);
     }
 }

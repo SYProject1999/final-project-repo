@@ -1,4 +1,4 @@
-package com.example.finalproject;
+package com.example.finalproject.profile;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,9 +14,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.annotation.GlideModule;
-import com.bumptech.glide.module.AppGlideModule;
+import com.example.finalproject.GlideApp;
+import com.example.finalproject.LoginActivity;
+import com.example.finalproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -184,7 +184,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void moveToLoginActivity () {
-        Intent intent = new Intent(getApplication(), MainActivity.class);
+        Intent intent = new Intent(getApplication(), LoginActivity.class);
         startActivity(intent);
     }
 }

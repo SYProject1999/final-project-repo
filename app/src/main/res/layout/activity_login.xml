@@ -7,6 +7,14 @@
     android:background="@drawable/background"
     tools:context=".LoginActivity">
 
+    <ProgressBar
+        android:id="@+id/loginProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/registerbtn"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -115,7 +123,8 @@
             android:layout_height="48dp"
             android:layout_margin="20dp"
             android:clickable="true"
-            android:src="@drawable/google" />
+            android:src="@drawable/google"
+            tools:ignore="SpeakableTextPresentCheck" />
 
     </LinearLayout>
 

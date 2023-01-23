@@ -1,4 +1,4 @@
-package com.example.finalproject;
+package com.example.finalproject.profile;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -11,8 +11,6 @@ import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -21,7 +19,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.finalproject.models.ProfileImageModel;
+import com.example.finalproject.GlideApp;
+import com.example.finalproject.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;

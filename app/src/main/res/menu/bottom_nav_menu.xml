@@ -4,10 +4,10 @@
     <item android:title="@string/todo"
         android:icon="@drawable/ic_baseline_checklist_rtl_24"
         android:id="@+id/todo"/>
-    <item android:title="@string/habits"
-        android:icon="@drawable/ic_baseline_accessibility_new_24"
+    <item android:title="@string/groups"
+        android:icon="@drawable/ic_baseline_groups_24"
         android:id="@+id/habits"/>
-    <item android:title="@string/diary"
+    <item android:title="@string/notes"
         android:icon="@drawable/ic_baseline_note_alt_24"
         android:id="@+id/diary"/>
     <item android:title="@string/timer"

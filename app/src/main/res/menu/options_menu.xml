@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        app:showAsAction="always"
+        android:title=""
+        android:icon="@drawable/ic_baseline_more_vert_24"
+        android:iconTint="@color/white">
+
+        <menu>
+            <item
+                android:id="@+id/menu_find_friends_option"
+                app:showAsAction="never"
+                android:title="Find Friends"
+                android:icon="@drawable/ic_baseline_groups_24">
+            </item>
+            <item
+                android:id="@+id/menu_create_group_option"
+                app:showAsAction="never"
+                android:title="Create Group"
+                android:icon="@drawable/ic_baseline_groups_24">
+            </item>
+            <item
+                android:id="@+id/menu_settings_option"
+                app:showAsAction="never"
+                android:title="Settings"
+                android:icon="@drawable/ic_baseline_settings_24">
+            </item>
+        </menu>
+    </item>
+
+</menu>

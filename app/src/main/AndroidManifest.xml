@@ -18,13 +18,22 @@
         android:theme="@style/Theme.FinalProject"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".EditProfileActivity"
+            android:name=".groups.GroupChatActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".notes.EditNoteActivity"
             android:exported="false" />
         <activity
-            android:name=".addDiary"
+            android:name=".notes.CreateNote"
+            android:exported="false" />
+        <activity
+            android:name=".profile.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".profile.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".notes.addDiary"
             android:exported="false" />
         <activity
             android:name=".Onboarding.OnBoardingScreensActivity"
@@ -40,9 +49,6 @@
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

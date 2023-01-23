@@ -1,21 +1,10 @@
-package com.example.finalproject;
+package com.example.finalproject.notes;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewbinding.ViewBindings;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,9 +13,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.TextView;
 
-import org.xmlpull.v1.XmlPullParser;
-
-import java.util.ArrayList;
+import com.example.finalproject.R;
 
 
 public class DiaryFragment extends Fragment  {
@@ -63,7 +50,7 @@ public class DiaryFragment extends Fragment  {
                 @Override
                 public void onClick(View view) {
 
-                    Intent intent = new Intent(getActivity(),addDiary.class);
+                    Intent intent = new Intent(getActivity(), addDiary.class);
                     startActivity(intent);
                 }
             });

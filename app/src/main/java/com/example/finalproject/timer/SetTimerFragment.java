@@ -1,4 +1,4 @@
-package com.example.finalproject;
+package com.example.finalproject.timer;
 
 import android.os.Bundle;
 
@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
+import com.example.finalproject.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SetTimerFragment extends Fragment {

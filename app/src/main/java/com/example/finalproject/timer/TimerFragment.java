@@ -1,4 +1,4 @@
-package com.example.finalproject;
+package com.example.finalproject.timer;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
@@ -19,6 +19,7 @@ import android.widget.Chronometer;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.finalproject.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -26,7 +27,7 @@ public class TimerFragment extends Fragment {
 
     private int progr = 100, workCount = 0, shortBreakCount = 0;
     private Chronometer chronometer;
-    private long time, workTime, sections, countDownInterval;
+    private long time, sections, countDownInterval;
     private boolean isPlaying = false, fabStartClicked = false, played = false;
     private FloatingActionButton fabStart, fabStop;
     private ProgressBar timerProgressBar;
@@ -54,7 +55,6 @@ public class TimerFragment extends Fragment {
         getParentFragmentManager().setFragmentResultListener("timerSettings", this, (requestKey, result) -> {
 
             sections = result.getInt("sections");
-            workTime = result.getLong("focusTime");
             time = result.getLong("focusTime");
 
             time *= 600;
@@ -104,7 +104,7 @@ public class TimerFragment extends Fragment {
                         @Override
                         public void onTick(long millisecondsUntilFinished) {
                             if (millisecondsUntilFinished <= time - countDownInterval + 3000 && progr >= 1) {
-                                progr -= 1;
+                                progr -= 1; 
                                 updateProgressBar();
                             }
                         }
