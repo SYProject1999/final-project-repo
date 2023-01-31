@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Button loginBtn;
     TextView registerBtn, forgotPassword;
     FirebaseAuth mAuth;
+    FirebaseUser firebaseUser;
 
     ProgressBar loginProgressBar;
 
@@ -164,6 +165,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                     });
                 } else {
+                    firebaseUser = mAuth.getCurrentUser();
+                    firebaseUser.sendEmailVerification();
                     Toast.makeText(LoginActivity.this, "Verify your email", Toast.LENGTH_LONG).show();
                     loginProgressBar.setVisibility(View.INVISIBLE);
                 }

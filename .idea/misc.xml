@@ -30,8 +30,9 @@
         <entry key="app/src/main/res/layout/activity_create_note.xml" value="0.2296195652173913" />
         <entry key="app/src/main/res/layout/activity_edit_note.xml" value="0.11944444444444445" />
         <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_find_friends.xml" value="0.2296195652173913" />
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_group_chat.xml" value="0.11629667003027246" />
+        <entry key="app/src/main/res/layout/activity_group_chat.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_onboarding_screens.xml" value="0.21875" />
@@ -65,6 +66,7 @@
         <entry key="app/src/main/res/layout/todolist_input_layout.xml" value="0.2557291666666667" />
         <entry key="app/src/main/res/layout/todolist_update_layout.xml" value="0.2557291666666667" />
         <entry key="app/src/main/res/layout/toolbar.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/users_display_layout.xml" value="0.25" />
         <entry key="app/src/main/res/menu-v26/options_menu.xml" value="0.2557291666666667" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.24166666666666667" />
         <entry key="app/src/main/res/menu/options_menu.xml" value="0.2557291666666667" />

@@ -1,6 +1,7 @@
 package com.example.finalproject.groups;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -108,7 +109,7 @@ public class GroupsFragment extends Fragment {
         super.onOptionsItemSelected(item);
 
         if (item.getItemId() == R.id.menu_find_friends_option) {
-
+            sendUserToFindFriendsActivity();
         }
 
         if (item.getItemId() == R.id.menu_create_group_option) {
@@ -153,5 +154,10 @@ public class GroupsFragment extends Fragment {
             if (task.isSuccessful())
                 Toast.makeText(requireContext(), groupName + " Group is Created Successfully", Toast.LENGTH_LONG).show();
         });
+    }
+
+    private void sendUserToFindFriendsActivity() {
+        Intent findFriendsIntent = new Intent(requireContext(), FindFriendsActivity.class);
+        startActivity(findFriendsIntent);
     }
 }

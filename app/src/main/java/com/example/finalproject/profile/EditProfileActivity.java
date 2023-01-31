@@ -1,6 +1,5 @@
 package com.example.finalproject.profile;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -14,15 +13,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.finalproject.GlideApp;
 import com.example.finalproject.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,28 +32,28 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    private int day = 0, month = 0, year = 0;
-
+    private ProgressBar progressBar;
     private DatePickerDialog datePickerDialog;
     private CircleImageView profileImage;
     private TextView dateOfBirthTV;
-    private Button changeImageBtn, dateOfBirthBtn, saveBtn;
     private EditText fullNameET, emailET, genderET;
 
     private Uri imageUri;
 
-    private FirebaseAuth auth;
     private FirebaseUser user;
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
@@ -67,28 +68,27 @@ public class EditProfileActivity extends AppCompatActivity {
 
         profileImage = findViewById(R.id.editProfileImage);
         dateOfBirthTV = findViewById(R.id.editProfileDateOfBirthTV);
-        changeImageBtn = findViewById(R.id.editProfileImageBtn);
-        dateOfBirthBtn = findViewById(R.id.editProfileDateOfBirthBtn);
-        saveBtn = findViewById(R.id.editProfileSaveBtn);
+        Button changeImageBtn = findViewById(R.id.editProfileImageBtn);
+        Button dateOfBirthBtn = findViewById(R.id.editProfileDateOfBirthBtn);
+        Button saveBtn = findViewById(R.id.editProfileSaveBtn);
         fullNameET = findViewById(R.id.editProfileFullName);
         emailET = findViewById(R.id.editProfileEmail);
         genderET = findViewById(R.id.editProfileGender);
+        progressBar = findViewById(R.id.edit_profile_progress_bar);
 
-        auth = FirebaseAuth.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        storageReference = FirebaseStorage.getInstance().getReference("Users").child(user.getUid());
-        databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+        storageReference = FirebaseStorage.getInstance().getReference("Users");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users");
 
         ActivityResultLauncher<String> getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
-                new ActivityResultCallback<Uri>() {
-            @Override
-            public void onActivityResult(Uri result) {
-                if (result != null) {
-                    imageUri = result;
-                    Picasso.with(EditProfileActivity.this).load(result).into(profileImage);
-                }
-            }
-        });
+                result -> {
+                    if (result != null) {
+                        imageUri = result;
+                        Toast.makeText(EditProfileActivity.this, "Image Selected", Toast.LENGTH_SHORT).show();
+                        Picasso.with(getApplicationContext()).load(result).placeholder(R.drawable.ic_baseline_person_24).into(profileImage);
+                    }
+                });
 
         initDatePicker();
         dateOfBirthBtn.setOnClickListener(this::openDatePicker);
@@ -104,6 +104,31 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        emailET.setText(user.getEmail());
+
+        databaseReference.child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                GlideApp.with(getApplicationContext()).load(snapshot.child("imageUrl").getValue(String.class)).placeholder(R.drawable.ic_baseline_person_24).into(profileImage);
+
+                fullNameET.setText(snapshot.child("fullName").getValue(String.class));
+                if (snapshot.child("DateOfBirth").getValue() != null) {
+                    dateOfBirthTV.setText(snapshot.child("DateOfBirth").getValue(String.class));
+                }
+                if (snapshot.child("Gender").getValue() != null) {
+                    genderET.setText(snapshot.child("Gender").getValue(String.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
+    }
+
     private String getFileExtension(Uri uri) {
         ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
@@ -116,7 +141,7 @@ public class EditProfileActivity extends AppCompatActivity {
         String gender = genderET.getText().toString().trim();
         String dateOfBirth = (String) dateOfBirthTV.getText();
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!fullName.equals(snapshot.child("fullName").getValue()) && !fullName.isEmpty()) {
@@ -139,61 +164,36 @@ public class EditProfileActivity extends AppCompatActivity {
 
         if (imageUri != null) {
             timeMillis = System.currentTimeMillis();
-            StorageReference fileReference = storageReference.child(timeMillis + "." + getFileExtension(imageUri));
-
-            storageTask = fileReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    databaseReference.child("imageUrl").setValue(timeMillis + "." + getFileExtension(imageUri));
-                    Toast.makeText(EditProfileActivity.this, "Image Selected", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(EditProfileActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+            StorageReference fileReference = storageReference.child(user.getUid()).child(timeMillis + "." + getFileExtension(imageUri));
+            storageTask = fileReference.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
+                fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                    String url = String.valueOf(uri);
+                    sendLink(url);
+                });
+            }).addOnProgressListener(snapshot -> {
+                progressBar.setVisibility(View.VISIBLE);
+            }).addOnFailureListener(e -> {
+                Toast.makeText(EditProfileActivity.this, "Failed to upload image", Toast.LENGTH_SHORT).show();
             });
-        }
-        finish();
+        } else finish();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        emailET.setText(user.getEmail());
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.child("imageUrl").getValue() != null) {
-                    GlideApp.with(EditProfileActivity.this).load(storageReference.child(snapshot.child("imageUrl").getValue(String.class))).into(profileImage);
-                }
-                fullNameET.setText(snapshot.child("fullName").getValue(String.class));
-                if (snapshot.child("DateOfBirth").getValue() != null) {
-                    dateOfBirthTV.setText(snapshot.child("DateOfBirth").getValue(String.class));
-                }
-                if (snapshot.child("Gender").getValue() != null) {
-                    genderET.setText(snapshot.child("Gender").getValue(String.class));
-                }
+    private void sendLink(String url) {
+        databaseReference.child(user.getUid()).child("imageUrl").setValue(url).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(EditProfileActivity.this, "Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
         });
+        finish();
     }
 
     private void initDatePicker()
     {
-        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
-        {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day)
-            {
-                month = month + 1;
-                String date = makeDateString(day, month, year);
-                dateOfBirthTV.setText(date);
-            }
+        DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
+            month = month + 1;
+            String date = makeDateString(day, month, year);
+            dateOfBirthTV.setText(date);
         };
 
         Calendar cal = Calendar.getInstance();

@@ -17,8 +17,6 @@ import android.widget.Toast;
 import com.example.finalproject.GlideApp;
 import com.example.finalproject.LoginActivity;
 import com.example.finalproject.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.Objects;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -42,7 +42,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     private CircleImageView circleImageView;
 
-    private TextView changePasswordTV, editProfileTV, usernameTV, userEmailTV, userDateOfBirthTV, userGenderTV;
+    private TextView usernameTV;
+    private TextView userEmailTV;
+    private TextView userDateOfBirthTV;
+    private TextView userGenderTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,87 +64,78 @@ public class ProfileActivity extends AppCompatActivity {
         userEmailTV = findViewById(R.id.email_profile_tv);
         userDateOfBirthTV = findViewById(R.id.dateOfBirth_profile_tv);
         userGenderTV = findViewById(R.id.gender_profile_tv);
-        editProfileTV = findViewById(R.id.editProfile);
-        changePasswordTV = findViewById(R.id.changePassword_profile_tv);
+        TextView editProfileTV = findViewById(R.id.editProfile);
+        TextView changePasswordTV = findViewById(R.id.changePassword_profile_tv);
         circleImageView = findViewById(R.id.profileImage);
         Button logoutBtn = findViewById(R.id.logoutBtn);
 
-        changePasswordTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder changePasswordDialog = new AlertDialog.Builder(ProfileActivity.this);
-                LayoutInflater inflater = LayoutInflater.from(ProfileActivity.this);
-                View changePasswordDialogView = inflater.inflate(R.layout.change_password_layout, null);
-                changePasswordDialog.setView(changePasswordDialogView);
+        changePasswordTV.setOnClickListener(view -> {
+            AlertDialog.Builder changePasswordDialog = new AlertDialog.Builder(ProfileActivity.this);
+            LayoutInflater inflater = LayoutInflater.from(ProfileActivity.this);
+            View changePasswordDialogView = inflater.inflate(R.layout.change_password_layout, null);
+            changePasswordDialog.setView(changePasswordDialogView);
 
-                AlertDialog alertDialog = changePasswordDialog.create();
-                alertDialog.setCancelable(false);
+            AlertDialog alertDialog = changePasswordDialog.create();
+            alertDialog.setCancelable(false);
 
-                final EditText oldPasswordET = changePasswordDialogView.findViewById(R.id.oldPasswordET);
-                final EditText checkOldPasswordET = changePasswordDialogView.findViewById(R.id.checkOldPasswordET);
-                final EditText newPasswordET = changePasswordDialogView.findViewById(R.id.newPasswordET);
-                final Button cancelPasswordBtn = changePasswordDialogView.findViewById(R.id.cancelPasswordBtn);
-                final Button changePasswordBtn = changePasswordDialogView.findViewById(R.id.changePasswordBtn);
+            final EditText oldPasswordET = changePasswordDialogView.findViewById(R.id.oldPasswordET);
+            final EditText checkOldPasswordET = changePasswordDialogView.findViewById(R.id.checkOldPasswordET);
+            final EditText newPasswordET = changePasswordDialogView.findViewById(R.id.newPasswordET);
+            final Button cancelPasswordBtn = changePasswordDialogView.findViewById(R.id.cancelPasswordBtn);
+            final Button changePasswordBtn = changePasswordDialogView.findViewById(R.id.changePasswordBtn);
 
-                cancelPasswordBtn.setOnClickListener(v -> alertDialog.dismiss());
+            cancelPasswordBtn.setOnClickListener(v -> alertDialog.dismiss());
 
-                changePasswordBtn.setOnClickListener(v -> {
-                    String oldPassword = oldPasswordET.getText().toString();
-                    String checkOldPassword = checkOldPasswordET.getText().toString();
-                    String newPassword = newPasswordET.getText().toString();
-                    final String email = user.getEmail();
+            changePasswordBtn.setOnClickListener(v -> {
+                String oldPassword = oldPasswordET.getText().toString();
+                String checkOldPassword = checkOldPasswordET.getText().toString();
+                String newPassword = newPasswordET.getText().toString();
+                final String email = user.getEmail();
 
-                    if (TextUtils.isEmpty(oldPassword)) {
-                        oldPasswordET.setError("Old Password is Required");
-                        oldPasswordET.requestFocus();
-                        return;
-                    }
-                    if (TextUtils.isEmpty(checkOldPassword)) {
-                        checkOldPasswordET.setError("Check Old Password is Required");
-                        checkOldPasswordET.requestFocus();
-                        return;
-                    }
-                    if (!TextUtils.equals(oldPassword, checkOldPassword)) {
-                        checkOldPasswordET.setError("Check Old Password Don't Match Old Password");
-                        checkOldPasswordET.requestFocus();
-                        return;
-                    }
-                    if (TextUtils.isEmpty(newPassword)) {
-                        newPasswordET.setError("New Password is Required");
-                        newPasswordET.requestFocus();
-                        return;
-                    }
-                    if (newPassword.length() < 6 ) {
-                        newPasswordET.setError("Min Password Length Should Be 6 Characters");
-                        newPasswordET.requestFocus();
-                        return;
-                    }
+                if (TextUtils.isEmpty(oldPassword)) {
+                    oldPasswordET.setError("Old Password is Required");
+                    oldPasswordET.requestFocus();
+                    return;
+                }
+                if (TextUtils.isEmpty(checkOldPassword)) {
+                    checkOldPasswordET.setError("Check Old Password is Required");
+                    checkOldPasswordET.requestFocus();
+                    return;
+                }
+                if (!TextUtils.equals(oldPassword, checkOldPassword)) {
+                    checkOldPasswordET.setError("Check Old Password Don't Match Old Password");
+                    checkOldPasswordET.requestFocus();
+                    return;
+                }
+                if (TextUtils.isEmpty(newPassword)) {
+                    newPasswordET.setError("New Password is Required");
+                    newPasswordET.requestFocus();
+                    return;
+                }
+                if (newPassword.length() < 6 ) {
+                    newPasswordET.setError("Min Password Length Should Be 6 Characters");
+                    newPasswordET.requestFocus();
+                    return;
+                }
 
-                    assert email != null;
-                    AuthCredential credential = EmailAuthProvider.getCredential(email, oldPassword);
-                    user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Toast.makeText(ProfileActivity.this, "Password Has Been Changed Successfully", Toast.LENGTH_LONG).show();
-                                        } else {
-                                            Toast.makeText(ProfileActivity.this, "Failed to Change Password: " + task.getException().toString(), Toast.LENGTH_LONG).show();
-                                        }
-                                    }
-                                });
+                assert email != null;
+                AuthCredential credential = EmailAuthProvider.getCredential(email, oldPassword);
+                user.reauthenticate(credential).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        user.updatePassword(newPassword).addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+                                Toast.makeText(ProfileActivity.this, "Password Has Been Changed Successfully", Toast.LENGTH_LONG).show();
                             } else {
-                                Toast.makeText(ProfileActivity.this, "Old Password is Wrong: " + task.getException().toString(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(ProfileActivity.this, "Failed to Change Password: " + Objects.requireNonNull(task1.getException()), Toast.LENGTH_LONG).show();
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        Toast.makeText(ProfileActivity.this, "Old Password is Wrong: " + Objects.requireNonNull(task.getException()), Toast.LENGTH_LONG).show();
+                    }
                 });
+            });
 
-                alertDialog.show();
-            }
+            alertDialog.show();
         });
 
         editProfileTV.setOnClickListener(v -> {
@@ -170,9 +164,7 @@ public class ProfileActivity extends AppCompatActivity {
                 if (snapshot.child("Gender").getValue() != null) {
                     userGenderTV.setText(snapshot.child("Gender").getValue(String.class));
                 }
-                if (snapshot.child("imageUrl").getValue() != null) {
-                    GlideApp.with(ProfileActivity.this).load(storageReference.child(snapshot.child("imageUrl").getValue(String.class))).into(circleImageView);
-                }
+                GlideApp.with(getApplicationContext()).load(snapshot.child("imageUrl").getValue(String.class)).placeholder(R.drawable.ic_baseline_person_24).into(circleImageView);
             }
 
             @Override

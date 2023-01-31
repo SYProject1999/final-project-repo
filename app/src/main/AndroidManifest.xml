@@ -18,6 +18,9 @@
         android:theme="@style/Theme.FinalProject"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".groups.FindFriendsActivity"
+            android:exported="false"/>
+        <activity
             android:name=".groups.GroupChatActivity"
             android:exported="false" />
         <activity
