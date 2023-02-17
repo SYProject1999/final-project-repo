@@ -43,7 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
     private CircleImageView circleImageView;
 
     private TextView usernameTV;
-    private TextView userEmailTV;
+    private TextView userStatusTV;
     private TextView userDateOfBirthTV;
     private TextView userGenderTV;
 
@@ -61,7 +61,7 @@ public class ProfileActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference("Users").child(userID);
 
         usernameTV = findViewById(R.id.usernameProfile);
-        userEmailTV = findViewById(R.id.email_profile_tv);
+        userStatusTV = findViewById(R.id.status_profile_tv);
         userDateOfBirthTV = findViewById(R.id.dateOfBirth_profile_tv);
         userGenderTV = findViewById(R.id.gender_profile_tv);
         TextView editProfileTV = findViewById(R.id.editProfile);
@@ -153,11 +153,13 @@ public class ProfileActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
-        userEmailTV.setText(user.getEmail());
         userReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 usernameTV.setText(snapshot.child("fullName").getValue(String.class));
+                if (snapshot.child("Status").getValue() != null) {
+                    userStatusTV.setText(snapshot.child("Status").getValue(String.class));
+                }
                 if (snapshot.child("DateOfBirth").getValue() != null) {
                     userDateOfBirthTV.setText(snapshot.child("DateOfBirth").getValue(String.class));
                 }

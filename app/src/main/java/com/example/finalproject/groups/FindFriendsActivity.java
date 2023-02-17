@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +18,8 @@ import com.example.finalproject.GlideApp;
 import com.example.finalproject.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.firebase.ui.database.SnapshotParser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.Objects;
 
@@ -32,11 +27,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FindFriendsActivity extends AppCompatActivity {
 
-    private Toolbar mToolbar;
     private RecyclerView FindFriendsRecyclerList;
 
     private DatabaseReference UsersRef;
-    private StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +37,12 @@ public class FindFriendsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_find_friends);
 
         UsersRef = FirebaseDatabase.getInstance().getReference("Users");
-        storageReference = FirebaseStorage.getInstance().getReference("Users");
 
-        FindFriendsRecyclerList = (RecyclerView) findViewById(R.id.find_friends_recycler_list);
+        FindFriendsRecyclerList = findViewById(R.id.find_friends_recycler_list);
         FindFriendsRecyclerList.setLayoutManager(new LinearLayoutManager(this));
 
 
-        mToolbar = (Toolbar) findViewById(R.id.find_friends_toolbar);
+        Toolbar mToolbar = findViewById(R.id.find_friends_toolbar);
         setSupportActionBar(mToolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -66,11 +58,23 @@ public class FindFriendsActivity extends AppCompatActivity {
                 .setQuery(UsersRef, Contacts.class).build();
 
         FirebaseRecyclerAdapter<Contacts, FindFriendsViewHolder> adapter = new FirebaseRecyclerAdapter<Contacts, FindFriendsViewHolder>(options) {
-            @SuppressLint("CheckResult")
+            @SuppressLint({"CheckResult", "SetTextI18n"})
             @Override
             protected void onBindViewHolder(@NonNull FindFriendsViewHolder holder, int position, @NonNull Contacts model) {
                 holder.userName.setText(model.getFullName());
+                if (model.getStatus() != null) {
+                    holder.userStatus.setText(model.getStatus());
+                } else {
+                    holder.userStatus.setText("no Status");
+                }
                 GlideApp.with(getApplicationContext()).load(model.getImageUrl()).placeholder(R.drawable.ic_baseline_person_24).into(holder.profileImage);
+
+                holder.itemView.setOnClickListener(view -> {
+                    String visit_user_id = getRef(position).getKey();
+                    Intent groupsProfileIntent = new Intent(FindFriendsActivity.this, GroupsProfileActivity.class);
+                    groupsProfileIntent.putExtra("visit_user_id", visit_user_id);
+                    startActivity(groupsProfileIntent);
+                });
             }
 
             @NonNull
@@ -87,13 +91,14 @@ public class FindFriendsActivity extends AppCompatActivity {
 
     public static class FindFriendsViewHolder extends RecyclerView.ViewHolder {
 
-        TextView userName;
+        TextView userName, userStatus;
         CircleImageView profileImage;
 
         public FindFriendsViewHolder(@NonNull View itemView) {
             super(itemView);
 
             userName = itemView.findViewById(R.id.user_profile_name);
+            userStatus = itemView.findViewById(R.id.user_status);
             profileImage = itemView.findViewById(R.id.users_profile_image);
         }
     }

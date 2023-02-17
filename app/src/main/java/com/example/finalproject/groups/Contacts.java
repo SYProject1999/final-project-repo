@@ -2,13 +2,22 @@ package com.example.finalproject.groups;
 
 public class Contacts {
 
-    public String fullName, imageUrl;
+    private String fullName, Status, imageUrl;
 
     public Contacts() {}
 
-    public Contacts(String fullName, String imageUrl) {
+    public Contacts(String fullName, String Status, String imageUrl) {
         this.fullName = fullName;
+        this.Status = Status;
         this.imageUrl = imageUrl;
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
     }
 
     public String getFullName() {

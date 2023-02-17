@@ -1,6 +1,5 @@
 package com.example.finalproject.groups;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -23,8 +22,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.finalproject.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.finalproject.profile.ProfileActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -33,10 +31,8 @@ import java.util.Objects;
 
 public class GroupsFragment extends Fragment {
 
-    private Toolbar toolbar;
     private ViewPager2 viewPager2;
     private TabLayout tabLayout;
-    private TabAccessorAdapter tabAccessorAdapter;
 
     private DatabaseReference groupsReference;
 
@@ -59,7 +55,7 @@ public class GroupsFragment extends Fragment {
 
         groupsReference = FirebaseDatabase.getInstance().getReference();
 
-        toolbar = view.findViewById(R.id.groups_toolbar);
+        Toolbar toolbar = view.findViewById(R.id.groups_toolbar);
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle("Groups");
 
@@ -67,12 +63,13 @@ public class GroupsFragment extends Fragment {
         tabLayout = view.findViewById(R.id.main_tabs);
 
         FragmentManager fragmentManager = getParentFragmentManager();
-        tabAccessorAdapter = new TabAccessorAdapter(fragmentManager, getLifecycle());
+        TabAccessorAdapter tabAccessorAdapter = new TabAccessorAdapter(fragmentManager, getLifecycle());
         viewPager2.setAdapter(tabAccessorAdapter);
         tabLayout.addTab(tabLayout.newTab().setText("Tasks"));
         tabLayout.addTab(tabLayout.newTab().setText("Chats"));
         tabLayout.addTab(tabLayout.newTab().setText("Groups"));
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
+        tabLayout.addTab(tabLayout.newTab().setText("Requests"));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -117,7 +114,8 @@ public class GroupsFragment extends Fragment {
         }
 
         if (item.getItemId() == R.id.menu_settings_option) {
-
+            Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
+            startActivity(profileIntent);
         }
 
         return true;
@@ -142,9 +140,7 @@ public class GroupsFragment extends Fragment {
             }
         });
 
-        builder.setNegativeButton("Cancel", (dialogInterface, i) -> {
-            dialogInterface.cancel();
-        });
+        builder.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel());
 
         builder.show();
     }

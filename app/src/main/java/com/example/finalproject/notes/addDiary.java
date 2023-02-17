@@ -87,6 +87,8 @@ public class addDiary extends AppCompatActivity {
                 holder.setNoteTitle(model.getNoteTitle());
                 holder.setNoteContent(model.getNoteContent());
 
+                String docId = getRef(position).getKey();
+
                 popUpButton.setOnClickListener(view -> {
                     key = getRef(holder.getAbsoluteAdapterPosition()).getKey();
                     PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
@@ -94,6 +96,9 @@ public class addDiary extends AppCompatActivity {
 
                     popupMenu.getMenu().add("Edit").setOnMenuItemClickListener(menuItem -> {
                       Intent intent = new Intent(view.getContext(), EditNoteActivity.class);
+                      intent.putExtra("title", model.getNoteTitle());
+                      intent.putExtra("content", model.getNoteContent());
+                      intent.putExtra("noteId", docId);
                       view.getContext().startActivity(intent);
                       return false;
                     });

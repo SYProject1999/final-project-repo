@@ -20,10 +20,6 @@ import android.widget.Toast;
 
 import com.example.finalproject.GlideApp;
 import com.example.finalproject.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,15 +28,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -50,7 +42,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private DatePickerDialog datePickerDialog;
     private CircleImageView profileImage;
     private TextView dateOfBirthTV;
-    private EditText fullNameET, emailET, genderET;
+    private EditText fullNameET, statusET, genderET;
 
     private Uri imageUri;
 
@@ -72,7 +64,7 @@ public class EditProfileActivity extends AppCompatActivity {
         Button dateOfBirthBtn = findViewById(R.id.editProfileDateOfBirthBtn);
         Button saveBtn = findViewById(R.id.editProfileSaveBtn);
         fullNameET = findViewById(R.id.editProfileFullName);
-        emailET = findViewById(R.id.editProfileEmail);
+        statusET = findViewById(R.id.editProfileStatus);
         genderET = findViewById(R.id.editProfileGender);
         progressBar = findViewById(R.id.edit_profile_progress_bar);
 
@@ -108,14 +100,15 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        emailET.setText(user.getEmail());
-
         databaseReference.child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 GlideApp.with(getApplicationContext()).load(snapshot.child("imageUrl").getValue(String.class)).placeholder(R.drawable.ic_baseline_person_24).into(profileImage);
 
                 fullNameET.setText(snapshot.child("fullName").getValue(String.class));
+                if (snapshot.child("Status").getValue() != null) {
+                    statusET.setText(snapshot.child("Status").getValue(String.class));
+                }
                 if (snapshot.child("DateOfBirth").getValue() != null) {
                     dateOfBirthTV.setText(snapshot.child("DateOfBirth").getValue(String.class));
                 }
@@ -137,7 +130,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void saveChanges() {
         String fullName = fullNameET.getText().toString().trim();
-        String email = emailET.getText().toString().trim();
+        String status = statusET.getText().toString().trim();
         String gender = genderET.getText().toString().trim();
         String dateOfBirth = (String) dateOfBirthTV.getText();
 
@@ -145,16 +138,16 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!fullName.equals(snapshot.child("fullName").getValue()) && !fullName.isEmpty()) {
-                    databaseReference.child("fullName").setValue(fullName);
+                    databaseReference.child(user.getUid()).child("fullName").setValue(fullName);
                 }
-                if (!email.equals(user.getEmail()) && !email.isEmpty()) {
-                    user.updateEmail(email);
+                if (!status.equals(snapshot.child("Status").getValue()) && !status.isEmpty()) {
+                    databaseReference.child(user.getUid()).child("Status").setValue(status);
                 }
                 if (!gender.equals(snapshot.child("Gender").getValue()) && !gender.isEmpty()) {
-                    databaseReference.child("Gender").setValue(gender);
+                    databaseReference.child(user.getUid()).child("Gender").setValue(gender);
                 }
                 if (!dateOfBirth.equals(snapshot.child("DateOfBirth").getValue())) {
-                    databaseReference.child("DateOfBirth").setValue(dateOfBirth);
+                    databaseReference.child(user.getUid()).child("DateOfBirth").setValue(dateOfBirth);
                 }
             }
 
@@ -165,16 +158,10 @@ public class EditProfileActivity extends AppCompatActivity {
         if (imageUri != null) {
             timeMillis = System.currentTimeMillis();
             StorageReference fileReference = storageReference.child(user.getUid()).child(timeMillis + "." + getFileExtension(imageUri));
-            storageTask = fileReference.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
-                fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                    String url = String.valueOf(uri);
-                    sendLink(url);
-                });
-            }).addOnProgressListener(snapshot -> {
-                progressBar.setVisibility(View.VISIBLE);
-            }).addOnFailureListener(e -> {
-                Toast.makeText(EditProfileActivity.this, "Failed to upload image", Toast.LENGTH_SHORT).show();
-            });
+            storageTask = fileReference.putFile(imageUri).addOnSuccessListener(taskSnapshot -> fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                String url = String.valueOf(uri);
+                sendLink(url);
+            })).addOnProgressListener(snapshot -> progressBar.setVisibility(View.VISIBLE)).addOnFailureListener(e -> Toast.makeText(EditProfileActivity.this, "Failed to upload image", Toast.LENGTH_SHORT).show());
         } else finish();
     }
 

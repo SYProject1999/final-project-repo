@@ -58,15 +58,15 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/email_profile_tv"
+        android:id="@+id/status_profile_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/usernameProfile"
         android:layout_marginStart="40sp"
         android:layout_marginTop="20dp"
-        android:drawableStart="@drawable/ic_baseline_email_24"
+        android:drawableStart="@drawable/ic_baseline_textsms_24"
         android:drawablePadding="20sp"
-        android:text="User Email"
+        android:text="User Status"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         tools:ignore="UseCompatTextViewDrawableXml" />
@@ -75,7 +75,7 @@
         android:id="@+id/dateOfBirth_profile_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/email_profile_tv"
+        android:layout_below="@id/status_profile_tv"
         android:layout_marginStart="40sp"
         android:layout_marginTop="20dp"
         android:drawableStart="@drawable/ic_baseline_calendar_month_24"

@@ -22,12 +22,14 @@ public class TabAccessorAdapter extends FragmentStateAdapter {
                 return new GroupsChatsFragment();
             case 3:
                 return new ContactsFragment();
+            case 4:
+                return new RequestsFragment();
         }
         return new GroupsTasksFragment();
     }
 
     @Override
     public int getItemCount() {
-        return 4;
+        return 5;
     }
 }
