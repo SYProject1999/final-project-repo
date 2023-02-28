@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    tools:context=".TodoList">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/toplayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingBottom="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="16dp"
+                android:src="@drawable/baseline_arrow_back_black_24"></ImageView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:gravity="center"
+                android:text="Today"
+                android:layout_weight="1"
+                android:textColor="#000000"
+                android:textSize="24dp"></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:gravity="center"
+                android:text="save"
+                android:textStyle="bold"
+                android:textColor="#24AAC3"
+                android:textSize="16dp"></TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+            <LinearLayout
+                android:id="@+id/select_task"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:gravity="center"
+                android:layout_margin="16dp"
+                android:background="@drawable/unselected_circle_bg">
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/baseline_check_24"></ImageView>
+            </LinearLayout>
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:hint="Add Title"
+                android:textColor="#000000"
+                android:background="#0000ffff"
+                android:textSize="24dp"
+                android:textStyle="bold"></EditText>
+
+            <ImageView
+                android:id="@+id/favorite"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_baseline_star_border_24"></ImageView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/listview_steps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"></LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/next_step"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/listview_steps">
+
+            <ImageView
+                android:id="@+id/next_step_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="16dp"
+                android:src="@drawable/baseline_add_24"></ImageView>
+
+            <TextView
+                android:id="@+id/next_step_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:gravity="center"
+                android:text="Next Step"
+                android:textColor="#24AAC3"
+                android:textSize="16dp"></TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/add_step_layout"
+            android:layout_width="match_parent"
+            android:layout_marginStart="16dp"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/next_step">
+
+            <LinearLayout
+
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:background="@drawable/unselected_circle_bg">
+            </LinearLayout>
+
+
+            <EditText
+                android:id="@+id/new_step_edttxt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:hint="New Step"
+                android:background="#0000ffff"
+                android:textColor="#000000"
+                android:textSize="16dp"
+               ></EditText>
+            <ImageView
+                android:id="@+id/add_step"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="16dp"
+                android:src="@drawable/baseline_add_24"></ImageView>
+
+
+        </LinearLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/rem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toplayout">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/baseline_notifications_none_24"
+                app:tint="#333333"></ImageView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="16dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Reminder"
+                        android:textColor="#333333"
+                        android:textSize="16dp"></TextView>
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"></Switch>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#50000000"></LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/calendar_layout"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="16dp"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_baseline_calendar_month_24"
+                app:tint="#333333"></ImageView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="16dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/date_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Due Date"
+                        android:textColor="#333333"
+                        android:textSize="16dp"></TextView>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#50000000"></LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/add_note"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/rem"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Add Note"
+            android:gravity="top"
+            android:background="#0000ffff"
+            android:padding="5dp"
+            ></EditText>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dlt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:gravity="end"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="8dp"
+            android:src="@drawable/trash"></ImageView>
+
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

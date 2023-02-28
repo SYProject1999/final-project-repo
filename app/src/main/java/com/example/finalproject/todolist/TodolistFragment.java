@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.finalproject.TodoList;
 import com.example.finalproject.profile.ProfileActivity;
 import com.example.finalproject.R;
 import com.example.finalproject.models.TaskModel;
@@ -72,7 +73,7 @@ public class TodolistFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         FloatingActionButton floatingActionButton = view.findViewById(R.id.fab);
-        floatingActionButton.setOnClickListener((v) -> addTask());
+        floatingActionButton.setOnClickListener((v) -> todoListActivity());
 
         return view;
     }
@@ -126,6 +127,10 @@ public class TodolistFragment extends Fragment {
         alertDialog.show();
     }
 
+    private void todoListActivity(){
+        Intent intent=new Intent(getActivity(), TodoList.class);
+        startActivity(intent);
+    }
     @Override
     public void onStart() {
         super.onStart();
