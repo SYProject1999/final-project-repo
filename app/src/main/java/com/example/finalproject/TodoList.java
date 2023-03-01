@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActionBar;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.example.finalproject.adapters.TodoListStepAdapter;
 
@@ -29,7 +31,7 @@ public class TodoList extends AppCompatActivity {
     TextView date_txt;
     ImageView favorite;
     ImageView add_step;
-
+    private int mYear, mMonth, mDay, mHour, mMinute;
     LinearLayout calendar_layout;
     TodoListStepAdapter TodoListStepAdapter;
     LinearLayout listview_steps;
@@ -154,6 +156,28 @@ public class TodoList extends AppCompatActivity {
         String myFormat="MM/dd/yyyy";
         SimpleDateFormat dateFormat=new SimpleDateFormat(myFormat, Locale.US);
         date_txt.setText(dateFormat.format(myCalendar.getTime()));
+        time_picker();
 
+    }
+
+    private void time_picker(){
+        // Get Current Time
+        final Calendar c = Calendar.getInstance();
+        mHour = c.get(Calendar.HOUR_OF_DAY);
+        mMinute = c.get(Calendar.MINUTE);
+
+        // Launch Time Picker Dialog
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                new TimePickerDialog.OnTimeSetListener() {
+
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay,
+                                          int minute) {
+
+                        String date_saved=date_txt.getText().toString();
+                        date_txt.setText(date_saved+" - "+hourOfDay + ":" + minute);
+                    }
+                }, mHour, mMinute, false);
+        timePickerDialog.show();
     }
 }
