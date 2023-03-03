@@ -10,16 +10,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.finalproject.LoginActivity;
 import com.example.finalproject.TodoList;
+import com.example.finalproject.adapters.Todocompletedshowadapter;
+import com.example.finalproject.adapters.Todoshowadapter;
+import com.example.finalproject.models.StepsModel;
+import com.example.finalproject.models.TodoTaskModel;
 import com.example.finalproject.profile.ProfileActivity;
 import com.example.finalproject.R;
 import com.example.finalproject.models.TaskModel;
@@ -28,6 +36,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,14 +44,28 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class TodolistFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
+    public static TodoTaskModel todoTaskModelsender=null;
+    ArrayList<TodoTaskModel> todoTaskModelArrayList=new ArrayList<>();
+    ArrayList<TodoTaskModel> completedtodoTaskModelArrayList=new ArrayList<>();
+    TodoTaskModel todoTaskModel;
+    StepsModel stepsModel;
+    Todoshowadapter todoshowadapter;
+    Todocompletedshowadapter todocompletedshowadapter;
+    ListView listView,completed_listview;
     private TextView username;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("Users");
+    String userID= LoginActivity.userID;
     private DatabaseReference reference, fullNameReference;
 
     private String key = "", task = "", description = "";
@@ -52,25 +75,80 @@ public class TodolistFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_todolist, container, false);
 
+        completed_listview=view.findViewById(R.id.completed_listview);
+        listView=view.findViewById(R.id.listview);
         ImageView profile_iv = view.findViewById(R.id.userProfile);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser mUser = mAuth.getCurrentUser();
         assert mUser != null;
         String userID = mUser.getUid();
 
+        myRef.child(userID).child("Tasks").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                completedtodoTaskModelArrayList=new ArrayList<>();
+                todoTaskModelArrayList=new ArrayList<>();
+                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+
+                    todoTaskModel =dataSnapshot.getValue(TodoTaskModel.class);
+                    if (todoTaskModel.getIscompleted()){
+                        completedtodoTaskModelArrayList.add(todoTaskModel);
+                        Log.d("TAG", "ssssss complete: "+completedtodoTaskModelArrayList.size());
+                        todocompletedshowadapter=new Todocompletedshowadapter(getActivity(), android.R.layout.simple_list_item_1,completedtodoTaskModelArrayList);
+                        completed_listview.setAdapter(todocompletedshowadapter);
+                    }else{
+                        todoTaskModelArrayList.add(todoTaskModel);
+                        Log.d("TAG", "ssssss onDataChange todo: "+todoTaskModelArrayList.size());
+                        todoshowadapter=new Todoshowadapter(getActivity(), android.R.layout.simple_list_item_1,todoTaskModelArrayList);
+                        listView.setAdapter(todoshowadapter);
+                    }
+
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                todoshowadapter.getItem(position);
+                todoTaskModelsender=todoshowadapter.getItem(position);
+                Intent intent=new Intent(getActivity(), TodoList.class);
+                startActivity(intent);
+            }
+        });
+        completed_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                todoTaskModelsender=todocompletedshowadapter.getItem(position);
+                Intent intent=new Intent(getActivity(), TodoList.class);
+                startActivity(intent);
+            }
+        });
+
         username = view.findViewById(R.id.username);
         reference = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("Tasks");
         fullNameReference = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("fullName");
 
+
+
         profile_iv.setOnClickListener(v -> startActivity(new Intent(getActivity(), ProfileActivity.class)));
 
-        recyclerView = view.findViewById(R.id.recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(recyclerView.getAdapter());
-        recyclerView.setLayoutManager(linearLayoutManager);
+//        recyclerView = view.findViewById(R.id.recyclerView);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+//        linearLayoutManager.setReverseLayout(true);
+//        linearLayoutManager.setStackFromEnd(true);
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.setAdapter(recyclerView.getAdapter());
+//        recyclerView.setLayoutManager(linearLayoutManager);
 
         FloatingActionButton floatingActionButton = view.findViewById(R.id.fab);
         floatingActionButton.setOnClickListener((v) -> todoListActivity());
@@ -153,9 +231,9 @@ public class TodolistFragment extends Fragment {
         FirebaseRecyclerAdapter<TaskModel, MyViewHolder> adapter = new FirebaseRecyclerAdapter<TaskModel, MyViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull MyViewHolder holder, int position, @NonNull TaskModel model) {
-                holder.setDate(model.getTaskDate());
+//                holder.setDate(model.getTaskDate());
                 holder.setTask(model.getTaskTitle());
-                holder.setDescription(model.getTaskDescription());
+//                holder.setDescription(model.getTaskDescription());
 
                 holder.holderView.setOnClickListener(view -> {
                     key = getRef(holder.getAbsoluteAdapterPosition()).getKey();
@@ -173,7 +251,7 @@ public class TodolistFragment extends Fragment {
             }
         };
 
-        recyclerView.setAdapter(adapter);
+//        recyclerView.setAdapter(adapter);
         adapter.startListening();
     }
 
@@ -187,19 +265,19 @@ public class TodolistFragment extends Fragment {
         }
 
         public void setTask(String task) {
-            TextView taskTextView = holderView.findViewById(R.id.taskLayoutTV);
+            TextView taskTextView = holderView.findViewById(R.id.task_title);
             taskTextView.setText(task);
         }
 
-        public void setDescription(String description) {
-            TextView descriptionTextView = holderView.findViewById(R.id.descriptionLayoutTV);
-            descriptionTextView.setText(description);
-        }
+//        public void setDescription(String description) {
+//            TextView descriptionTextView = holderView.findViewById(R.id.date);
+//            descriptionTextView.setText(description);
+//        }
 
-        public void setDate(String date) {
-            TextView dateTextView = holderView.findViewById(R.id.dateLayoutTV);
-            dateTextView.setText(date);
-        }
+//        public void setDate(String date) {
+//            TextView dateTextView = holderView.findViewById(R.id.date);
+//            dateTextView.setText(date);
+//        }
     }
 
     private void updateTask() {
@@ -253,5 +331,13 @@ public class TodolistFragment extends Fragment {
         });
 
         alertDialog.show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        todoTaskModelsender=null    ;
+        completedtodoTaskModelArrayList=new ArrayList<>();
+        todoTaskModelArrayList=new ArrayList<>();
     }
 }

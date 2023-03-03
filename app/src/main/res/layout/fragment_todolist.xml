@@ -12,12 +12,34 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:divider="@null"
+        android:id="@+id/listview"
 
-        <androidx.recyclerview.widget.RecyclerView
+        tools:listitem="@layout/retrieved_layout"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="--- Tasks Completed ---"
+            android:textSize="16dp"
+            android:layout_marginVertical="5dp"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"></TextView>
+        <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/recyclerView"
+            android:layout_weight="1"
+            android:id="@+id/completed_listview"
             tools:listitem="@layout/retrieved_layout"/>
+    </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
