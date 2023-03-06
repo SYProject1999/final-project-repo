@@ -88,12 +88,19 @@ public class TodolistFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 completedtodoTaskModelArrayList=new ArrayList<>();
                 todoTaskModelArrayList=new ArrayList<>();
+                todocompletedshowadapter=new Todocompletedshowadapter(getActivity(), android.R.layout.simple_list_item_1,completedtodoTaskModelArrayList);
+                completed_listview.setAdapter(todocompletedshowadapter);
+                todoshowadapter=new Todoshowadapter(getActivity(), android.R.layout.simple_list_item_1,todoTaskModelArrayList);
+                listView.setAdapter(todoshowadapter);
+
+
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
 
                     todoTaskModel =dataSnapshot.getValue(TodoTaskModel.class);
                     if (todoTaskModel.getIscompleted()){
+//                        Log.d("TAG", "debuding added to completed arraylist == "+completedtodoTaskModelArrayList.size());
                         completedtodoTaskModelArrayList.add(todoTaskModel);
-                        Log.d("TAG", "ssssss complete: "+completedtodoTaskModelArrayList.size());
+//                        Log.d("TAG", "ssssss complete: "+completedtodoTaskModelArrayList.size());
                         todocompletedshowadapter=new Todocompletedshowadapter(getActivity(), android.R.layout.simple_list_item_1,completedtodoTaskModelArrayList);
                         completed_listview.setAdapter(todocompletedshowadapter);
                     }else{
@@ -339,5 +346,7 @@ public class TodolistFragment extends Fragment {
         todoTaskModelsender=null    ;
         completedtodoTaskModelArrayList=new ArrayList<>();
         todoTaskModelArrayList=new ArrayList<>();
+        Log.d("TAG", "debuding: on resumer");
+
     }
 }

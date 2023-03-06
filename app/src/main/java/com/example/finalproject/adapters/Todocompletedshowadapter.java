@@ -1,6 +1,8 @@
 package com.example.finalproject.adapters;
 
 import android.content.Context;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,8 +39,15 @@ public class Todocompletedshowadapter extends ArrayAdapter {
         convertView= LayoutInflater.from(getContext()).inflate(R.layout.main_todo_show_layout,parent,false);
         TodoTaskModel todoTaskModel=getItem(position);
         TextView task_title=convertView.findViewById(R.id.task_title);
+
+
+
+
+
+
         TextView task_date=convertView.findViewById(R.id.task_date);
         task_title.setText(todoTaskModel.getTitle());
+        task_title.setBackgroundResource(R.drawable.strike_through_text);
         task_date.setText(militodate(todoTaskModel.getDuedatetime()));
         ImageView favorite=convertView.findViewById(R.id.favorite);
         LinearLayout select_task=convertView.findViewById(R.id.select_task);

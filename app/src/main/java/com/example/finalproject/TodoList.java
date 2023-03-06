@@ -271,8 +271,13 @@ public class TodoList extends AppCompatActivity {
                         }else{
                             todoTaskModel=new TodoTaskModel(id,Title,note_txt,iscompleted,reminder,isimportant,duedatetime,stepsModelArrayList);
                             myRef.child(userID).child("Tasks").child(id).setValue(todoTaskModel);
-                            Toast.makeText(TodoList.this, "Task Created Successfully!", Toast.LENGTH_SHORT).show();
-                            finish(); 
+                            if(its_edit){
+                                Toast.makeText(TodoList.this, "Task Edited Successfully!", Toast.LENGTH_SHORT).show();
+
+                            }else{
+                                Toast.makeText(TodoList.this, "Task Created Successfully!", Toast.LENGTH_SHORT).show();
+                            }
+                            finish();
                         }
                        
                     }
