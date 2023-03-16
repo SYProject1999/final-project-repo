@@ -51,7 +51,6 @@ public class EditProfileActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
 
     private StorageTask storageTask;
-    private long timeMillis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,8 +155,8 @@ public class EditProfileActivity extends AppCompatActivity {
         });
 
         if (imageUri != null) {
-            timeMillis = System.currentTimeMillis();
-            StorageReference fileReference = storageReference.child(user.getUid()).child(timeMillis + "." + getFileExtension(imageUri));
+            long timeMillis = System.currentTimeMillis();
+            StorageReference fileReference = storageReference.child(user.getUid()).child("Profile Image").child(timeMillis + "." + getFileExtension(imageUri));
             storageTask = fileReference.putFile(imageUri).addOnSuccessListener(taskSnapshot -> fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
                 String url = String.valueOf(uri);
                 sendLink(url);

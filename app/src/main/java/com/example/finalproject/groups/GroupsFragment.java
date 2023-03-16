@@ -1,5 +1,6 @@
 package com.example.finalproject.groups;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -24,9 +25,13 @@ import android.widget.Toast;
 import com.example.finalproject.R;
 import com.example.finalproject.profile.ProfileActivity;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class GroupsFragment extends Fragment {
@@ -34,7 +39,9 @@ public class GroupsFragment extends Fragment {
     private ViewPager2 viewPager2;
     private TabLayout tabLayout;
 
-    private DatabaseReference groupsReference;
+    private DatabaseReference groupsReference, RootRef;
+    private FirebaseAuth auth;
+
 
     public GroupsFragment() {
         // Required empty public constructor
@@ -53,6 +60,8 @@ public class GroupsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_groups, container, false);
 
+        auth = FirebaseAuth.getInstance();
+        RootRef = FirebaseDatabase.getInstance().getReference("Users");
         groupsReference = FirebaseDatabase.getInstance().getReference();
 
         Toolbar toolbar = view.findViewById(R.id.groups_toolbar);
@@ -62,7 +71,7 @@ public class GroupsFragment extends Fragment {
         viewPager2 = view.findViewById(R.id.main_tabs_pager);
         tabLayout = view.findViewById(R.id.main_tabs);
 
-        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentManager fragmentManager = getChildFragmentManager();
         TabAccessorAdapter tabAccessorAdapter = new TabAccessorAdapter(fragmentManager, getLifecycle());
         viewPager2.setAdapter(tabAccessorAdapter);
         tabLayout.addTab(tabLayout.newTab().setText("Tasks"));
@@ -92,6 +101,12 @@ public class GroupsFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateUserStatus("Online");
     }
 
     @Override
@@ -155,5 +170,27 @@ public class GroupsFragment extends Fragment {
     private void sendUserToFindFriendsActivity() {
         Intent findFriendsIntent = new Intent(requireContext(), FindFriendsActivity.class);
         startActivity(findFriendsIntent);
+    }
+
+    private void updateUserStatus(String state) {
+
+        String saveCurrentTime, saveCurrentDate;
+        Calendar calendar = Calendar.getInstance();
+
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+        saveCurrentTime = currentTime.format(calendar.getTime());
+
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+        saveCurrentDate = currentDate.format(calendar.getTime());
+
+        HashMap<String, Object> onlineStateMap = new HashMap<>();
+        onlineStateMap.put("time", saveCurrentTime);
+        onlineStateMap.put("date", saveCurrentDate);
+        onlineStateMap.put("state", state);
+
+        String currentUserID = Objects.requireNonNull(auth.getCurrentUser()).getUid();
+
+        RootRef.child(currentUserID).child("userState")
+                .updateChildren(onlineStateMap);
     }
 }

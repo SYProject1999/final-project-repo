@@ -177,6 +177,71 @@ public class RequestsFragment extends Fragment {
                                     }
                                 });
                             }
+
+                            else if (type.equals("sent")) {
+                                Button request_sent_btn = holder.itemView.findViewById(R.id.request_accept_btn);
+                                request_sent_btn.setText("Request Sent");
+
+                                holder.itemView.findViewById(R.id.request_cancel_btn).setVisibility(View.INVISIBLE);
+
+                                UsersRef.child(list_user_id).addValueEventListener(new ValueEventListener() {
+                                    @SuppressLint("SetTextI18n")
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                        String requestProfileImage = "";
+                                        String requestUserStatus = "No Status";
+
+                                        if (snapshot.hasChild("imageUrl")) {
+                                            requestProfileImage = snapshot.child("imageUrl").getValue(String.class);
+                                        }
+                                        if (snapshot.hasChild("Status")) {
+                                            requestUserStatus = snapshot.child("Status").getValue(String.class);
+                                        }
+
+                                        GlideApp.with(requireContext()).load(requestProfileImage).placeholder(R.drawable.ic_baseline_person_24).into(holder.profileImage);
+                                        final String requestUserName = snapshot.child("fullName").getValue(String.class);
+
+                                        holder.userName.setText(requestUserName);
+                                        holder.userStatus.setText("you have sent a request to " + requestUserName);
+
+                                        holder.itemView.setOnClickListener(view -> {
+
+                                            CharSequence options[] = new CharSequence[] {
+                                                    "Cancel Chat Request"
+                                            };
+
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                            builder.setTitle(requestUserName + " Chat Request");
+
+                                            builder.setItems(options, (dialogInterface, i) -> {
+                                                if (i == 0) {
+                                                    ChatRequestsRef.child(currentUserID).child(list_user_id)
+                                                            .removeValue().addOnCompleteListener(task -> {
+
+                                                        if (task.isSuccessful()) {
+                                                            ChatRequestsRef.child(list_user_id).child(currentUserID)
+                                                                    .removeValue().addOnCompleteListener(task1 -> {
+                                                                if (task1.isSuccessful()) {
+                                                                    Toast.makeText(getContext(), "Request Canceled", Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                }
+
+                                            });
+                                            builder.show();
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+
                         }
 
                     }
