@@ -524,6 +524,7 @@ public class TodolistFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+//                Toast.makeText(getContext(), "ERROR", Toast.LENGTH_SHORT).show();
             }
         });
 
