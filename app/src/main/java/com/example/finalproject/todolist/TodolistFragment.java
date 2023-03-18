@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,25 +45,37 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 public class TodolistFragment extends Fragment {
 
+
+    LinearLayout today,alltasks;
     private RecyclerView recyclerView;
 
+    TextView todayCompleted,todayTotal;
+    Boolean todaySelected=true;
     public static TodoTaskModel todoTaskModelsender=null;
     ArrayList<TodoTaskModel> todoTaskModelArrayList=new ArrayList<>();
     ArrayList<TodoTaskModel> completedtodoTaskModelArrayList=new ArrayList<>();
+    ArrayList<TodoTaskModel> todayTodoTaskModelArrayList=new ArrayList<>();
     TodoTaskModel todoTaskModel;
     StepsModel stepsModel;
+
+
+    int countTodayTotal=0,countTodayCompleted=0;
+
+    LinearLayout todoListLayout;
     Todoshowadapter todoshowadapter;
     Todocompletedshowadapter todocompletedshowadapter;
     ListView listView,completed_listview;
     private TextView username;
-
+    String currentDateandTime;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("Users");
     String userID= LoginActivity.userID;
@@ -75,71 +88,93 @@ public class TodolistFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_todolist, container, false);
 
-        completed_listview=view.findViewById(R.id.completed_listview);
-        listView=view.findViewById(R.id.listview);
+        today=view.findViewById(R.id.today);
+        alltasks=view.findViewById(R.id.alltasks);
+
+        todayCompleted=view.findViewById(R.id.todayCompleted);
+        todayTotal=view.findViewById(R.id.todayTotal);
+
+
+        today.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                todoListLayout.removeAllViews();
+                viewChanger(today);
+                todaySelected=true;
+                Log.d("TAG", "TODO: size of today arraylist"+todayTodoTaskModelArrayList.size());
+                for (int i=0;i<todayTodoTaskModelArrayList.size();i++){
+                    todoTaskModel=todayTodoTaskModelArrayList.get(i);
+                    View todoListView= LayoutInflater.from(getContext()).inflate(R.layout.main_todo_show_layout,null,false);
+                    TextView title=todoListView.findViewById(R.id.task_title);
+                    TextView taskDate=todoListView.findViewById(R.id.task_date);
+                    title.setText(todoTaskModel.getTitle());
+                    taskDate.setText(militodate(todoTaskModel.getDuedatetime()));
+                    todoListLayout.addView(todoListView);
+                    LinearLayout select_task=todoListView.findViewById(R.id.select_task);
+                    if (todoTaskModel.getIscompleted()){
+                        select_task.setBackgroundResource(R.drawable.selected_circle_bg);
+                        title.setBackgroundResource(R.drawable.strike_through_text);
+
+                    }
+                    else{
+                        select_task.setBackgroundResource(R.drawable.unselected_circle_bg);
+                    }
+                    todoListView.setTag(todoTaskModel);
+                    todoListView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            todoTaskModel= (TodoTaskModel) todoListView.getTag();
+//                            Toast.makeText(getContext(),todoTaskModel.getTitle() , Toast.LENGTH_SHORT).show();
+                            todoTaskModelsender=todoTaskModel;
+                            Intent intent=new Intent(getActivity(), TodoList.class);
+                            startActivity(intent);
+                        }
+                    });
+                }
+            }
+        });
+        alltasks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewChanger(alltasks);
+                todaySelected=false;
+                dataBaseFetch();
+            }
+        });
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+         currentDateandTime = sdf.format(new Date());
+//        Toast.makeText(getContext(), currentDateandTime, Toast.LENGTH_SHORT).show();
+
+//        Toast.makeText(getContext(), "Activity Started", Toast.LENGTH_SHORT).show();
+//        completed_listview=view.findViewById(R.id.completed_listview);
+//        listView=view.findViewById(R.id.listview);
         ImageView profile_iv = view.findViewById(R.id.userProfile);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser mUser = mAuth.getCurrentUser();
         assert mUser != null;
+        todoListLayout=view.findViewById(R.id.todoListLayout);
         String userID = mUser.getUid();
-
-        myRef.child(userID).child("Tasks").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                completedtodoTaskModelArrayList=new ArrayList<>();
-                todoTaskModelArrayList=new ArrayList<>();
-                todocompletedshowadapter=new Todocompletedshowadapter(getActivity(), android.R.layout.simple_list_item_1,completedtodoTaskModelArrayList);
-                completed_listview.setAdapter(todocompletedshowadapter);
-                todoshowadapter=new Todoshowadapter(getActivity(), android.R.layout.simple_list_item_1,todoTaskModelArrayList);
-                listView.setAdapter(todoshowadapter);
-
-
-                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
-
-                    todoTaskModel =dataSnapshot.getValue(TodoTaskModel.class);
-                    if (todoTaskModel.getIscompleted()){
-//                        Log.d("TAG", "debuding added to completed arraylist == "+completedtodoTaskModelArrayList.size());
-                        completedtodoTaskModelArrayList.add(todoTaskModel);
-//                        Log.d("TAG", "ssssss complete: "+completedtodoTaskModelArrayList.size());
-                        todocompletedshowadapter=new Todocompletedshowadapter(getActivity(), android.R.layout.simple_list_item_1,completedtodoTaskModelArrayList);
-                        completed_listview.setAdapter(todocompletedshowadapter);
-                    }else{
-                        todoTaskModelArrayList.add(todoTaskModel);
-                        Log.d("TAG", "ssssss onDataChange todo: "+todoTaskModelArrayList.size());
-                        todoshowadapter=new Todoshowadapter(getActivity(), android.R.layout.simple_list_item_1,todoTaskModelArrayList);
-                        listView.setAdapter(todoshowadapter);
-                    }
-
-
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                todoshowadapter.getItem(position);
-                todoTaskModelsender=todoshowadapter.getItem(position);
-                Intent intent=new Intent(getActivity(), TodoList.class);
-                startActivity(intent);
-            }
-        });
-        completed_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-                todoTaskModelsender=todocompletedshowadapter.getItem(position);
-                Intent intent=new Intent(getActivity(), TodoList.class);
-                startActivity(intent);
-            }
-        });
+        todoListLayout.removeAllViews();
+        dataBaseFetch();
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                todoshowadapter.getItem(position);
+//                todoTaskModelsender=todoshowadapter.getItem(position);
+//                Intent intent=new Intent(getActivity(), TodoList.class);
+//                startActivity(intent);
+//            }
+//        });
+//        completed_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//
+//                todoTaskModelsender=todocompletedshowadapter.getItem(position);
+//                Intent intent=new Intent(getActivity(), TodoList.class);
+//                startActivity(intent);
+//            }
+//        });
 
         username = view.findViewById(R.id.username);
         reference = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("Tasks");
@@ -343,10 +378,155 @@ public class TodolistFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+//        Toast.makeText(getContext(), "RESUME", Toast.LENGTH_SHORT).show();
+
         todoTaskModelsender=null    ;
         completedtodoTaskModelArrayList=new ArrayList<>();
         todoTaskModelArrayList=new ArrayList<>();
         Log.d("TAG", "debuding: on resumer");
+        viewChanger(alltasks);
+        todaySelected=false;
+        dataBaseFetch();
+    }
+    private String militodate(long milliSeconds){
+        String dateFormat="dd/MM/yyyy hh:mm:ss";
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliSeconds);
+        Log.d("TAG", "milli: "+formatter.format(calendar.getTime()));
+        return formatter.format(calendar.getTime());
+    }
+
+    public void viewChanger(View view){
+        today.setBackgroundResource(R.drawable.greybtn24dp);
+        alltasks.setBackgroundResource(R.drawable.greybtn24dp);
+        view.setBackgroundResource(R.drawable.lightbluebtn24dp);
+    }
+
+
+    public void dataBaseFetch(){
+        countTodayCompleted=0;
+        countTodayTotal=0;
+        myRef.child(userID).child("Tasks").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                completedtodoTaskModelArrayList=new ArrayList<>();
+                todoTaskModelArrayList=new ArrayList<>();
+                todayTodoTaskModelArrayList=new ArrayList<>();
+                todoListLayout.removeAllViews();
+                countTodayCompleted=0;
+                countTodayTotal=0;
+                todayTotal.setText(String.valueOf(countTodayTotal));
+                todayCompleted.setText(String.valueOf(countTodayCompleted)+"/");
+//                todocompletedshowadapter=new Todocompletedshowadapter(getActivity(), android.R.layout.simple_list_item_1,completedtodoTaskModelArrayList);
+//                completed_listview.setAdapter(todocompletedshowadapter);
+//                todoshowadapter=new Todoshowadapter(getActivity(), android.R.layout.simple_list_item_1,todoTaskModelArrayList);
+//                listView.setAdapter(todoshowadapter);
+
+
+                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+
+                    todoTaskModel =dataSnapshot.getValue(TodoTaskModel.class);
+                    // TO GET DATE OF TASK
+
+                    if (todoTaskModel.getIscompleted()){
+//                        Log.d("TAG", "debuding added to completed arraylist == "+completedtodoTaskModelArrayList.size());
+                        completedtodoTaskModelArrayList.add(todoTaskModel);
+//                        Log.d("TAG", "ssssss complete: "+completedtodoTaskModelArrayList.size());
+                        todocompletedshowadapter=new Todocompletedshowadapter(getActivity(), android.R.layout.simple_list_item_1,completedtodoTaskModelArrayList);
+
+                    }else{
+                        todoTaskModelArrayList.add(todoTaskModel);
+                        Log.d("TAG", "ssssss onDataChange todo: "+todoTaskModelArrayList.size());
+
+                    }
+                }
+                for (int i=0;i<todoTaskModelArrayList.size();i++){
+                    todoTaskModel=todoTaskModelArrayList.get(i);
+                    String taskDateS=militodate(todoTaskModel.getDuedatetime());
+                    taskDateS=taskDateS.substring(0,10);
+//                    Toast.makeText(getContext(), taskDateS, Toast.LENGTH_SHORT).show();
+
+                    //compare task date to today's date
+                    if (taskDateS.equals(currentDateandTime)){
+                        todayTodoTaskModelArrayList.add(todoTaskModel);
+                        countTodayTotal++;
+                        todayTotal.setText(String.valueOf(countTodayTotal));
+                        todayCompleted.setText(String.valueOf(countTodayCompleted)+"/");
+                        Log.d("TAG", "TODO: TASK ADDED");
+                    }
+                    View todoListView= LayoutInflater.from(getActivity()).inflate(R.layout.main_todo_show_layout,null,false);
+                    TextView title=todoListView.findViewById(R.id.task_title);
+                    TextView taskDate=todoListView.findViewById(R.id.task_date);
+                    title.setText(todoTaskModel.getTitle());
+                    taskDate.setText(militodate(todoTaskModel.getDuedatetime()));
+                    todoListLayout.addView(todoListView);
+                    todoListView.setTag(todoTaskModel);
+                    todoListView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            todoTaskModel= (TodoTaskModel) todoListView.getTag();
+//                            Toast.makeText(getContext(),todoTaskModel.getTitle() , Toast.LENGTH_SHORT).show();
+                            todoTaskModelsender=todoTaskModel;
+                            Intent intent=new Intent(getActivity(), TodoList.class);
+                            startActivity(intent);
+                        }
+                    });
+                }
+                for (int i=0;i<completedtodoTaskModelArrayList.size();i++){
+                    todoTaskModel=completedtodoTaskModelArrayList.get(i);
+                    String taskDateS=militodate(todoTaskModel.getDuedatetime());
+                    taskDateS=taskDateS.substring(0,10);
+//                    Toast.makeText(getContext(), taskDateS, Toast.LENGTH_SHORT).show();
+
+                    //compare task date to today's date
+                    if (taskDateS.equals(currentDateandTime)){
+                        Log.d("TAG", "TODO: TASK ADDED");
+                        todayTodoTaskModelArrayList.add(todoTaskModel);
+                        countTodayTotal++;
+                        countTodayCompleted++;
+                        todayTotal.setText(String.valueOf(countTodayTotal));
+                        todayCompleted.setText(String.valueOf(countTodayCompleted)+"/");
+
+                    }
+                    View todoListView= LayoutInflater.from(getContext()).inflate(R.layout.main_todo_show_layout,null,false);
+                    TextView title=todoListView.findViewById(R.id.task_title);
+                    TextView taskDate=todoListView.findViewById(R.id.task_date);
+                    title.setText(todoTaskModel.getTitle());
+                    LinearLayout select_task=todoListView.findViewById(R.id.select_task);
+                    if (todoTaskModel.getIscompleted()){
+                        select_task.setBackgroundResource(R.drawable.selected_circle_bg);
+                    }
+                    else{
+                        select_task.setBackgroundResource(R.drawable.unselected_circle_bg);
+                    }
+                    select_task.setBackgroundResource(R.drawable.selected_circle_bg);
+                    title.setBackgroundResource(R.drawable.strike_through_text);
+                    taskDate.setText(militodate(todoTaskModel.getDuedatetime()));
+                    todoListLayout.addView(todoListView);
+                    todoListView.setTag(todoTaskModel);
+                    todoListView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            todoTaskModel= (TodoTaskModel) todoListView.getTag();
+//                            Toast.makeText(getContext(),todoTaskModel.getTitle() , Toast.LENGTH_SHORT).show();
+                            todoTaskModelsender=todoTaskModel;
+                            Intent intent=new Intent(getActivity(), TodoList.class);
+                            startActivity(intent);
+                        }
+                    });
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
+
 }

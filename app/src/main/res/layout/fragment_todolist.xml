@@ -12,34 +12,109 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-        <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:divider="@null"
-        android:id="@+id/listview"
-
-        tools:listitem="@layout/retrieved_layout"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="--- Tasks Completed ---"
-            android:textSize="16dp"
-            android:layout_marginVertical="5dp"
-            android:textColor="@color/white"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"></TextView>
-        <ListView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:id="@+id/completed_listview"
-            tools:listitem="@layout/retrieved_layout"/>
-    </LinearLayout>
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:gravity="end"
+                android:layout_marginVertical="8dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/today"
+                    android:layout_width="wrap_content"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/lightbluebtn24dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:textSize="14dp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:layout_height="wrap_content"
+                        android:text="Today"></TextView>
+                    <TextView
+                        android:id="@+id/todayCompleted"
+                        android:layout_width="wrap_content"
+                        android:textSize="14dp"
+                        android:layout_marginStart="8dp"
+                        android:textColor="#0AFB63"
+
+                        android:layout_height="wrap_content"
+                        android:text="10/"></TextView>
+                    <TextView
+                        android:id="@+id/todayTotal"
+
+                        android:layout_width="wrap_content"
+                        android:textSize="14dp"
+
+                        android:textColor="@color/white"
+
+                        android:layout_height="wrap_content"
+                        android:text="20"></TextView>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/alltasks"
+
+                    android:layout_width="wrap_content"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:layout_marginStart="16dp"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/greybtn24dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:textSize="14dp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:layout_height="wrap_content"
+                        android:text="All Tasks"></TextView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:id="@+id/todoListLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+                    <!--        <ListView-->
+                    <!--        android:layout_width="match_parent"-->
+                    <!--        android:layout_height="match_parent"-->
+                    <!--            android:layout_weight="1"-->
+                    <!--            android:divider="@null"-->
+                    <!--        android:id="@+id/listview"-->
+
+                    <!--        tools:listitem="@layout/retrieved_layout"/>-->
+                    <!--        <TextView-->
+                    <!--            android:layout_width="wrap_content"-->
+                    <!--            android:text="-&#45;&#45; Tasks Completed -&#45;&#45;"-->
+                    <!--            android:textSize="16dp"-->
+                    <!--            android:layout_marginVertical="5dp"-->
+                    <!--            android:textColor="@color/white"-->
+                    <!--            android:layout_gravity="center"-->
+                    <!--            android:layout_height="wrap_content"></TextView>-->
+                    <!--        <ListView-->
+                    <!--            android:layout_width="match_parent"-->
+                    <!--            android:layout_height="match_parent"-->
+                    <!--            android:layout_weight="1"-->
+                    <!--            android:id="@+id/completed_listview"-->
+                    <!--            tools:listitem="@layout/retrieved_layout"/>-->
+                </LinearLayout>
+
+            </ScrollView>
+
+        </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
