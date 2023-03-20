@@ -1,6 +1,7 @@
 package com.example.finalproject.todolist;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -23,6 +24,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.finalproject.LoginActivity;
 import com.example.finalproject.TodoList;
 import com.example.finalproject.adapters.Todocompletedshowadapter;
@@ -43,6 +45,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -58,6 +61,7 @@ public class TodolistFragment extends Fragment {
     LinearLayout today,alltasks;
     private RecyclerView recyclerView;
 
+    ImageView userProfile;
     TextView todayCompleted,todayTotal;
     Boolean todaySelected=true;
     public static TodoTaskModel todoTaskModelsender=null;
@@ -75,6 +79,7 @@ public class TodolistFragment extends Fragment {
     Todocompletedshowadapter todocompletedshowadapter;
     ListView listView,completed_listview;
     private TextView username;
+    ProgressDialog progressdialog;
     String currentDateandTime;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("Users");
@@ -87,14 +92,16 @@ public class TodolistFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_todolist, container, false);
-
+        progressdialog = new ProgressDialog(getContext());
+        progressdialog.setMessage("Loading, Please Wait....");
+        progressdialog.show();
         today=view.findViewById(R.id.today);
         alltasks=view.findViewById(R.id.alltasks);
 
         todayCompleted=view.findViewById(R.id.todayCompleted);
         todayTotal=view.findViewById(R.id.todayTotal);
 
-
+        userProfile=view.findViewById(R.id.userProfile);
         today.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -156,7 +163,24 @@ public class TodolistFragment extends Fragment {
         todoListLayout=view.findViewById(R.id.todoListLayout);
         String userID = mUser.getUid();
         todoListLayout.removeAllViews();
+        myRef.child(userID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Toast.makeText(getContext(), userID, Toast.LENGTH_SHORT).show();
+                Log.d("TAG", "onDataChange1: "+userID);
+                String url=snapshot.child("imageUrl").getValue(String.class);
+                userimage(url);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+//                Toast.makeText(getContext(), "ERROR", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         dataBaseFetch();
+
 //        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -409,6 +433,7 @@ public class TodolistFragment extends Fragment {
     public void dataBaseFetch(){
         countTodayCompleted=0;
         countTodayTotal=0;
+
         myRef.child(userID).child("Tasks").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -420,6 +445,7 @@ public class TodolistFragment extends Fragment {
                 countTodayTotal=0;
                 todayTotal.setText(String.valueOf(countTodayTotal));
                 todayCompleted.setText(String.valueOf(countTodayCompleted)+"/");
+
 //                todocompletedshowadapter=new Todocompletedshowadapter(getActivity(), android.R.layout.simple_list_item_1,completedtodoTaskModelArrayList);
 //                completed_listview.setAdapter(todocompletedshowadapter);
 //                todoshowadapter=new Todoshowadapter(getActivity(), android.R.layout.simple_list_item_1,todoTaskModelArrayList);
@@ -430,6 +456,7 @@ public class TodolistFragment extends Fragment {
 
                     todoTaskModel =dataSnapshot.getValue(TodoTaskModel.class);
                     // TO GET DATE OF TASK
+
 
                     if (todoTaskModel.getIscompleted()){
 //                        Log.d("TAG", "debuding added to completed arraylist == "+completedtodoTaskModelArrayList.size());
@@ -518,15 +545,24 @@ public class TodolistFragment extends Fragment {
                         }
                     });
                 }
+                progressdialog.dismiss();
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
-//                Toast.makeText(getContext(), "ERROR", Toast.LENGTH_SHORT).show();
+                progressdialog.dismiss();
+                Toast.makeText(getContext(), "ERROR", Toast.LENGTH_SHORT).show();
             }
         });
+
+    }
+
+    public void userimage(String url){
+        Toast.makeText(getContext(), url, Toast.LENGTH_SHORT).show();
+        Glide.with(this).load(url).into(userProfile);
+
 
     }
 
