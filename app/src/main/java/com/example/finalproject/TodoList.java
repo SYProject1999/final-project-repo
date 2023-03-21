@@ -543,6 +543,7 @@ public class TodoList extends AppCompatActivity {
         values.put(CalendarContract.Events.HAS_ALARM, 1);
         Uri event = cr.insert(EVENTS_URI, values);
 
+        Log.d("TAG", "addReminderInCalendar: ");
         // Display event id
 //        Toast.makeText(getApplicationContext(), "Event added :: ID :: " + event.getLastPathSegment(), Toast.LENGTH_SHORT).show();
 
