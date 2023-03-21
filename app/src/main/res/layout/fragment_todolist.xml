@@ -55,9 +55,31 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:divider="@null"
+        android:id="@+id/listview"
+
+        tools:listitem="@layout/retrieved_layout"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="--- Tasks Completed ---"
+            android:textSize="16dp"
+            android:layout_marginVertical="5dp"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"></TextView>
+        <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+<<<<<<< HEAD
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -159,6 +181,12 @@
             </ScrollView>
 
         </LinearLayout>
+=======
+            android:layout_weight="1"
+            android:id="@+id/completed_listview"
+            tools:listitem="@layout/retrieved_layout"/>
+    </LinearLayout>
+>>>>>>> parent of 8f8bb2b (Reminder option added)
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"

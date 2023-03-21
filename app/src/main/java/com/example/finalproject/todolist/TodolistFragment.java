@@ -19,7 +19,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,28 +47,27 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 public class TodolistFragment extends Fragment {
 
-
-    LinearLayout today,alltasks;
     private RecyclerView recyclerView;
 
+<<<<<<< HEAD
     ImageView userProfile;
     TextView todayCompleted,todayTotal;
     Boolean todaySelected=true;
+=======
+>>>>>>> parent of 8f8bb2b (Reminder option added)
     public static TodoTaskModel todoTaskModelsender=null;
     ArrayList<TodoTaskModel> todoTaskModelArrayList=new ArrayList<>();
     ArrayList<TodoTaskModel> completedtodoTaskModelArrayList=new ArrayList<>();
-    ArrayList<TodoTaskModel> todayTodoTaskModelArrayList=new ArrayList<>();
     TodoTaskModel todoTaskModel;
     StepsModel stepsModel;
+<<<<<<< HEAD
 
     LayoutInflater layoutInflater;
 
@@ -77,12 +75,18 @@ public class TodolistFragment extends Fragment {
     int countTodayTotal=0,countTodayCompleted=0;
 
     LinearLayout todoListLayout;
+=======
+>>>>>>> parent of 8f8bb2b (Reminder option added)
     Todoshowadapter todoshowadapter;
     Todocompletedshowadapter todocompletedshowadapter;
     ListView listView,completed_listview;
     private TextView username;
+<<<<<<< HEAD
     ProgressDialog progressdialog;
     String currentDateandTime;
+=======
+
+>>>>>>> parent of 8f8bb2b (Reminder option added)
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("Users");
     String userID= LoginActivity.userID;
@@ -94,6 +98,7 @@ public class TodolistFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_todolist, container, false);
+<<<<<<< HEAD
         progressdialog = new ProgressDialog(getContext());
         progressdialog.setMessage("Loading, Please Wait....");
         progressdialog.show();
@@ -158,12 +163,17 @@ public class TodolistFragment extends Fragment {
 //        Toast.makeText(getContext(), "Activity Started", Toast.LENGTH_SHORT).show();
 //        completed_listview=view.findViewById(R.id.completed_listview);
 //        listView=view.findViewById(R.id.listview);
+=======
+
+        completed_listview=view.findViewById(R.id.completed_listview);
+        listView=view.findViewById(R.id.listview);
+>>>>>>> parent of 8f8bb2b (Reminder option added)
         ImageView profile_iv = view.findViewById(R.id.userProfile);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser mUser = mAuth.getCurrentUser();
         assert mUser != null;
-        todoListLayout=view.findViewById(R.id.todoListLayout);
         String userID = mUser.getUid();
+<<<<<<< HEAD
         todoListLayout.removeAllViews();
         myRef.child(userID).addValueEventListener(new ValueEventListener() {
             @Override
@@ -173,11 +183,46 @@ public class TodolistFragment extends Fragment {
                 String usernamestring=snapshot.child("fullName").getValue(String.class);
                 username.setText(usernamestring);
                 userimage(url);
+=======
+
+        myRef.child(userID).child("Tasks").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                completedtodoTaskModelArrayList=new ArrayList<>();
+                todoTaskModelArrayList=new ArrayList<>();
+                todocompletedshowadapter=new Todocompletedshowadapter(getActivity(), android.R.layout.simple_list_item_1,completedtodoTaskModelArrayList);
+                completed_listview.setAdapter(todocompletedshowadapter);
+                todoshowadapter=new Todoshowadapter(getActivity(), android.R.layout.simple_list_item_1,todoTaskModelArrayList);
+                listView.setAdapter(todoshowadapter);
+
+
+                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+
+                    todoTaskModel =dataSnapshot.getValue(TodoTaskModel.class);
+                    if (todoTaskModel.getIscompleted()){
+//                        Log.d("TAG", "debuding added to completed arraylist == "+completedtodoTaskModelArrayList.size());
+                        completedtodoTaskModelArrayList.add(todoTaskModel);
+//                        Log.d("TAG", "ssssss complete: "+completedtodoTaskModelArrayList.size());
+                        todocompletedshowadapter=new Todocompletedshowadapter(getActivity(), android.R.layout.simple_list_item_1,completedtodoTaskModelArrayList);
+                        completed_listview.setAdapter(todocompletedshowadapter);
+                    }else{
+                        todoTaskModelArrayList.add(todoTaskModel);
+                        Log.d("TAG", "ssssss onDataChange todo: "+todoTaskModelArrayList.size());
+                        todoshowadapter=new Todoshowadapter(getActivity(), android.R.layout.simple_list_item_1,todoTaskModelArrayList);
+                        listView.setAdapter(todoshowadapter);
+                    }
+
+
+
+                }
+
+>>>>>>> parent of 8f8bb2b (Reminder option added)
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+<<<<<<< HEAD
 //                Toast.makeText(getContext(), "ERROR", Toast.LENGTH_SHORT).show();
             }
         });
@@ -202,6 +247,29 @@ public class TodolistFragment extends Fragment {
 //                startActivity(intent);
 //            }
 //        });
+=======
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                todoshowadapter.getItem(position);
+                todoTaskModelsender=todoshowadapter.getItem(position);
+                Intent intent=new Intent(getActivity(), TodoList.class);
+                startActivity(intent);
+            }
+        });
+        completed_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                todoTaskModelsender=todocompletedshowadapter.getItem(position);
+                Intent intent=new Intent(getActivity(), TodoList.class);
+                startActivity(intent);
+            }
+        });
+>>>>>>> parent of 8f8bb2b (Reminder option added)
 
         username = view.findViewById(R.id.username);
         reference = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("Tasks");
@@ -405,12 +473,11 @@ public class TodolistFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//        Toast.makeText(getContext(), "RESUME", Toast.LENGTH_SHORT).show();
-
         todoTaskModelsender=null    ;
         completedtodoTaskModelArrayList=new ArrayList<>();
         todoTaskModelArrayList=new ArrayList<>();
         Log.d("TAG", "debuding: on resumer");
+<<<<<<< HEAD
         viewChanger(alltasks);
         todaySelected=false;
         dataBaseFetch();
@@ -572,4 +639,8 @@ public class TodolistFragment extends Fragment {
 
     }
 
+=======
+
+    }
+>>>>>>> parent of 8f8bb2b (Reminder option added)
 }
