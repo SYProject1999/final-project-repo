@@ -59,6 +59,11 @@
         <activity
             android:name=".BottomNavigationBarActivity"
             android:exported="false" />
+        <service
+            android:name = ".todolist.NotifyService"
+            android:enabled = "true"
+            android:exported = "true" >
+        </service>
         <activity
             android:name=".LoginActivity"
             android:exported="true">
