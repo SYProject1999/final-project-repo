@@ -3,11 +3,10 @@ package com.example.finalproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActionBar;
+
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +17,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -181,9 +179,6 @@ public class TodoList extends AppCompatActivity {
                 text.setText(stepsModelArrayListsender.get(k).getTitle());
                 listview_steps.addView(step_layout);
                 step_id=k;
-
-
-
 
 
 
