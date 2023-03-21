@@ -71,6 +71,8 @@ public class TodolistFragment extends Fragment {
     TodoTaskModel todoTaskModel;
     StepsModel stepsModel;
 
+    LayoutInflater layoutInflater;
+
 
     int countTodayTotal=0,countTodayCompleted=0;
 
@@ -97,7 +99,7 @@ public class TodolistFragment extends Fragment {
         progressdialog.show();
         today=view.findViewById(R.id.today);
         alltasks=view.findViewById(R.id.alltasks);
-
+        layoutInflater=LayoutInflater.from(getActivity());
         todayCompleted=view.findViewById(R.id.todayCompleted);
         todayTotal=view.findViewById(R.id.todayTotal);
 
@@ -166,9 +168,10 @@ public class TodolistFragment extends Fragment {
         myRef.child(userID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Toast.makeText(getContext(), userID, Toast.LENGTH_SHORT).show();
-                Log.d("TAG", "onDataChange1: "+userID);
+             Log.d("TAG", "onDataChange1: "+userID);
                 String url=snapshot.child("imageUrl").getValue(String.class);
+                String usernamestring=snapshot.child("fullName").getValue(String.class);
+                username.setText(usernamestring);
                 userimage(url);
             }
 
@@ -282,7 +285,7 @@ public class TodolistFragment extends Fragment {
         fullNameReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                username.setText(snapshot.getValue(String.class));
+
             }
 
             @Override
@@ -443,8 +446,8 @@ public class TodolistFragment extends Fragment {
                 todoListLayout.removeAllViews();
                 countTodayCompleted=0;
                 countTodayTotal=0;
-                todayTotal.setText(String.valueOf(countTodayTotal));
-                todayCompleted.setText(String.valueOf(countTodayCompleted)+"/");
+                todayTotal.setText("/"+String.valueOf(countTodayTotal));
+                todayCompleted.setText(String.valueOf(countTodayCompleted));
 
 //                todocompletedshowadapter=new Todocompletedshowadapter(getActivity(), android.R.layout.simple_list_item_1,completedtodoTaskModelArrayList);
 //                completed_listview.setAdapter(todocompletedshowadapter);
@@ -480,11 +483,11 @@ public class TodolistFragment extends Fragment {
                     if (taskDateS.equals(currentDateandTime)){
                         todayTodoTaskModelArrayList.add(todoTaskModel);
                         countTodayTotal++;
-                        todayTotal.setText(String.valueOf(countTodayTotal));
-                        todayCompleted.setText(String.valueOf(countTodayCompleted)+"/");
+                        todayTotal.setText("/"+String.valueOf(countTodayTotal));
+                        todayCompleted.setText(String.valueOf(countTodayCompleted));
                         Log.d("TAG", "TODO: TASK ADDED");
                     }
-                    View todoListView= LayoutInflater.from(getActivity()).inflate(R.layout.main_todo_show_layout,null,false);
+                    View todoListView= layoutInflater.inflate(R.layout.main_todo_show_layout,null,false);
                     TextView title=todoListView.findViewById(R.id.task_title);
                     TextView taskDate=todoListView.findViewById(R.id.task_date);
                     title.setText(todoTaskModel.getTitle());
@@ -514,11 +517,11 @@ public class TodolistFragment extends Fragment {
                         todayTodoTaskModelArrayList.add(todoTaskModel);
                         countTodayTotal++;
                         countTodayCompleted++;
-                        todayTotal.setText(String.valueOf(countTodayTotal));
-                        todayCompleted.setText(String.valueOf(countTodayCompleted)+"/");
+                        todayTotal.setText("/"+String.valueOf(countTodayTotal));
+                        todayCompleted.setText(String.valueOf(countTodayCompleted));
 
                     }
-                    View todoListView= LayoutInflater.from(getContext()).inflate(R.layout.main_todo_show_layout,null,false);
+                    View todoListView= layoutInflater.inflate(R.layout.main_todo_show_layout,null,false);
                     TextView title=todoListView.findViewById(R.id.task_title);
                     TextView taskDate=todoListView.findViewById(R.id.task_date);
                     title.setText(todoTaskModel.getTitle());
@@ -560,8 +563,11 @@ public class TodolistFragment extends Fragment {
     }
 
     public void userimage(String url){
-        Toast.makeText(getContext(), url, Toast.LENGTH_SHORT).show();
-        Glide.with(this).load(url).into(userProfile);
+//        Toast.makeText(getContext(), url, Toast.LENGTH_SHORT).show();
+        if (getActivity() == null) {
+            return;
+        }
+        Glide.with(getActivity()).load(url).into(userProfile);
 
 
     }

@@ -99,7 +99,7 @@ public class TodoList extends AppCompatActivity {
         setContentView(R.layout.activity_todo_list);
 
 
-
+        checkPermission(Manifest.permission.WRITE_CALENDAR, CALENDAR_WRITE_PERMISSION_CODE);
         note=findViewById(R.id.note);
         reminder_switch=findViewById(R.id.reminder_switch);
         task_title=findViewById(R.id.task_title);

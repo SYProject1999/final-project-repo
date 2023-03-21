@@ -20,8 +20,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/userProfile"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="16dp"
             android:src="@drawable/user"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -89,7 +89,7 @@
                         android:textColor="#0AFB63"
 
                         android:layout_height="wrap_content"
-                        android:text="10/"></TextView>
+                        android:text="10"></TextView>
                     <TextView
                         android:id="@+id/todayTotal"
 
@@ -99,7 +99,7 @@
                         android:textColor="@color/white"
 
                         android:layout_height="wrap_content"
-                        android:text="20"></TextView>
+                        android:text="/20"></TextView>
 
                 </LinearLayout>
                 <LinearLayout
