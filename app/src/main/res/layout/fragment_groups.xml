@@ -19,7 +19,7 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/main_tabs"
-            app:tabMode="scrollable"
+            app:tabMode="fixed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:ignore="SpeakableTextPresentCheck" />

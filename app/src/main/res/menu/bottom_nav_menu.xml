@@ -7,9 +7,6 @@
     <item android:title="@string/groups"
         android:icon="@drawable/ic_baseline_groups_24"
         android:id="@+id/habits"/>
-    <item android:title="@string/notes"
-        android:icon="@drawable/ic_baseline_note_alt_24"
-        android:id="@+id/diary"/>
     <item android:title="@string/timer"
         android:icon="@drawable/ic_baseline_timer_24"
         android:id="@+id/timer"/>
