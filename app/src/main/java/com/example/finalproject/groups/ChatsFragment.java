@@ -31,12 +31,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatsFragment extends Fragment {
 
-    private View PrivateChatsView;
     private RecyclerView chatsList;
 
     private DatabaseReference ChatsRef, UserRef;
-    private FirebaseAuth mAuth;
-    private String currentUserID = "";
 
     public ChatsFragment() {
         // Required empty public constructor
@@ -46,17 +43,17 @@ public class ChatsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        PrivateChatsView = inflater.inflate(R.layout.fragment_chats, container, false);
+        View privateChatsView = inflater.inflate(R.layout.fragment_chats, container, false);
 
-        mAuth = FirebaseAuth.getInstance();
-        currentUserID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        String currentUserID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         ChatsRef = FirebaseDatabase.getInstance().getReference("Contacts").child(currentUserID);
         UserRef = FirebaseDatabase.getInstance().getReference("Users");
 
-        chatsList = PrivateChatsView.findViewById(R.id.chats_list);
+        chatsList = privateChatsView.findViewById(R.id.chats_list);
         chatsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        return PrivateChatsView;
+        return privateChatsView;
     }
 
     @Override
@@ -79,24 +76,29 @@ public class ChatsFragment extends Fragment {
 
                         if (snapshot.exists()) {
                             String retImage = "";
-                            String retStatus = "No Status";
                             if (snapshot.hasChild("imageUrl")) {
                                 retImage = snapshot.child("imageUrl").getValue(String.class);
                             }
-                            if (snapshot.hasChild("status")) {
-                                retStatus = snapshot.child("Status").getValue(String.class);
-                            }
-                            final String retName = snapshot.child("fullName").getValue(String.class);
-
-                            holder.userName.setText(retName);
-                            holder.userStatus.setText("Last Seen: " + "\n" + "Date " + " Time");
                             GlideApp.with(requireContext()).load(retImage).placeholder(R.drawable.ic_baseline_person_24).into(holder.profileImage);
 
+                            final String retName = snapshot.child("fullName").getValue(String.class);
+                            holder.userName.setText(retName);
+
+                            if (snapshot.hasChild("userState")) {
+                                String state = snapshot.child("userState").child("state").getValue(String.class);
+                                String date = snapshot.child("userState").child("date").getValue(String.class);
+                                String time = snapshot.child("userState").child("time").getValue(String.class);
+
+                                holder.userStatus.setText(state);
+                            }
+
+                            String finalRetImage = retImage;
                             holder.itemView.setOnClickListener(view -> {
 
                                 Intent chatIntent = new Intent(getContext(), ChatActivity.class);
                                 chatIntent.putExtra("visit_user_id", usersIDs);
                                 chatIntent.putExtra("visit_user_name", retName);
+                                chatIntent.putExtra("visit_image", finalRetImage);
                                 startActivity(chatIntent);
 
                             });
@@ -125,7 +127,6 @@ public class ChatsFragment extends Fragment {
 
         CircleImageView profileImage;
         TextView userStatus, userName;
-
 
         public ChatsViewHolder(@NonNull View itemView)
         {

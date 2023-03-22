@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.finalproject.GlideApp;
@@ -30,12 +29,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ContactsFragment extends Fragment {
 
-    private View ContactsView;
     private RecyclerView myContactsList;
 
     private DatabaseReference ContactsRef, UserRef;
-    private FirebaseAuth mAuth;
-    private String currentUserID;
 
     public ContactsFragment() {
         // Required empty public constructor
@@ -51,17 +47,17 @@ public class ContactsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        ContactsView = inflater.inflate(R.layout.fragment_contacts, container, false);
+        View contactsView = inflater.inflate(R.layout.fragment_contacts, container, false);
 
-        myContactsList = ContactsView.findViewById(R.id.contacts_list);
+        myContactsList = contactsView.findViewById(R.id.contacts_list);
         myContactsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mAuth = FirebaseAuth.getInstance();
-        currentUserID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        String currentUserID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         ContactsRef = FirebaseDatabase.getInstance().getReference("Contacts").child(currentUserID);
         UserRef = FirebaseDatabase.getInstance().getReference("Users");
 
-        return ContactsView;
+        return contactsView;
     }
 
     @Override
@@ -81,20 +77,23 @@ public class ContactsFragment extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                        String ImageUrl = "";
-                        String profileStatus = "no Status";
-                        String userFullName = Objects.requireNonNull(snapshot.child("fullName").getValue()).toString();
+                        if (snapshot.exists()) {
 
-                        if (snapshot.hasChild("imageUrl")) {
-                            ImageUrl = Objects.requireNonNull(snapshot.child("imageUrl").getValue()).toString();
-                        }
-                        if (snapshot.hasChild("Status")) {
-                            profileStatus = Objects.requireNonNull(snapshot.child("Status").getValue()).toString();
-                        }
+                            String ImageUrl = "";
+                            String profileStatus = "no Status";
+                            String userFullName = Objects.requireNonNull(snapshot.child("fullName").getValue()).toString();
 
-                        holder.userName.setText(userFullName);
-                        holder.userStatus.setText(profileStatus);
-                        GlideApp.with(getContext()).load(ImageUrl).placeholder(R.drawable.ic_baseline_person_24).into(holder.profileImage);
+                            if (snapshot.hasChild("imageUrl")) {
+                                ImageUrl = Objects.requireNonNull(snapshot.child("imageUrl").getValue()).toString();
+                            }
+                            if (snapshot.hasChild("Status")) {
+                                profileStatus = Objects.requireNonNull(snapshot.child("Status").getValue()).toString();
+                            }
+
+                            holder.userName.setText(userFullName);
+                            holder.userStatus.setText(profileStatus);
+                            GlideApp.with(requireContext()).load(ImageUrl).placeholder(R.drawable.ic_baseline_person_24).into(holder.profileImage);
+                        }
                     }
 
                     @Override
@@ -119,7 +118,6 @@ public class ContactsFragment extends Fragment {
 
         TextView userName, userStatus;
         CircleImageView profileImage;
-        ImageView onlineIcon;
 
         public ContactsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -127,7 +125,6 @@ public class ContactsFragment extends Fragment {
             userName = itemView.findViewById(R.id.user_profile_name);
             userStatus = itemView.findViewById(R.id.user_status);
             profileImage = itemView.findViewById(R.id.users_profile_image);
-            onlineIcon = itemView.findViewById(R.id.user_online_status);
         }
     }
 }

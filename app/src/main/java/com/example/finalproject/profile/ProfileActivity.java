@@ -26,8 +26,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.Objects;
 
@@ -38,7 +36,6 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private DatabaseReference userReference;
-    private StorageReference storageReference;
 
     private CircleImageView circleImageView;
 
@@ -58,7 +55,6 @@ public class ProfileActivity extends AppCompatActivity {
         String userID = user.getUid();
 
         userReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
-        storageReference = FirebaseStorage.getInstance().getReference("Users").child(userID);
 
         usernameTV = findViewById(R.id.usernameProfile);
         userStatusTV = findViewById(R.id.status_profile_tv);
@@ -171,7 +167,6 @@ public class ProfileActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                System.out.println(error);
                 Toast.makeText(ProfileActivity.this, "Error Loading Image", Toast.LENGTH_SHORT).show();
             }
         });

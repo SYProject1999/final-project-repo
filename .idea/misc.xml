@@ -7,6 +7,7 @@
         <entry key="app/src/main/res/drawable/circle.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/determinate_circle.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/fastfood_selected.xml" value="0.1875" />
+        <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.2125" />
         <entry key="app/src/main/res/drawable/ic_baseline_calendar_month_24.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/ic_baseline_fastfood_24.xml" value="0.193" />
         <entry key="app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.1055" />
@@ -20,8 +21,10 @@
         <entry key="app/src/main/res/drawable/ic_outline_smoking_rooms_24.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/onboarding_indicator_active.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/onboarding_indicator_inactive.xml" value="0.1875" />
+        <entry key="app/src/main/res/drawable/receiver_messages_layout.xml" value="0.2125" />
         <entry key="app/src/main/res/drawable/round_button.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/rounded_edges.xml" value="0.1875" />
+        <entry key="app/src/main/res/drawable/sender_messages_layout.xml" value="0.2125" />
         <entry key="app/src/main/res/drawable/smocking_selected.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/start_pause_btn.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/tea_selected.xml" value="0.1875" />
@@ -45,6 +48,7 @@
         <entry key="app/src/main/res/layout/app_bar_layout.xml" value="0.11944444444444445" />
         <entry key="app/src/main/res/layout/change_password_layout.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/custom_chat_bar.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/layout/custom_messages_layout.xml" value="0.335" />
         <entry key="app/src/main/res/layout/custom_single_image.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/dropdown_item.xml" value="0.2557291666666667" />
         <entry key="app/src/main/res/layout/fragment_chats.xml" value="0.2296195652173913" />
