@@ -1,5 +1,8 @@
 package com.example.finalproject.groups;
 
+import static com.example.finalproject.models.FirebaseReference.CONTACTS;
+import static com.example.finalproject.models.FirebaseReference.USERS;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,6 +19,8 @@ import android.widget.TextView;
 
 import com.example.finalproject.GlideApp;
 import com.example.finalproject.R;
+import com.example.finalproject.models.FirebaseReference;
+import com.example.finalproject.models.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
@@ -36,11 +41,10 @@ public class FindFriendsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_friends);
 
-        UsersRef = FirebaseDatabase.getInstance().getReference("Users");
+        UsersRef = FirebaseDatabase.getInstance().getReference(USERS);
 
         FindFriendsRecyclerList = findViewById(R.id.find_friends_recycler_list);
         FindFriendsRecyclerList.setLayoutManager(new LinearLayoutManager(this));
-
 
         Toolbar mToolbar = findViewById(R.id.find_friends_toolbar);
         setSupportActionBar(mToolbar);
@@ -53,14 +57,17 @@ public class FindFriendsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        loadContacts();
+    }
 
-        FirebaseRecyclerOptions<Contacts> options = new FirebaseRecyclerOptions.Builder<Contacts>()
-                .setQuery(UsersRef, Contacts.class).build();
+    private void loadContacts() {
+        FirebaseRecyclerOptions<User> options = new FirebaseRecyclerOptions.Builder<User>()
+                .setQuery(UsersRef, User.class).build();
 
-        FirebaseRecyclerAdapter<Contacts, FindFriendsViewHolder> adapter = new FirebaseRecyclerAdapter<Contacts, FindFriendsViewHolder>(options) {
+        FirebaseRecyclerAdapter<User, FindFriendsViewHolder> adapter = new FirebaseRecyclerAdapter<User, FindFriendsViewHolder>(options) {
             @SuppressLint({"CheckResult", "SetTextI18n"})
             @Override
-            protected void onBindViewHolder(@NonNull FindFriendsViewHolder holder, int position, @NonNull Contacts model) {
+            protected void onBindViewHolder(@NonNull FindFriendsViewHolder holder, int position, @NonNull User model) {
                 holder.userName.setText(model.getFullName());
                 if (model.getStatus() != null) {
                     holder.userStatus.setText(model.getStatus());
@@ -86,7 +93,6 @@ public class FindFriendsActivity extends AppCompatActivity {
         };
         FindFriendsRecyclerList.setAdapter(adapter);
         adapter.startListening();
-
     }
 
     public static class FindFriendsViewHolder extends RecyclerView.ViewHolder {

@@ -1,8 +1,15 @@
 package com.example.finalproject.groups;
 
+import static com.example.finalproject.models.FirebaseReference.GROUP_CHAT;
+
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
@@ -13,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.finalproject.GlideApp;
 import com.example.finalproject.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -27,6 +35,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Objects;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class GroupChatActivity extends AppCompatActivity {
     private ImageButton SendMessageButton;
     private EditText userMessageInput;
@@ -34,11 +44,14 @@ public class GroupChatActivity extends AppCompatActivity {
     private TextView displayTextMessages;
 
     private DatabaseReference UsersRef;
-    private DatabaseReference GroupNameRef;
+    private DatabaseReference groupChatReference;
 
-    private String currentGroupName;
+    private Group currentGroup;
     private String currentUserID;
     private String currentUserName;
+
+    private CircleImageView ivGroupProfile;
+    private TextView tvGroupName;
 
 
     @Override
@@ -49,14 +62,14 @@ public class GroupChatActivity extends AppCompatActivity {
 
 
 
-        currentGroupName = getIntent().getExtras().get("groupName").toString();
-        Toast.makeText(GroupChatActivity.this, currentGroupName, Toast.LENGTH_SHORT).show();
+        currentGroup = (Group) getIntent().getSerializableExtra("group");
+        Toast.makeText(GroupChatActivity.this, currentGroup.getName(), Toast.LENGTH_SHORT).show();
 
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         currentUserID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         UsersRef = FirebaseDatabase.getInstance().getReference("Users");
-        GroupNameRef = FirebaseDatabase.getInstance().getReference("Groups").child(currentGroupName);
+        groupChatReference = FirebaseDatabase.getInstance().getReference(GROUP_CHAT).child(currentGroup.getId());
 
         InitializeFields();
         GetUserInfo();
@@ -78,7 +91,7 @@ public class GroupChatActivity extends AppCompatActivity {
     {
         super.onStart();
 
-        GroupNameRef.addChildEventListener(new ChildEventListener() {
+        groupChatReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s)
             {
@@ -119,12 +132,30 @@ public class GroupChatActivity extends AppCompatActivity {
     {
         Toolbar mToolbar = findViewById(R.id.group_chat_bar_layout);
         setSupportActionBar(mToolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(currentGroupName);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("");
+
+        ivGroupProfile = mToolbar.findViewById(R.id.ivProfile);
+        tvGroupName = mToolbar.findViewById(R.id.tvGroupName);
+        tvGroupName.setText(currentGroup.getName());
+        GlideApp.with(this).load(currentGroup.getPicUrl()).placeholder(R.drawable.ic_profile).into(ivGroupProfile);
 
         SendMessageButton = findViewById(R.id.send_message_button);
         userMessageInput = findViewById(R.id.input_group_message);
         displayTextMessages = findViewById(R.id.group_chat_text_display);
         mScrollView = findViewById(R.id.my_scroll_view);
+
+        mToolbar.findViewById(R.id.llGroupBar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(getNextIntent(GroupProfileActivity.class));
+            }
+        });
+    }
+
+    private Intent getNextIntent(Class<?> activity) {
+        Intent intent = new Intent(this, activity);
+        intent.putExtra("group", currentGroup);
+        return intent;
     }
 
 
@@ -154,7 +185,7 @@ public class GroupChatActivity extends AppCompatActivity {
     private void SaveMessageInfoToDatabase()
     {
         String message = userMessageInput.getText().toString();
-        String messageKey = GroupNameRef.push().getKey();
+        String messageKey = groupChatReference.push().getKey();
 
         if (TextUtils.isEmpty(message))
         {
@@ -172,10 +203,10 @@ public class GroupChatActivity extends AppCompatActivity {
 
 
             HashMap<String, Object> groupMessageKey = new HashMap<>();
-            GroupNameRef.updateChildren(groupMessageKey);
+            groupChatReference.updateChildren(groupMessageKey);
 
             assert messageKey != null;
-            DatabaseReference groupMessageKeyRef = GroupNameRef.child(messageKey);
+            DatabaseReference groupMessageKeyRef = groupChatReference.child(messageKey);
 
             HashMap<String, Object> messageInfoMap = new HashMap<>();
             messageInfoMap.put("name", currentUserName);
@@ -206,5 +237,25 @@ public class GroupChatActivity extends AppCompatActivity {
 
         displayTextMessages.append(chatName + " :\n" + chatMessage + "\n" + chatTime + "     " + chatDate + "\n\n\n");
         mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.group_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_add_members:
+                startActivity(getNextIntent(GroupMembersActivity.class));
+                break;
+            case R.id.item_tasks:
+                startActivity(getNextIntent(GroupTasksActivity.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/app_bar_layout"
+    android:background="@color/purple_500"
+    app:titleTextColor="@color/white"
+    android:theme="@style/MyThemeOverlay_Toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/llGroupBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="40dp"
+            android:tint="@color/white"
+            android:src="@drawable/ic_profile"
+            android:layout_height="40dp"/>
+
+        <TextView
+            android:id="@+id/tvGroupName"
+            android:text="Title"
+            android:textSize="18sp"
+            android:layout_marginTop="3dp"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/white"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
+
+
+
+
+</androidx.appcompat.widget.Toolbar>

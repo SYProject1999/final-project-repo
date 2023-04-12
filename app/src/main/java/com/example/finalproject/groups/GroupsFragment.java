@@ -1,5 +1,7 @@
 package com.example.finalproject.groups;
 
+import static com.example.finalproject.models.FirebaseReference.GROUPS;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.finalproject.R;
+import com.example.finalproject.models.FirebaseReference;
 import com.example.finalproject.profile.ProfileActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Objects;
@@ -160,7 +164,9 @@ public class GroupsFragment extends Fragment {
     }
 
     private void CreateNewGroup(String groupName) {
-        groupsReference.child("Groups").child(groupName).setValue("").addOnCompleteListener(task -> {
+        String key = groupsReference.child(GROUPS).push().getKey();
+        Group group = new Group(key,groupName,auth.getUid(), Arrays.asList(auth.getUid()));
+        groupsReference.child(GROUPS).child(key).setValue(group).addOnCompleteListener(task -> {
             if (task.isSuccessful())
                 Toast.makeText(requireContext(), groupName + " Group is Created Successfully", Toast.LENGTH_LONG).show();
         });

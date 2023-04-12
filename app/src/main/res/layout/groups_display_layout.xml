@@ -12,11 +12,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/users_profile_image"
+            android:id="@+id/ivProfile"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:src="@drawable/ic_baseline_person_24" />
@@ -30,7 +29,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/user_profile_name"
+                android:id="@+id/tvGroupName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="user name"
@@ -40,46 +39,13 @@
 
 
             <TextView
-                android:id="@+id/user_status"
+                android:id="@+id/tvMembers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
-                android:text="user status"
+                android:text="20 Members"
                 android:textAlignment="textStart"
                 android:textSize="16sp" />
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/request_accept_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:background="@android:color/holo_green_light"
-                    android:text="Accept"
-                    android:textAllCaps="false"
-                    android:textSize="16sp"
-                    android:visibility="gone"
-                    tools:ignore="SmallSp" />
-
-                <Button
-                    android:id="@+id/request_cancel_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:background="@android:color/holo_red_dark"
-                    android:text="Cancel"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/background_light"
-                    android:textSize="16sp"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
 
         </LinearLayout>
 

@@ -18,6 +18,21 @@
         android:theme="@style/Theme.FinalProject"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".groups.GroupMembersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".groups.GroupProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".groups.GroupTasksActivity"
+            android:exported="false" />
+        <activity
+            android:name=".groups.AddGroupTaskActivity"
+            android:exported="false" />
+        <activity
+            android:name=".groups.AddGroupMembersActivity"
+            android:exported="false" />
+        <activity
             android:name=".TodoList"
             android:exported="false" />
         <activity
@@ -59,11 +74,12 @@
         <activity
             android:name=".BottomNavigationBarActivity"
             android:exported="false" />
+
         <service
-            android:name = ".todolist.NotifyService"
-            android:enabled = "true"
-            android:exported = "true" >
-        </service>
+            android:name=".todolist.NotifyService"
+            android:enabled="true"
+            android:exported="true" />
+
         <activity
             android:name=".LoginActivity"
             android:exported="true">

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/item_tasks"
+        android:title="Group Tasks"
+        android:iconTint="@color/white"
+        android:icon="@drawable/ic_baseline_task_24"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/item_add_members"
+        app:showAsAction="always"
+        android:iconTint="@color/white"
+        android:icon="@drawable/ic_baseline_groups_24"
+        android:title="Add Members" />
+
+
+</menu>
