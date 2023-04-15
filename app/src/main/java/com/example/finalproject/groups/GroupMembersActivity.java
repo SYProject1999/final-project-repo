@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.example.finalproject.BaseActivity;
 import com.example.finalproject.R;
 import com.example.finalproject.models.User;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,7 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class GroupMembersActivity extends AppCompatActivity implements GroupMembersAdapter.Listener {
+public class GroupMembersActivity extends BaseActivity implements GroupMembersAdapter.Listener {
 
     private Group currentGroup;
     private RecyclerView recyclerView;
@@ -51,22 +52,21 @@ public class GroupMembersActivity extends AppCompatActivity implements GroupMemb
     }
 
     private void loadCurrentGroupData() {
-        ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
+
+        showProgressDialog("Loading...");
+
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(GROUPS).child(currentGroup.getId());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 currentGroup = snapshot.getValue(Group.class);
                 init();
-                progressDialog.dismiss();
+                closeProgressDialog();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                progressDialog.dismiss();
+                closeProgressDialog();
             }
         });
     }

@@ -29,5 +29,7 @@
     <color name="color3" >#ccf6c8</color>
     <color name="color4" >#ffe0ac</color>
     <color name="color5" >#e5cfe5</color>
+    <color name="color_input">#FFF3DF</color>
+    <color name="color_input_2">#7A7162</color>
 
 </resources>
