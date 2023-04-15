@@ -85,7 +85,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                     receiverImage = snapshot.child("imageUrl").getValue(String.class);
                 }
 
-                GlideApp.with(holder.itemView.getContext().getApplicationContext()).load(receiverImage).placeholder(R.drawable.ic_baseline_person_24).into(holder.receiverProfileImage);
+                if(receiverImage != null ) {
+                    if(receiverImage.isEmpty() == false) {
+                        GlideApp.with(holder.itemView.getContext().getApplicationContext()).load(receiverImage).placeholder(R.drawable.ic_baseline_person_24).into(holder.receiverProfileImage);
+                    }
+                }
             }
 
             @Override

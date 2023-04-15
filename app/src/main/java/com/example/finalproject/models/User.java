@@ -2,6 +2,7 @@ package com.example.finalproject.models;
 
 public class User {
 
+    private String id;
     // test change
     private String fullName, email, gender, dateOfBirth, imageUrl, Status;
     private boolean alreadyUsedTheApp;
@@ -76,6 +77,14 @@ public class User {
 
     public void setStatus(String status) {
         Status = status;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
 

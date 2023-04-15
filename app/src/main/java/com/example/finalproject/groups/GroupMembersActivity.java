@@ -1,5 +1,6 @@
 package com.example.finalproject.groups;
 
+import static com.example.finalproject.models.FirebaseReference.GROUPS;
 import static com.example.finalproject.models.FirebaseReference.USERS;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,37 +19,75 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.finalproject.R;
-import com.example.finalproject.models.FirebaseReference;
 import com.example.finalproject.models.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class GroupMembersActivity extends AppCompatActivity {
+public class GroupMembersActivity extends AppCompatActivity implements GroupMembersAdapter.Listener {
 
     private Group currentGroup;
     private RecyclerView recyclerView;
     private GroupMembersAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_members);
         currentGroup = (Group) getIntent().getSerializableExtra("group");
+        loadCurrentGroupData();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    private void loadCurrentGroupData() {
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(GROUPS).child(currentGroup.getId());
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                currentGroup = snapshot.getValue(Group.class);
+                init();
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    private void init() {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new GroupMembersAdapter(new ArrayList<>());
+        int mode;
+        boolean isAdmin = FirebaseAuth.getInstance().getCurrentUser().getUid().equals(currentGroup.getCreatedBy());
+        if (isAdmin) {
+            mode = GroupMembersAdapter.REMOVE_MODE;
+        } else {
+            mode = GroupMembersAdapter.NONE_MODE;
+        }
+        adapter = new GroupMembersAdapter(new ArrayList<>(), currentGroup.getCreatedBy(), mode, this);
         recyclerView.setAdapter(adapter);
         loadData();
 
         Toolbar mToolbar = findViewById(R.id.app_bar_layout);
         setSupportActionBar(mToolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Group Members (" + currentGroup.getMembers().size()+")");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Group Members (" + currentGroup.getMembers().size() + ")");
     }
 
     @Override
@@ -72,10 +114,30 @@ public class GroupMembersActivity extends AppCompatActivity {
             reference.child(memberId).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
                 @Override
                 public void onSuccess(DataSnapshot snapshot) {
-                    adapter.addMember(snapshot.getValue(User.class));
+                    User user = snapshot.getValue(User.class);
+                    user.setId(memberId);
+                    adapter.addMember(user);
                 }
             });
         }
     }
 
+    @Override
+    public void onRemoveClickListener(User user) {
+        // only called for the owner
+        for (int i = 0; i < currentGroup.getMembers().size(); i++) {
+            if (user.getId().equals(currentGroup.getMembers().get(i))) {
+                currentGroup.getMembers().remove(i);
+                break;
+            }
+        }
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(GROUPS).child(currentGroup.getId());
+        reference.setValue(currentGroup);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Group Members (" + currentGroup.getMembers().size() + ")");
+    }
+
+    @Override
+    public void onAddClickListener(User user, int position) {
+        // not supported
+    }
 }
