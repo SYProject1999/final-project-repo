@@ -18,7 +18,7 @@
         android:theme="@style/Theme.FinalProject"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ExploreMultimediaActivity"
+            android:name=".groups.ExploreMultimediaActivity"
             android:exported="false" />
         <activity
             android:name=".groups.GroupTaskDetailActivity"

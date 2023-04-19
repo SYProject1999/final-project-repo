@@ -1,7 +1,7 @@
 package com.example.finalproject.groups;
 
-import static com.example.finalproject.models.FirebaseReference.GROUPS;
-import static com.example.finalproject.models.FirebaseReference.USERS;
+import static com.example.finalproject.models.References.GROUPS;
+import static com.example.finalproject.models.References.USERS;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.example.finalproject.R;
 import com.example.finalproject.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;

@@ -1,9 +1,8 @@
 package com.example.finalproject.groups;
 
-import static com.example.finalproject.models.FirebaseReference.GROUPS;
+import static com.example.finalproject.models.References.GROUPS;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;

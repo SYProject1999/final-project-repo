@@ -10,12 +10,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalproject.R;
-import com.example.finalproject.models.FirebaseReference;
+import com.example.finalproject.models.References;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -91,7 +90,7 @@ public class GroupTasksAdapter extends RecyclerView.Adapter<GroupTasksAdapter.My
     }
 
     private void updDateIsTaskSuccessful(GroupTask groupTask) {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(FirebaseReference.GROUP_TASKS).child(currentGroup.getId());
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(References.GROUP_TASKS).child(currentGroup.getId());
         reference.child(groupTask.getId()).setValue(groupTask);
     }
 

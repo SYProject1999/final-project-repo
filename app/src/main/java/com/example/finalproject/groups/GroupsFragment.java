@@ -1,6 +1,6 @@
 package com.example.finalproject.groups;
 
-import static com.example.finalproject.models.FirebaseReference.GROUPS;
+import static com.example.finalproject.models.References.GROUPS;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -25,7 +25,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.finalproject.R;
-import com.example.finalproject.models.FirebaseReference;
 import com.example.finalproject.profile.ProfileActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;

@@ -1,8 +1,7 @@
 package com.example.finalproject.groups;
 
-import static com.example.finalproject.models.FirebaseReference.GROUPS;
-import static com.example.finalproject.models.FirebaseReference.GROUP_TASKS;
-import static com.example.finalproject.models.FirebaseReference.USERS;
+import static com.example.finalproject.models.References.GROUP_TASKS;
+import static com.example.finalproject.models.References.USERS;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -15,11 +14,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.finalproject.BaseActivity;
 import com.example.finalproject.R;
-import com.example.finalproject.models.FirebaseReference;
 import com.example.finalproject.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;

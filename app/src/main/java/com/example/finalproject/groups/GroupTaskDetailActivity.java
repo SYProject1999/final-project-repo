@@ -11,7 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.finalproject.BaseActivity;
 import com.example.finalproject.R;
-import com.example.finalproject.models.FirebaseReference;
+import com.example.finalproject.models.References;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -68,7 +68,7 @@ public class GroupTaskDetailActivity extends BaseActivity {
 
     private void deleteGroupTask() {
         showProgressDialog("Deleting...");
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(FirebaseReference.GROUP_TASKS).child(currentGroup.getId());
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(References.GROUP_TASKS).child(currentGroup.getId());
         reference.child(groupTask.getId()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

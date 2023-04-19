@@ -1,17 +1,13 @@
 package com.example.finalproject.groups;
 
-import static com.example.finalproject.models.FirebaseReference.GROUPS;
-import static com.example.finalproject.models.FirebaseReference.USERS;
+import static com.example.finalproject.models.References.GROUPS;
+import static com.example.finalproject.models.References.USERS;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;

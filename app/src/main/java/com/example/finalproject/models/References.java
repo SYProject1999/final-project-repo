@@ -1,6 +1,6 @@
 package com.example.finalproject.models;
 
-public class FirebaseReference {
+public class References {
     public static final String CONTACTS = "Contacts";
     public static final String USERS = "Users";
     public static final String MESSAGES = "Messages";

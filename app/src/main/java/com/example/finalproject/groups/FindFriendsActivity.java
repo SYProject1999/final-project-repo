@@ -1,7 +1,6 @@
 package com.example.finalproject.groups;
 
-import static com.example.finalproject.models.FirebaseReference.CONTACTS;
-import static com.example.finalproject.models.FirebaseReference.USERS;
+import static com.example.finalproject.models.References.USERS;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 
 import com.example.finalproject.GlideApp;
 import com.example.finalproject.R;
-import com.example.finalproject.models.FirebaseReference;
 import com.example.finalproject.models.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;

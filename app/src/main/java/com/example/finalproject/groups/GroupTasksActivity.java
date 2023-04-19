@@ -1,7 +1,7 @@
 package com.example.finalproject.groups;
 
-import static com.example.finalproject.models.FirebaseReference.GROUPS;
-import static com.example.finalproject.models.FirebaseReference.GROUP_TASKS;
+import static com.example.finalproject.models.References.GROUPS;
+import static com.example.finalproject.models.References.GROUP_TASKS;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
