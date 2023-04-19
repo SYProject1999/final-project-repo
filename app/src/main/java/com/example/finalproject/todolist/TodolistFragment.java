@@ -3,6 +3,7 @@ package com.example.finalproject.todolist;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -51,6 +52,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -110,16 +113,25 @@ public class TodolistFragment extends Fragment {
                 todoListLayout.removeAllViews();
                 viewChanger(today);
                 todaySelected=true;
+
                 Log.d("TAG", "TODO: size of today arraylist"+todayTodoTaskModelArrayList.size());
                 for (int i=0;i<todayTodoTaskModelArrayList.size();i++){
+
                     todoTaskModel=todayTodoTaskModelArrayList.get(i);
                     View todoListView= LayoutInflater.from(getContext()).inflate(R.layout.main_todo_show_layout,null,false);
                     TextView title=todoListView.findViewById(R.id.task_title);
+                    ImageView favourite=todoListView.findViewById(R.id.favorite);
                     TextView taskDate=todoListView.findViewById(R.id.task_date);
                     title.setText(todoTaskModel.getTitle());
+                    if(todoTaskModel.getIsimportant())
+                    {
+                        favourite.setImageResource(R.drawable.star_filled);
+                    }
                     taskDate.setText(militodate(todoTaskModel.getDuedatetime()));
+
                     todoListLayout.addView(todoListView);
                     LinearLayout select_task=todoListView.findViewById(R.id.select_task);
+
                     if (todoTaskModel.getIscompleted()){
                         select_task.setBackgroundResource(R.drawable.selected_circle_bg);
                         title.setBackgroundResource(R.drawable.strike_through_text);
@@ -128,6 +140,7 @@ public class TodolistFragment extends Fragment {
                     else{
                         select_task.setBackgroundResource(R.drawable.unselected_circle_bg);
                     }
+
                     todoListView.setTag(todoTaskModel);
                     todoListView.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -301,6 +314,8 @@ public class TodolistFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull MyViewHolder holder, int position, @NonNull TaskModel model) {
 //                holder.setDate(model.getTaskDate());
+
+
                 holder.setTask(model.getTaskTitle());
 //                holder.setDescription(model.getTaskDescription());
 
@@ -374,6 +389,7 @@ public class TodolistFragment extends Fragment {
             task = taskTitleEditText.getText().toString().trim();
             description = taskDescriptionEditText.getText().toString().trim();
             String date = DateFormat.getDateInstance().format(new Date());
+
             TaskModel taskModel = new TaskModel(task, description, key, date);
 
             reference.child(key).setValue(taskModel).addOnCompleteListener(task -> {
@@ -460,12 +476,13 @@ public class TodolistFragment extends Fragment {
                     todoTaskModel =dataSnapshot.getValue(TodoTaskModel.class);
                     // TO GET DATE OF TASK
 
-
                     if (todoTaskModel.getIscompleted()){
 //                        Log.d("TAG", "debuding added to completed arraylist == "+completedtodoTaskModelArrayList.size());
                         completedtodoTaskModelArrayList.add(todoTaskModel);
 //                        Log.d("TAG", "ssssss complete: "+completedtodoTaskModelArrayList.size());
+
                         todocompletedshowadapter=new Todocompletedshowadapter(getActivity(), android.R.layout.simple_list_item_1,completedtodoTaskModelArrayList);
+
 
                     }else{
                         todoTaskModelArrayList.add(todoTaskModel);
@@ -474,6 +491,20 @@ public class TodolistFragment extends Fragment {
                     }
                 }
                 for (int i=0;i<todoTaskModelArrayList.size();i++){
+
+                    Comparator<TodoTaskModel> numberComparator = new Comparator<TodoTaskModel>() {
+                        @Override
+                        public int compare(TodoTaskModel todoTaskModel, TodoTaskModel t1) {
+                            return Boolean.compare(todoTaskModel.getIsimportant(), t1.getIsimportant());
+                        }
+                    };
+
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        Collections.sort(todoTaskModelArrayList,numberComparator.reversed());
+                    }
+
+
                     todoTaskModel=todoTaskModelArrayList.get(i);
                     String taskDateS=militodate(todoTaskModel.getDuedatetime());
                     taskDateS=taskDateS.substring(0,10);
@@ -489,8 +520,16 @@ public class TodolistFragment extends Fragment {
                     }
                     View todoListView= layoutInflater.inflate(R.layout.main_todo_show_layout,null,false);
                     TextView title=todoListView.findViewById(R.id.task_title);
+                    ImageView favourite=todoListView.findViewById(R.id.favorite);
                     TextView taskDate=todoListView.findViewById(R.id.task_date);
                     title.setText(todoTaskModel.getTitle());
+
+
+                    if(todoTaskModel.getIsimportant()==true)
+                    {
+                        favourite.setImageResource(R.drawable.star_filled);
+                    }
+
                     taskDate.setText(militodate(todoTaskModel.getDuedatetime()));
                     todoListLayout.addView(todoListView);
                     todoListView.setTag(todoTaskModel);
@@ -506,6 +545,18 @@ public class TodolistFragment extends Fragment {
                     });
                 }
                 for (int i=0;i<completedtodoTaskModelArrayList.size();i++){
+
+                    Comparator<TodoTaskModel> numberComparator = new Comparator<TodoTaskModel>() {
+                        @Override
+                        public int compare(TodoTaskModel todoTaskModel, TodoTaskModel t1) {
+                            return Boolean.compare(todoTaskModel.getIsimportant(), t1.getIsimportant());
+                        }
+                    };
+
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        Collections.sort(completedtodoTaskModelArrayList,numberComparator.reversed());
+                    }
                     todoTaskModel=completedtodoTaskModelArrayList.get(i);
                     String taskDateS=militodate(todoTaskModel.getDuedatetime());
                     taskDateS=taskDateS.substring(0,10);
@@ -525,6 +576,12 @@ public class TodolistFragment extends Fragment {
                     TextView title=todoListView.findViewById(R.id.task_title);
                     TextView taskDate=todoListView.findViewById(R.id.task_date);
                     title.setText(todoTaskModel.getTitle());
+                    ImageView favourite=todoListView.findViewById(R.id.favorite);
+
+                    if(todoTaskModel.getIsimportant()==true)
+                    {
+                        favourite.setImageResource(R.drawable.star_filled);
+                    }
                     LinearLayout select_task=todoListView.findViewById(R.id.select_task);
                     if (todoTaskModel.getIscompleted()){
                         select_task.setBackgroundResource(R.drawable.selected_circle_bg);

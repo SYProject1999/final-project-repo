@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,14 +38,10 @@ public class Todocompletedshowadapter extends ArrayAdapter {
     }
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         convertView= LayoutInflater.from(getContext()).inflate(R.layout.main_todo_show_layout,parent,false);
+
         TodoTaskModel todoTaskModel=getItem(position);
+
         TextView task_title=convertView.findViewById(R.id.task_title);
-
-
-
-
-
-
         TextView task_date=convertView.findViewById(R.id.task_date);
         task_title.setText(todoTaskModel.getTitle());
         task_title.setBackgroundResource(R.drawable.strike_through_text);
@@ -56,18 +53,21 @@ public class Todocompletedshowadapter extends ArrayAdapter {
         if (todoTaskModel.getIsimportant())
         {
             favorite.setImageResource(R.drawable.star_filled);
-        }else{
+        }
+
+
+        else{
 
             favorite.setImageResource(R.drawable.ic_baseline_star_border_24);
-            }
+        }
 
         if (todoTaskModel.getIscompleted()){
             select_task.setBackgroundResource(R.drawable.selected_circle_bg);
 
-            }else{
+        }else{
 
             select_task.setBackgroundResource(R.drawable.unselected_circle_bg);
-            }
+        }
 
 
 //        Boolean isimportant=false;

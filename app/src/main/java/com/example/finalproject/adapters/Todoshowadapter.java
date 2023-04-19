@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,8 @@ import com.example.finalproject.models.TodoTaskModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Todoshowadapter extends ArrayAdapter {
     ArrayList<TodoTaskModel> todoTaskModelArrayList=new ArrayList<>();
@@ -34,7 +37,12 @@ public class Todoshowadapter extends ArrayAdapter {
         return todoTaskModelArrayList.get(position);
     }
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
         convertView= LayoutInflater.from(getContext()).inflate(R.layout.main_todo_show_layout,parent,false);
+
+
+
+
         TodoTaskModel todoTaskModel=getItem(position);
         TextView task_title=convertView.findViewById(R.id.task_title);
         TextView task_date=convertView.findViewById(R.id.task_date);
@@ -50,15 +58,15 @@ public class Todoshowadapter extends ArrayAdapter {
         }else{
 
             favorite.setImageResource(R.drawable.ic_baseline_star_border_24);
-            }
+        }
 
         if (todoTaskModel.getIscompleted()){
             select_task.setBackgroundResource(R.drawable.selected_circle_bg);
 
-            }else{
+        }else{
 
             select_task.setBackgroundResource(R.drawable.unselected_circle_bg);
-            }
+        }
 
 
 //        Boolean isimportant=false;

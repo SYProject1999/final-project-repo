@@ -46,7 +46,7 @@
         app:civ_circle_background_color="@color/white" />
 
     <TextView
-        android:id="@+id/usernameProfile"
+        android:id="@+id/tvProfileName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/profileImage"
@@ -61,7 +61,7 @@
         android:id="@+id/status_profile_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/usernameProfile"
+        android:layout_below="@id/tvProfileName"
         android:layout_marginStart="40sp"
         android:layout_marginTop="20dp"
         android:drawableStart="@drawable/ic_baseline_textsms_24"

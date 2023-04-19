@@ -1,8 +1,9 @@
 package com.example.finalproject.groups;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class GroupTask {
+public class GroupTask implements Serializable {
     private String id;
     private String taskTitle;
     private String taskDescription;

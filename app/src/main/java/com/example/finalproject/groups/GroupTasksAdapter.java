@@ -1,5 +1,6 @@
 package com.example.finalproject.groups;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,6 +74,16 @@ public class GroupTasksAdapter extends RecyclerView.Adapter<GroupTasksAdapter.My
                 } else {
                     Toast.makeText(holder.itemView.getContext(), "You're not allowed to perform this operation", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(holder.itemView.getContext(),GroupTaskDetailActivity.class);
+                intent.putExtra("group", currentGroup);
+                intent.putExtra("groupTask", groupTask);
+                holder.itemView.getContext().startActivity(intent);
             }
         });
 

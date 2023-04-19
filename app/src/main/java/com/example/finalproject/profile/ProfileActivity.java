@@ -56,7 +56,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         userReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
 
-        usernameTV = findViewById(R.id.usernameProfile);
+        usernameTV = findViewById(R.id.tvProfileName);
         userStatusTV = findViewById(R.id.status_profile_tv);
         userDateOfBirthTV = findViewById(R.id.dateOfBirth_profile_tv);
         userGenderTV = findViewById(R.id.gender_profile_tv);
