@@ -49,6 +49,20 @@
         android:layout_marginBottom="5dp"
         android:scaleType="centerCrop" />
 
+    <TextView
+        android:id="@+id/tvFileMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="200dp"
+        android:layout_alignParentTop="@+id/receiver_message_text"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/sender_messages_layout"
+        android:padding="10dp"
+        android:text="file Message"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:layout_below="@+id/message_sender_image_view"
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/message_receiver_image_view"

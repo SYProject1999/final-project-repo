@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,7 +40,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView senderMessageText, receiverMessageText;
+        public TextView senderMessageText, receiverMessageText, tvFileMessage;
         public CircleImageView receiverProfileImage;
         public ImageView messageSenderPicture, messageReceiverPicture;
         public ProgressBar messageReceiverProgressBar, messageSenderProgressBar;
@@ -52,6 +53,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             messageSenderPicture = itemView.findViewById(R.id.message_sender_image_view);
             messageReceiverPicture = itemView.findViewById(R.id.message_receiver_image_view);
             messageReceiverProgressBar = itemView.findViewById(R.id.receiver_message_progressBar);
+            tvFileMessage = itemView.findViewById(R.id.tvFileMessage);
         }
     }
 
@@ -69,10 +71,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         String messageSenderId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
         Messages messages = userMessagesList.get(position);
-
         String fromUserID = messages.getFrom();
         String fromMessageType = messages.getType();
-
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users").child(fromUserID);
 
         usersRef.addValueEventListener(new ValueEventListener() {
@@ -85,8 +85,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                     receiverImage = snapshot.child("imageUrl").getValue(String.class);
                 }
 
-                if(receiverImage != null ) {
-                    if(receiverImage.isEmpty() == false) {
+                if (receiverImage != null) {
+                    if (receiverImage.isEmpty() == false) {
                         GlideApp.with(holder.itemView.getContext().getApplicationContext()).load(receiverImage).placeholder(R.drawable.ic_baseline_person_24).into(holder.receiverProfileImage);
                     }
                 }
@@ -123,6 +123,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         } else if (fromMessageType.equals("image")) {
             if (fromUserID.equals(messageSenderId)) {
                 holder.messageSenderPicture.setVisibility(View.VISIBLE);
+                holder.tvFileMessage.setText(userMessagesList.get(position).getFileMessage());
                 GlideApp.with(holder.itemView.getContext().getApplicationContext()).load(messages.getMessage()).into(holder.messageSenderPicture);
             } else {
                 holder.receiverProfileImage.setVisibility(View.VISIBLE);
@@ -131,10 +132,24 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
                 GlideApp.with(holder.itemView.getContext().getApplicationContext()).load(messages.getMessage()).into(holder.messageReceiverPicture);
             }
-        } else if (fromMessageType.equals("pdf") || fromMessageType.equals("docx") ) {
+        } else if (fromMessageType.equals("pdf") || fromMessageType.equals("docx")) {
             if (fromUserID.equals(messageSenderId)) {
                 holder.messageSenderPicture.setVisibility(View.VISIBLE);
-                holder.messageSenderPicture.setBackgroundResource(R.drawable.file);
+                if (fromMessageType.equals("pdf")) {
+                    holder.messageSenderPicture.setBackgroundResource(R.drawable.ic_pdf);
+
+                } else if (fromMessageType.equals("docx")) {
+                    holder.messageSenderPicture.setBackgroundResource(R.drawable.ic_word);
+
+                }
+
+                String fileMessage = userMessagesList.get(position).getFileMessage();
+                if (fileMessage == null) {
+                    holder.tvFileMessage.setVisibility(View.GONE);
+
+                } else {
+                    holder.tvFileMessage.setText(userMessagesList.get(position).getFileMessage());
+                }
 
                 holder.itemView.setOnClickListener(view -> {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(position).getMessage()));

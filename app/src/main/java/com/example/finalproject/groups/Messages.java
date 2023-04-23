@@ -2,14 +2,22 @@ package com.example.finalproject.groups;
 
 public class Messages
 {
-    private String from, message, type, to, messageID, time, date, name;
+    private String from, message, type, to, messageID, time, date, name,fileMessage;
 
     public Messages()
     {
 
     }
 
-    public Messages(String from, String message, String type, String to, String messageID, String time, String date, String name) {
+    public String getFileMessage() {
+        return fileMessage;
+    }
+
+    public void setFileMessage(String fileMessage) {
+        this.fileMessage = fileMessage;
+    }
+
+    public Messages(String from, String message, String type, String to, String messageID, String time, String date, String name, String fileMessage) {
         this.from = from;
         this.message = message;
         this.type = type;
@@ -18,6 +26,7 @@ public class Messages
         this.time = time;
         this.date = date;
         this.name = name;
+        this.fileMessage=fileMessage;
     }
 
     public String getFrom() {
