@@ -62,7 +62,6 @@ public class TodolistFragment extends Fragment {
 
 
     LinearLayout today,alltasks;
-    private RecyclerView recyclerView;
 
     ImageView userProfile;
     TextView todayCompleted,todayTotal;

@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.example.finalproject.adapters.TodoListStepAdapter;
 import com.example.finalproject.models.StepsModel;
 import com.example.finalproject.models.TodoTaskModel;
+import com.example.finalproject.todolist.MyAlarmManager;
 import com.example.finalproject.todolist.NotifyService;
 import com.example.finalproject.todolist.TodolistFragment;
 import com.google.firebase.database.DataSnapshot;
@@ -97,7 +98,6 @@ public class TodoList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_list);
-
 
         checkPermission(Manifest.permission.WRITE_CALENDAR, CALENDAR_WRITE_PERMISSION_CODE);
         note=findViewById(R.id.note);
@@ -247,12 +247,6 @@ public class TodoList extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -264,6 +258,7 @@ public class TodoList extends AppCompatActivity {
                         if (its_edit){
 
                         }else{
+                           // id = new Date().getTime()+"";
                             id=snapshot.child("task_count").getValue(String.class);
                             if (id==null){
                                 id="0";
@@ -280,9 +275,6 @@ public class TodoList extends AppCompatActivity {
                         if (Title.equals("")||note_txt.equals("")||duedatetime.equals("")){
                             Toast.makeText(TodoList.this, "Fill all the details", Toast.LENGTH_SHORT).show();
                         }else{
-                            if(reminder){
-                                addReminderInCalendar(duedatetime);
-                            }
 
                             todoTaskModel=new TodoTaskModel(id,Title,note_txt,iscompleted,reminder,isimportant,duedatetime,stepsModelArrayList);
                             myRef.child(userID).child("Tasks").child(id).setValue(todoTaskModel);
@@ -291,6 +283,9 @@ public class TodoList extends AppCompatActivity {
 
                             }else{
                                 Toast.makeText(TodoList.this, "Task Created Successfully!", Toast.LENGTH_SHORT).show();
+                            }
+                            if(reminder){
+                                MyAlarmManager.setAlarm(TodoList.this, Integer.parseInt(id) , task_title.getText().toString(), myCalendar);
                             }
                             finish();
                         }
@@ -463,6 +458,8 @@ public class TodoList extends AppCompatActivity {
                     public void onTimeSet(TimePicker view, int hourOfDay,
                                           int minute) {
 
+                        myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        myCalendar.set(Calendar.MINUTE, minute);
                         String date_saved=date_txt.getText().toString();
                         date_txt.setText(date_saved+" - "+hourOfDay + ":" + minute);
                         date_time=date_saved+" "+hourOfDay+":"+minute+":"+"00";
@@ -503,7 +500,7 @@ public class TodoList extends AppCompatActivity {
 
         }
     }
-    public void createNotification (Long mili) {
+  /*  public void createNotification (Long mili) {
         Intent myIntent = new Intent(getApplicationContext() , NotifyService. class ) ;
         AlarmManager alarmManager = (AlarmManager) getSystemService( ALARM_SERVICE ) ;
         PendingIntent pendingIntent = PendingIntent. getService ( this, 0 , myIntent , PendingIntent.FLAG_CANCEL_CURRENT ) ;
@@ -518,7 +515,7 @@ public class TodoList extends AppCompatActivity {
 
         Log.d("TAG", "createNotification: ");
 
-    }
+    }*/
 
     /** Adds Events and Reminders in Calendar. */
     private void addReminderInCalendar(Long mili) {
