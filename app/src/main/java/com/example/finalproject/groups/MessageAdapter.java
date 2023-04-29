@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,7 +39,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView senderMessageText, receiverMessageText, tvFileMessage;
+        public TextView senderMessageText, receiverMessageText, tvFileMessage, tvFileRecMessage;
         public CircleImageView receiverProfileImage;
         public ImageView messageSenderPicture, messageReceiverPicture;
         public ProgressBar messageReceiverProgressBar, messageSenderProgressBar;
@@ -48,6 +47,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
             senderMessageText = itemView.findViewById(R.id.sender_message_text);
+            tvFileRecMessage = itemView.findViewById(R.id.tvFileRecMessage);
             receiverMessageText = itemView.findViewById(R.id.receiver_message_text);
             receiverProfileImage = itemView.findViewById(R.id.message_profile_image);
             messageSenderPicture = itemView.findViewById(R.id.message_sender_image_view);
@@ -104,11 +104,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         holder.messageSenderPicture.setVisibility(View.GONE);
         holder.messageReceiverPicture.setVisibility(View.GONE);
 
-
         if (fromMessageType.equals("text")) {
             if (fromUserID.equals(messageSenderId)) {
                 holder.senderMessageText.setVisibility(View.VISIBLE);
-
                 holder.senderMessageText.setBackgroundResource(R.drawable.sender_messages_layout);
                 holder.senderMessageText.setTextColor(Color.WHITE);
                 holder.senderMessageText.setText(messages.getMessage() + "\n \n" + messages.getTime() + " - " + messages.getDate());
@@ -128,17 +126,21 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             } else {
                 holder.receiverProfileImage.setVisibility(View.VISIBLE);
                 holder.messageReceiverPicture.setVisibility(View.VISIBLE);
-                //holder.messageReceiverProgressBar.setVisibility(View.VISIBLE);
-
                 GlideApp.with(holder.itemView.getContext().getApplicationContext()).load(messages.getMessage()).into(holder.messageReceiverPicture);
             }
         } else if (fromMessageType.equals("pdf") || fromMessageType.equals("docx")) {
             if (fromUserID.equals(messageSenderId)) {
                 holder.messageSenderPicture.setVisibility(View.VISIBLE);
                 if (fromMessageType.equals("pdf")) {
+
+                    holder.tvFileMessage.setVisibility(View.VISIBLE);
+                    holder.tvFileMessage.setText(userMessagesList.get(position).getFileMessage());
                     holder.messageSenderPicture.setBackgroundResource(R.drawable.ic_pdf);
 
                 } else if (fromMessageType.equals("docx")) {
+
+                    holder.tvFileMessage.setVisibility(View.VISIBLE);
+                    holder.tvFileMessage.setText(userMessagesList.get(position).getFileMessage());
                     holder.messageSenderPicture.setBackgroundResource(R.drawable.ic_word);
 
                 }
@@ -147,8 +149,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 if (fileMessage == null) {
                     holder.tvFileMessage.setVisibility(View.GONE);
 
-                } else {
-                    holder.tvFileMessage.setText(userMessagesList.get(position).getFileMessage());
                 }
 
                 holder.itemView.setOnClickListener(view -> {
@@ -158,8 +158,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             } else {
                 holder.receiverProfileImage.setVisibility(View.VISIBLE);
                 holder.messageReceiverPicture.setVisibility(View.VISIBLE);
-                holder.messageReceiverPicture.setBackgroundResource(R.drawable.file);
+                if (fromMessageType.equals("pdf")) {
+                    holder.tvFileRecMessage.setText(userMessagesList.get(position).getFileMessage());
+                    holder.tvFileRecMessage.setVisibility(View.VISIBLE);
+                    holder.messageReceiverPicture.setBackgroundResource(R.drawable.ic_pdf);
 
+                } else if (fromMessageType.equals("docx")) {
+
+                    holder.tvFileRecMessage.setVisibility(View.VISIBLE);
+                    holder.messageReceiverPicture.setBackgroundResource(R.drawable.ic_word);
+                    holder.tvFileRecMessage.setText(userMessagesList.get(position).getFileMessage());
+
+                }
                 holder.itemView.setOnClickListener(view -> {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(position).getMessage()));
                     holder.itemView.getContext().startActivity(intent);

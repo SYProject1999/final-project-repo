@@ -59,7 +59,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class GroupChatActivity extends AppCompatActivity {
     private String messageReceiverID, messageReceiverName, messageReceiverImage, messageSenderID, saveCurrentTime, saveCurrentDate;
     private ScrollView scrollView;
-    private ProgressDialog progressDialog;
     private FirebaseAuth mAuth;
     View view;
     public String fileMessage;
@@ -84,6 +83,8 @@ public class GroupChatActivity extends AppCompatActivity {
     private TextView tvGroupName;
     public EditText ed_FileMessage;
 
+    ProgressDialog progressDialogFile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +93,11 @@ public class GroupChatActivity extends AppCompatActivity {
         currentGroup = (Group) getIntent().getSerializableExtra("group");
         Toast.makeText(GroupChatActivity.this, currentGroup.getName(), Toast.LENGTH_SHORT).show();
         initializeFields();
+        progressDialogFile = new ProgressDialog(this);
+        progressDialogFile.setTitle("Uploading File");
+        progressDialogFile.setCancelable(false);
+        progressDialogFile.setMessage("please wait..");
+
 
         mAuth = FirebaseAuth.getInstance();
         messageSenderID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
@@ -157,8 +163,7 @@ public class GroupChatActivity extends AppCompatActivity {
             CharSequence options[] = new CharSequence[]{
                     "Image",
                     "PDF File",
-                    "Ms Word File",
-                    "Add a Task"
+                    "Ms Word File"
             };
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle("Select");
@@ -280,8 +285,6 @@ public class GroupChatActivity extends AppCompatActivity {
             fileUri = data.getData();
 
             if (!checker.equals("image")) {
-                progressDialog = new ProgressDialog(this);
-                progressDialog.setTitle("Uploading...");
 
                 storageReference = FirebaseStorage.getInstance().getReference("Users").child(messageSenderID).child(messageReceiverID).child("Document File");
                 String messageSenderRef = GROUP_MESSAGES + "/" + messageReceiverID;
@@ -297,17 +300,27 @@ public class GroupChatActivity extends AppCompatActivity {
 
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
                 view = getLayoutInflater().inflate(R.layout.file_message_dailogbox, null, false);
-                Button payNow = view.findViewById(R.id.btn_submit);
+                Button submitTitleFile = view.findViewById(R.id.btn_submit);
                 EditText ed_FileMessage = view.findViewById(R.id.ed_FileMessage);
                 bottomSheetDialog.setContentView(view);
                 bottomSheetDialog.show();
                 bottomSheetDialog.setCancelable(false);
                 bottomSheetDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
-                payNow.setOnClickListener(v -> {
+                submitTitleFile.setOnClickListener(v -> {
+
+
                     fileMessage = ed_FileMessage.getText().toString();
 
-                    if (fileMessage != null) {
+                    if(fileMessage.isEmpty()||fileMessage==null||fileMessage.equals(""))
+                    {
+                        Toast.makeText(context, "filed is Empty", Toast.LENGTH_SHORT).show();
+
+                    }
+                    else if (fileMessage!=null) {
+                        progressDialogFile.setTitle("Uploading File");
+                        progressDialogFile.setMessage("please wait..");
+                        progressDialogFile.show();
 
                         filePath.putFile(fileUri).addOnSuccessListener(taskSnapshot -> {
 
@@ -341,10 +354,13 @@ public class GroupChatActivity extends AppCompatActivity {
 
                         }).addOnProgressListener(snapshot -> {
                             double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
-                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
+
                         });
 
 
+                    }
+                    else {
+                        Toast.makeText(context, "filed is Empty", Toast.LENGTH_SHORT).show();
                     }
                     bottomSheetDialog.dismiss();
                 });
@@ -364,17 +380,21 @@ public class GroupChatActivity extends AppCompatActivity {
                 storageTask = filePath.putFile(fileUri);
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
                 view = getLayoutInflater().inflate(R.layout.file_message_dailogbox, null, false);
-                Button payNow = view.findViewById(R.id.btn_submit);
+                Button submitFileTitle = view.findViewById(R.id.btn_submit);
                 EditText ed_FileMessage = view.findViewById(R.id.ed_FileMessage);
                 bottomSheetDialog.setContentView(view);
                 bottomSheetDialog.show();
                 bottomSheetDialog.setCancelable(false);
                 bottomSheetDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
-                payNow.setOnClickListener(v -> {
-                    fileMessage = ed_FileMessage.getText().toString();
+                submitFileTitle.setOnClickListener(v -> {
 
+                    fileMessage = ed_FileMessage.getText().toString();
                     if (fileMessage != null) {
+
+                        progressDialogFile.setTitle("Uploading images");
+                        progressDialogFile.setMessage("please wait..");
+                        progressDialogFile.show();
 
                         storageTask.continueWithTask(task -> {
                             if (!task.isSuccessful()) {
@@ -382,10 +402,10 @@ public class GroupChatActivity extends AppCompatActivity {
                             }
                             return filePath.getDownloadUrl();
                         }).addOnCompleteListener((OnCompleteListener<Uri>) task -> {
+                            progressDialogFile.dismiss();
                             if (task.isSuccessful()) {
                                 Uri downloadUri = task.getResult();
                                 myUrl = String.valueOf(downloadUri);
-
                                 Map messageTextBody = new HashMap();
                                 messageTextBody.put("message", myUrl);
                                 messageTextBody.put("name", fileUri.getLastPathSegment());
@@ -395,14 +415,13 @@ public class GroupChatActivity extends AppCompatActivity {
                                 messageTextBody.put("messageID", messagePushID);
                                 messageTextBody.put("time", saveCurrentTime);
                                 messageTextBody.put("date", saveCurrentDate);
-
                                 Map messageBodyDetails = new HashMap();
                                 messageBodyDetails.put(messageSenderRef + "/" + messagePushID, messageTextBody);
                                 messageBodyDetails.put(messageReceiverRef + "/" + messagePushID, messageTextBody);
 
                                 RootRef.updateChildren(messageBodyDetails).addOnCompleteListener(task1 -> {
                                     if (!task.isSuccessful()) {
-                                        Toast.makeText(context, (CharSequence) task.getException(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(),""+task.getException(), Toast.LENGTH_LONG).show();
                                     }
                                 });
                                 finish();

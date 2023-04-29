@@ -26,8 +26,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         Log.d("abc", "Alarm Raised");
         createNotificationChannel(context,"1");
         showNotification(context,taskTitle, taskDescription);
-
-
     }
 
     private void showNotification(Context context, String taskTitle, String taskDescription) {

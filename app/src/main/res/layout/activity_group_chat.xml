@@ -21,6 +21,7 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="10dp"
         android:id="@+id/private_messages_list_of_users"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
