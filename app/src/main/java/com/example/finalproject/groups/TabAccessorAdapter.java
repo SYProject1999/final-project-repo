@@ -17,13 +17,11 @@ public class TabAccessorAdapter extends FragmentStateAdapter {
 
         switch (position) {
             case 1:
-                return new GroupsChatsFragment();
-            case 2:
                 return new ContactsFragment();
-            case 3:
+            case 2:
                 return new RequestsFragment();
         }
-        return new ChatsFragment();
+        return new GroupsChatsFragment();
     }
 
     @Override

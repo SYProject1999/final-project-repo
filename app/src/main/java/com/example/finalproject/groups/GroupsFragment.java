@@ -77,7 +77,6 @@ public class GroupsFragment extends Fragment {
         FragmentManager fragmentManager = getChildFragmentManager();
         TabAccessorAdapter tabAccessorAdapter = new TabAccessorAdapter(fragmentManager, getLifecycle());
         viewPager2.setAdapter(tabAccessorAdapter);
-        tabLayout.addTab(tabLayout.newTab().setText("Chats"));
         tabLayout.addTab(tabLayout.newTab().setText("Groups"));
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.addTab(tabLayout.newTab().setText("Requests"));
