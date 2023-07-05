@@ -392,6 +392,8 @@ public class ChatActivity extends AppCompatActivity {
             RootRef.updateChildren(messageBodyDetails).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     Toast.makeText(ChatActivity.this, "Message Sent Successfully...", Toast.LENGTH_SHORT).show();
+                    messageAdapter.notifyDataSetChanged();
+
                 } else {
                     Toast.makeText(ChatActivity.this, "Error", Toast.LENGTH_SHORT).show();
                 }

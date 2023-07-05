@@ -95,7 +95,6 @@ public class GroupChatActivity extends AppCompatActivity {
         initializeFields();
         progressDialogFile = new ProgressDialog(this);
         progressDialogFile.setTitle("Uploading File");
-        progressDialogFile.setCancelable(false);
         progressDialogFile.setMessage("please wait..");
 
 
@@ -402,8 +401,8 @@ public class GroupChatActivity extends AppCompatActivity {
                             }
                             return filePath.getDownloadUrl();
                         }).addOnCompleteListener((OnCompleteListener<Uri>) task -> {
-                            progressDialogFile.dismiss();
                             if (task.isSuccessful()) {
+
                                 Uri downloadUri = task.getResult();
                                 myUrl = String.valueOf(downloadUri);
                                 Map messageTextBody = new HashMap();

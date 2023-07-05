@@ -169,6 +169,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     firebaseUser = mAuth.getCurrentUser();
                     firebaseUser.sendEmailVerification();
                     Toast.makeText(LoginActivity.this, "Verify your email", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(LoginActivity.this, OnBoardingScreensActivity.class));
                     loginProgressBar.setVisibility(View.INVISIBLE);
                 }
             } else {
