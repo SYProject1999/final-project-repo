@@ -16,7 +16,7 @@ public class MyAlarmManager {
         Intent intent = new Intent(context, AlarmReceiver.class);
 
         intent.putExtra("content", content);
-        PendingIntent mPendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent mPendingIntent = PendingIntent.getBroadcast(context, id, intent,  PendingIntent.FLAG_MUTABLE);
 
 
 
