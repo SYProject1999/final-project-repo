@@ -257,7 +257,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="Due Date"
+                        android:hint="Due Date"
                         android:textColor="#333333"
                         android:textSize="16dp"></TextView>
 

@@ -109,6 +109,7 @@ public class GroupChatActivity extends AppCompatActivity {
 
         InitializeControllers();
         setListeners();
+        loadMessages();
     }
 
 
@@ -449,7 +450,6 @@ public class GroupChatActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        loadMessages();
     }
 
     private Intent getNextIntent(Class<?> activity) {

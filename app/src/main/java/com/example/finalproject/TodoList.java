@@ -272,7 +272,7 @@ public class TodoList extends AppCompatActivity {
 
                         Title=task_title.getText().toString();
                         note_txt=note.getText().toString();
-                        if (Title.equals("")||note_txt.equals("")||duedatetime.equals("")){
+                        if (Title.equals("")||date_txt.getText().toString().trim().equals("")||note_txt.equals("")||duedatetime.equals("")){
                             Toast.makeText(TodoList.this, "Fill all the details", Toast.LENGTH_SHORT).show();
                         }else{
 

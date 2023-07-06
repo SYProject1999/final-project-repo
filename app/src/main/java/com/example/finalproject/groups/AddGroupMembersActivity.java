@@ -1,5 +1,6 @@
 package com.example.finalproject.groups;
 
+import static com.example.finalproject.models.References.CONTACTS;
 import static com.example.finalproject.models.References.GROUPS;
 import static com.example.finalproject.models.References.USERS;
 
@@ -59,15 +60,27 @@ public class AddGroupMembersActivity extends AppCompatActivity implements GroupM
     }
 
     private void loadData() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(USERS);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(CONTACTS).child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
-                    User user = dataSnapshot.getValue(User.class);
-                    user.setId(dataSnapshot.getKey());
-                    if (!currentGroup.getMembers().contains(user.getId())) {
-                        adapter.addMember(user);
+                    String userID = dataSnapshot.getKey();
+                    //user.setId(dataSnapshot.getKey());
+                    if (!currentGroup.getMembers().contains(userID)) {
+                        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference(USERS).child(userID);
+                        userReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                User user = snapshot.getValue(User.class);
+                                user.setId(snapshot.getKey());
+                                adapter.addMember(user);
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                     }
                 }
             }
