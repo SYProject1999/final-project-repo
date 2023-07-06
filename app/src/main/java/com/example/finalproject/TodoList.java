@@ -526,7 +526,7 @@ public class TodoList extends AppCompatActivity {
         ContentResolver cr = getContentResolver();
         TimeZone timeZone = TimeZone.getDefault();
 
-        /** Inserting an event in calendar. */
+        /* Inserting an event in calendar. */
         ContentValues values = new ContentValues();
         values.put(CalendarContract.Events.CALENDAR_ID, 1);
         values.put(CalendarContract.Events.TITLE, Title);

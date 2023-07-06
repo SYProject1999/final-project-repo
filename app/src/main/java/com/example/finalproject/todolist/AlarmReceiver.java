@@ -22,7 +22,6 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String taskTitle ="Schedule Notice";
         String taskDescription = intent.getStringExtra("content");
-        Toast.makeText(context, "Alarm Raised", Toast.LENGTH_SHORT).show();
         Log.d("abc", "Alarm Raised");
         createNotificationChannel(context,"1");
         showNotification(context,taskTitle, taskDescription);

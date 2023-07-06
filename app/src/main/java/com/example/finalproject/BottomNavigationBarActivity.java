@@ -10,7 +10,7 @@ import android.os.Bundle;
 
 import com.example.finalproject.databinding.ActivityBottomNavigationBarBinding;
 import com.example.finalproject.groups.GroupsFragment;
-import com.example.finalproject.timer.SetTimerFragment;
+import com.example.finalproject.timer.TimerFragment;
 import com.example.finalproject.todolist.TodolistFragment;
 
 public class BottomNavigationBarActivity extends AppCompatActivity {
@@ -35,7 +35,7 @@ public class BottomNavigationBarActivity extends AppCompatActivity {
                     replaceFragment(new GroupsFragment());
                     break;
                 case R.id.timer:
-                    replaceFragment(new SetTimerFragment());
+                    replaceFragment(new TimerFragment());
                     break;
             }
 
