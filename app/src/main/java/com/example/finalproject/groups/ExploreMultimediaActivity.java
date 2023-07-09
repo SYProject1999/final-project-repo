@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -22,16 +23,16 @@ import java.util.List;
 public class ExploreMultimediaActivity extends AppCompatActivity {
 
     Group currentGroup;
-    RecyclerView recyclerViewMessage, recyclerView;
+    RecyclerView recyclerViewMessage;
     public List<Messages> groupList;
 
+    @SuppressLint("CutPasteId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explore_multimedia);
         currentGroup = (Group) getIntent().getSerializableExtra("group");
         recyclerViewMessage = findViewById(R.id.recyclerViewMessage);
-        recyclerView = findViewById(R.id.recyclerViewMessage);
         groupList = new ArrayList<>();
 
         Query query = FirebaseDatabase.getInstance().getReference(References.GROUP_MESSAGES).child(currentGroup.getId()).
@@ -40,8 +41,8 @@ public class ExploreMultimediaActivity extends AppCompatActivity {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot FatchData : snapshot.getChildren()) {
-                    Messages model1 = FatchData.getValue(Messages.class);
+                for (DataSnapshot FetchData : snapshot.getChildren()) {
+                    Messages model1 = FetchData.getValue(Messages.class);
                     groupList.add(model1);
                 }
                 recyclerViewMessage.setLayoutManager(new GridLayoutManager(getApplicationContext(), 1));
@@ -60,8 +61,8 @@ public class ExploreMultimediaActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                for (DataSnapshot FatchData : snapshot.getChildren()) {
-                    Messages model2 = FatchData.getValue(Messages.class);
+                for (DataSnapshot FetchData : snapshot.getChildren()) {
+                    Messages model2 = FetchData.getValue(Messages.class);
                     groupList.add(model2);
                 }
 

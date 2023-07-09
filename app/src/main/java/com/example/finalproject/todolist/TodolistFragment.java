@@ -194,55 +194,6 @@ public class TodolistFragment extends Fragment {
         return view;
     }
 
-    private void addTask() {
-
-        AlertDialog.Builder myDialog = new AlertDialog.Builder(getContext());
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-
-        View dialogView = inflater.inflate(R.layout.todolist_input_layout, null);
-        myDialog.setView(dialogView);
-
-        AlertDialog alertDialog = myDialog.create();
-        alertDialog.setCancelable(false);
-
-        final EditText taskEditText = dialogView.findViewById(R.id.task);
-        final EditText descriptionEditText = dialogView.findViewById(R.id.description);
-        Button saveTask = dialogView.findViewById(R.id.saveBtn);
-        Button cancelTask = dialogView.findViewById(R.id.cancelBtn);
-
-        cancelTask.setOnClickListener((v) ->  alertDialog.dismiss());
-
-        saveTask.setOnClickListener((v) -> {
-
-            String taskTitle = taskEditText.getText().toString().trim();
-            String taskDescription = descriptionEditText.getText().toString().trim();
-            String id = reference.push().getKey();
-            String date = DateFormat.getDateInstance().format(new Date());
-
-            if (TextUtils.isEmpty(taskTitle)) {
-                taskEditText.setError("Task Title is Required");
-                taskEditText.requestFocus();
-                return;
-            } else if (TextUtils.isEmpty(taskDescription)) {
-                descriptionEditText.setError("Task Description is Required");
-                descriptionEditText.requestFocus();
-                return;
-            } else {
-                TaskModel taskModel = new TaskModel(taskTitle, taskDescription, id, date);
-                assert id != null;
-                reference.child(id).setValue(taskModel).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(getContext(), "Task Has Been Inserted Successfully", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getContext(), "Failed: " + Objects.requireNonNull(task.getException()), Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-            alertDialog.dismiss();
-        });
-        alertDialog.show();
-    }
-
     private void todoListActivity(){
         Intent intent=new Intent(getActivity(), TodoList.class);
         startActivity(intent);
@@ -474,7 +425,6 @@ public class TodolistFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             todoTaskModel= (TodoTaskModel) todoListView.getTag();
-//                            Toast.makeText(getContext(),todoTaskModel.getTitle() , Toast.LENGTH_SHORT).show();
                             todoTaskModelSender =todoTaskModel;
                             Intent intent=new Intent(getActivity(), TodoList.class);
                             startActivity(intent);

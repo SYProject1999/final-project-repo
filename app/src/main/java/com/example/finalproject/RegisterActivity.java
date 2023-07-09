@@ -1,6 +1,5 @@
 package com.example.finalproject;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,12 +12,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.finalproject.models.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -104,31 +102,26 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
 
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                .addOnCompleteListener(RegisterActivity.this, task -> {
+                    if (task.isSuccessful()) {
 
-                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                            User user = new User(fullName, email, false);
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                        User user = new User(fullName, email, false);
 
-                            FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(firebaseUser.getUid()).setValue(user)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
+                        assert firebaseUser != null;
+                        FirebaseDatabase.getInstance().getReference("Users")
+                                .child(firebaseUser.getUid()).setValue(user)
+                                .addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
                                         firebaseUser.sendEmailVerification();
                                         Toast.makeText(RegisterActivity.this, "User has been registered successfully. Please verify your email", Toast.LENGTH_LONG).show();
                                         startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                                     } else {
-                                        Toast.makeText(RegisterActivity.this, "Failed to register! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(RegisterActivity.this, "Failed to register! " + Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_LONG).show();
                                     }
-                                }
-                            });
-                        } else {
-                            Toast.makeText(RegisterActivity.this, "Failed to register! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                        }
+                                });
+                    } else {
+                        Toast.makeText(RegisterActivity.this, "Failed to register! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
 

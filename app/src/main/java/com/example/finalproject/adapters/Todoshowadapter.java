@@ -68,26 +68,6 @@ public class Todoshowadapter extends ArrayAdapter {
             select_task.setBackgroundResource(R.drawable.unselected_circle_bg);
         }
 
-
-//        Boolean isimportant=false;
-//        Boolean iscomplete=false;
-//        TextView taskname=convertView.findViewById(R.id.step_name);
-//        TextView taskdate=convertView.findViewById(R.id.step_name);
-//        final Boolean[] step_selection_check = {false};
-//        LinearLayout step_selection=convertView.findViewById(R.id.step_selection);
-//        step_name.setText(getItem(position));
-//        step_selection.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (step_selection_check[0]){
-//                    step_selection.setBackgroundResource(R.drawable.unselected_circle_bg);
-//                    step_selection_check[0] =false;
-//                }else{
-//                    step_selection.setBackgroundResource(R.drawable.selected_circle_bg);
-//                    step_selection_check[0] =true;
-//                }
-//            }
-//        });
         return convertView;
     }
     private String militodate(long milliSeconds){
