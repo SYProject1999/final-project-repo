@@ -44,9 +44,6 @@
             android:name=".TodoList"
             android:exported="false" />
         <activity
-            android:name=".groups.ChatActivity"
-            android:exported="false" />
-        <activity
             android:name=".groups.GroupsProfileActivity"
             android:exported="false" />
         <activity

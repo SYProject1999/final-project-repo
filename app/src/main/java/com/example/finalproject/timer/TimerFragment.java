@@ -44,6 +44,9 @@ public class TimerFragment extends Fragment {
     private static int shortBreakCount = 0;
     private static int longBreakCount = 0;
 
+    private static final int MAX_LONG_BREAK_TOTAL = 1800000;
+    private static final int MAX_SHORT_BREAK_TOTAL = 900000;
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -75,11 +78,16 @@ public class TimerFragment extends Fragment {
                 return;
             }
 
-            long millisInput = Long.parseLong(input) * 60000;
+            long millisInput = Long.parseLong(input);
             if (millisInput == 0) {
                 Toast.makeText(requireContext(), "Please enter a positive number", Toast.LENGTH_SHORT).show();
                 return;
             }
+            if (millisInput < 20) {
+                Toast.makeText(requireContext(), "Work Time Can't Be Less Than 20 Minutes", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            millisInput *= 60000;
 
             setTime(millisInput);
             editTextInput.setText("");
@@ -105,7 +113,7 @@ public class TimerFragment extends Fragment {
             longBreakTotal = 0;
         } else if (startTimeInMillis <= 10800000) {
             workTotal = 4;
-            shortBreakTotal = 4;
+            shortBreakTotal = 3;
             longBreakTotal = 1;
         } else if (startTimeInMillis <= 18000000) {
             workTotal = 6;
@@ -183,7 +191,7 @@ public class TimerFragment extends Fragment {
         updateButtons();
         endTime = System.currentTimeMillis() + timeLeftInMillis;
 
-        countDownTimer = new CountDownTimer(5000, 1000) {
+        countDownTimer = new CountDownTimer(timeLeftInMillis, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -293,7 +301,6 @@ public class TimerFragment extends Fragment {
 
         SharedPreferences prefs = requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
-        //startTimeInMillis = prefs.getLong("startTimeInMillis", 1500000);
         startTimeInMillis = prefs.getLong("startTimeInMillis", 1500000);
         timeLeftInMillis = prefs.getLong("millisLeft", startTimeInMillis);
         isTimerRunning = prefs.getBoolean("timerRunning", false);
