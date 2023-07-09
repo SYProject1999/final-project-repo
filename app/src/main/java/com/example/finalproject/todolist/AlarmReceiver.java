@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
@@ -21,7 +20,6 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String taskTitle ="Schedule Notice";
         String taskDescription = intent.getStringExtra("content");
-        Log.d("abc", "Alarm Raised");
         createNotificationChannel(context,"1");
         showNotification(context,taskTitle, taskDescription);
 

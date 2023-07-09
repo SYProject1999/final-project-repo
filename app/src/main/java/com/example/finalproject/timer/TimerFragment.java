@@ -3,13 +3,12 @@ package com.example.finalproject.timer;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
-
-
-import androidx.fragment.app.Fragment;
-
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.example.finalproject.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -30,7 +31,7 @@ public class TimerFragment extends Fragment {
     private EditText editTextInput;
     private TextView textViewWorkBreak;
     private TextView textViewCountDown;
-    private Button buttonSet;
+    private Button buttonSet, buttonDND;
     private FloatingActionButton buttonStartPause, buttonReset;
 
     private CountDownTimer countDownTimer;
@@ -60,6 +61,9 @@ public class TimerFragment extends Fragment {
         buttonSet = view.findViewById(R.id.button_set);
         buttonStartPause = view.findViewById(R.id.fab_start);
         buttonReset = view.findViewById(R.id.fab_reset);
+
+        buttonDND = view.findViewById(R.id.button_dnd);
+        buttonDND.setOnClickListener(view1 -> toggleDoNotDisturbMode());
 
         buttonStartPause.setOnClickListener(view1 -> {
             if (isTimerRunning) {
@@ -272,6 +276,44 @@ public class TimerFragment extends Fragment {
         if (view != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(requireView().getWindowToken(), 0);
+        }
+    }
+
+    private void toggleDoNotDisturbMode() {
+        NotificationManager notificationManager = (NotificationManager) requireActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (notificationManager == null) {
+            Toast.makeText(requireContext(), "Device does not support Do Not Disturb mode.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (notificationManager.isNotificationPolicyAccessGranted()) {
+                int currentFilter = notificationManager.getCurrentInterruptionFilter();
+                if (currentFilter == NotificationManager.INTERRUPTION_FILTER_NONE) {
+                    // Do Not Disturb is not currently active, so enable it
+                    notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL);
+                } else {
+                    // Do Not Disturb is currently active, so disable it
+                    notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE);
+                }
+
+                // Update the current filter after toggling
+                int updatedFilter = notificationManager.getCurrentInterruptionFilter();
+                if (updatedFilter == NotificationManager.INTERRUPTION_FILTER_NONE) {
+                    // Do Not Disturb is currently active
+                    Toast.makeText(requireContext(), "Do Not Disturb mode is active", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Do Not Disturb is not active
+                    Toast.makeText(requireContext(), "Do Not Disturb mode is not active", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                // Ask the user to grant permission to access notification policy
+                Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+                startActivity(intent);
+            }
+        } else {
+            Toast.makeText(requireContext(), "Device does not support Do Not Disturb mode.", Toast.LENGTH_SHORT).show();
         }
     }
 
