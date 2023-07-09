@@ -370,7 +370,7 @@ public class TodolistFragment extends Fragment {
                     if (todoTaskModel.getIscompleted()){
                         completedTodoTaskModelArrayList.add(todoTaskModel);
 
-                        todocompletedshowadapter=new Todocompletedshowadapter(requireActivity(), android.R.layout.simple_list_item_1, completedTodoTaskModelArrayList);
+                        todocompletedshowadapter=new Todocompletedshowadapter(getActivity(), android.R.layout.simple_list_item_1, completedTodoTaskModelArrayList);
 
 
                     }else{
