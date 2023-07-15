@@ -50,45 +50,21 @@ public class Todocompletedshowadapter extends ArrayAdapter {
         LinearLayout select_task=convertView.findViewById(R.id.select_task);
 
 
-        if (todoTaskModel.getIsimportant())
-        {
+        if (todoTaskModel.getIsimportant()) {
             favorite.setImageResource(R.drawable.star_filled);
         }
 
 
-        else{
-
+        else {
             favorite.setImageResource(R.drawable.ic_baseline_star_border_24);
         }
 
         if (todoTaskModel.getIscompleted()){
             select_task.setBackgroundResource(R.drawable.selected_circle_bg);
 
-        }else{
-
+        }else {
             select_task.setBackgroundResource(R.drawable.unselected_circle_bg);
         }
-
-
-//        Boolean isimportant=false;
-//        Boolean iscomplete=false;
-//        TextView taskname=convertView.findViewById(R.id.step_name);
-//        TextView taskdate=convertView.findViewById(R.id.step_name);
-//        final Boolean[] step_selection_check = {false};
-//        LinearLayout step_selection=convertView.findViewById(R.id.step_selection);
-//        step_name.setText(getItem(position));
-//        step_selection.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (step_selection_check[0]){
-//                    step_selection.setBackgroundResource(R.drawable.unselected_circle_bg);
-//                    step_selection_check[0] =false;
-//                }else{
-//                    step_selection.setBackgroundResource(R.drawable.selected_circle_bg);
-//                    step_selection_check[0] =true;
-//                }
-//            }
-//        });
         return convertView;
     }
     private String militodate(long milliSeconds){

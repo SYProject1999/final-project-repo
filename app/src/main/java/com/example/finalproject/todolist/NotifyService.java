@@ -32,7 +32,6 @@ public class NotifyService extends Service {
         mBuilder.setContentText( "Notification Listener Service Example" ) ;
         mBuilder.setSmallIcon(R.drawable. ic_launcher_foreground ) ;
         mBuilder.setAutoCancel( true ) ;
-        Log.d("TAG", "onBind: ");
         if (android.os.Build.VERSION. SDK_INT >= android.os.Build.VERSION_CODES. O ) {
             int importance = NotificationManager. IMPORTANCE_HIGH ;
             NotificationChannel notificationChannel = new

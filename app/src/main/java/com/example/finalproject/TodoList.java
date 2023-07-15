@@ -6,14 +6,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,11 +29,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.finalproject.adapters.TodoListStepAdapter;
 import com.example.finalproject.models.StepsModel;
 import com.example.finalproject.models.TodoTaskModel;
 import com.example.finalproject.todolist.MyAlarmManager;
-import com.example.finalproject.todolist.NotifyService;
 import com.example.finalproject.todolist.TodolistFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -56,8 +51,8 @@ public class TodoList extends AppCompatActivity {
 
 
     String id,Title,note_txt;
-    Boolean iscompleted=false,reminder=false,isimportant=false;
-    Long duedatetime=0L;
+    Boolean isCompleted =false,reminder=false, isImportant =false;
+    Long dueDateTime =0L;
 
     int id_int;
     private static final int CALENDAR_WRITE_PERMISSION_CODE = 100;
@@ -72,7 +67,7 @@ public class TodoList extends AppCompatActivity {
     StepsModel stepsModel;
     int step_id=0;
     String step_title;
-    Boolean step_iscompleted;
+    Boolean step_isCompleted;
     ArrayList<StepsModel> stepsModelArrayList=new ArrayList<>();
     ArrayList<StepsModel> stepsModelArrayListsender=new ArrayList<>();
     ImageView favorite;
@@ -80,18 +75,16 @@ public class TodoList extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("Users");
     String userID=LoginActivity.userID;
-    private int mYear, mMonth, mDay, mHour, mMinute;
+    private int mHour, mMinute;
     LinearLayout calendar_layout;
-    TodoListStepAdapter TodoListStepAdapter;
     LinearLayout listview_steps;
 
     Boolean its_edit=false;
 
     ImageView back;
-    EditText new_step_edttxt,task_title,note;
+    EditText new_step_edittext,task_title,note;
     LinearLayout next_step,add_step_layout;
-    TodoTaskModel todoTaskModelsender= TodolistFragment.todoTaskModelsender;
-    Boolean select_task_check=false,fav_check=false;
+    TodoTaskModel todoTaskModelSender = TodolistFragment.todoTaskModelSender;
     ArrayList<String> steps=new ArrayList();
     final Calendar myCalendar= Calendar.getInstance();
     @Override
@@ -113,19 +106,18 @@ public class TodoList extends AppCompatActivity {
         favorite=findViewById(R.id.favorite);
         next_step=findViewById(R.id.next_step);
         add_step_layout=findViewById(R.id.add_step_layout);
-        new_step_edttxt=findViewById(R.id.new_step_edttxt);
+        new_step_edittext =findViewById(R.id.new_step_edttxt);
         add_step=findViewById(R.id.add_step);
         listview_steps=findViewById(R.id.listview_steps);
 
-        if (todoTaskModelsender!=null){
-            Log.d("TAG", "TAGTAF: "+todoTaskModelsender.getTitle().toString());
+        if (todoTaskModelSender !=null){
             its_edit=true;
-            task_title.setText(todoTaskModelsender.getTitle());
-            id=todoTaskModelsender.getID();
-            duedatetime=todoTaskModelsender.getDuedatetime();
-            note.setText(todoTaskModelsender.getNote());
-            date_txt.setText(militodate(todoTaskModelsender.getDuedatetime()));
-            stepsModelArrayListsender=todoTaskModelsender.getStepsModelArrayList();
+            task_title.setText(todoTaskModelSender.getTitle());
+            id= todoTaskModelSender.getID();
+            dueDateTime = todoTaskModelSender.getDuedatetime();
+            note.setText(todoTaskModelSender.getNote());
+            date_txt.setText(militodate(todoTaskModelSender.getDuedatetime()));
+            stepsModelArrayListsender= todoTaskModelSender.getStepsModelArrayList();
 
             for (int k=0;k<stepsModelArrayListsender.size();k++){
                 View step_layout=layoutInflater.inflate(R.layout.new_step_listview_layout,null,false);
@@ -145,13 +137,12 @@ public class TodoList extends AppCompatActivity {
                                 TextView text=layout.findViewById(R.id.step_name);
                                 TextView check=layout.findViewById(R.id.checker);
                                 if (check.getText().toString().equals("1"))
-                                    step_iscompleted=true;
+                                    step_isCompleted =true;
                                 else
-                                    step_iscompleted=false;
-//                                Log.d("TAG", "getDrawableState: "+step_sel.getdrawab;e().toString());
+                                    step_isCompleted =false;
                                 step_title=text.getText().toString();
                                 step_id++;
-                                stepsModel=new StepsModel(String.valueOf(step_id),step_title,step_iscompleted);
+                                stepsModel=new StepsModel(String.valueOf(step_id),step_title, step_isCompleted);
                                 stepsModelArrayList.add(stepsModel);
                             }
                         }else{
@@ -165,13 +156,12 @@ public class TodoList extends AppCompatActivity {
                                 TextView text=layout.findViewById(R.id.step_name);
                                 TextView check=layout.findViewById(R.id.checker);
                                 if (check.getText().toString().equals("1"))
-                                    step_iscompleted=true;
+                                    step_isCompleted =true;
                                 else
-                                    step_iscompleted=false;
-//                                Log.d("TAG", "getDrawableState: "+step_sel.getdrawab;e().toString());
+                                    step_isCompleted =false;
                                 step_title=text.getText().toString();
                                 step_id++;
-                                stepsModel=new StepsModel(String.valueOf(step_id),step_title,step_iscompleted);
+                                stepsModel=new StepsModel(String.valueOf(step_id),step_title, step_isCompleted);
                                 stepsModelArrayList.add(stepsModel);
                             }
 
@@ -199,7 +189,7 @@ public class TodoList extends AppCompatActivity {
 
 
 
-            if (todoTaskModelsender.getReminder()){
+            if (todoTaskModelSender.getReminder()){
                 reminder_switch.setChecked(true);
                 reminder=true;
             }else{
@@ -207,20 +197,20 @@ public class TodoList extends AppCompatActivity {
                 reminder=false;
             }
 
-            if (todoTaskModelsender.getIsimportant()){
+            if (todoTaskModelSender.getIsimportant()){
                 favorite.setImageResource(R.drawable.star_filled);
-                isimportant=true;
+                isImportant =true;
             }else{
                 favorite.setImageResource(R.drawable.ic_baseline_star_border_24);
-                isimportant=false;
+                isImportant =false;
             }
 
-            if (todoTaskModelsender.getIscompleted()){
+            if (todoTaskModelSender.getIscompleted()){
                 select_task.setBackgroundResource(R.drawable.selected_circle_bg);
-                iscompleted=true;
+                isCompleted =true;
             }else{
                 select_task.setBackgroundResource(R.drawable.unselected_circle_bg);
-                iscompleted=false;
+                isCompleted =false;
             }
 
         }
@@ -272,11 +262,11 @@ public class TodoList extends AppCompatActivity {
 
                         Title=task_title.getText().toString();
                         note_txt=note.getText().toString();
-                        if (Title.equals("")||date_txt.getText().toString().trim().equals("")||note_txt.equals("")||duedatetime.equals("")){
+                        if (Title.equals("")||date_txt.getText().toString().trim().equals("")||note_txt.equals("")|| dueDateTime.equals("")){
                             Toast.makeText(TodoList.this, "Fill all the details", Toast.LENGTH_SHORT).show();
                         }else{
 
-                            todoTaskModel=new TodoTaskModel(id,Title,note_txt,iscompleted,reminder,isimportant,duedatetime,stepsModelArrayList);
+                            todoTaskModel=new TodoTaskModel(id,Title,note_txt, isCompleted,reminder, isImportant, dueDateTime,stepsModelArrayList);
                             myRef.child(userID).child("Tasks").child(id).setValue(todoTaskModel);
                             if(its_edit){
                                 Toast.makeText(TodoList.this, "Task Edited Successfully!", Toast.LENGTH_SHORT).show();
@@ -309,7 +299,7 @@ public class TodoList extends AppCompatActivity {
 
                 View step_layout=layoutInflater.inflate(R.layout.new_step_listview_layout,null,false);
                 TextView checker=step_layout.findViewById(R.id.checker);
-                steps.add(new_step_edttxt.getText().toString());
+                steps.add(new_step_edittext.getText().toString());
                 TextView text=step_layout.findViewById(R.id.step_name);
                 LinearLayout step_selection = step_layout.findViewById(R.id.step_selection);
                 step_selection.setOnClickListener(new View.OnClickListener() {
@@ -325,13 +315,12 @@ public class TodoList extends AppCompatActivity {
                                 TextView text=layout.findViewById(R.id.step_name);
                                 TextView check=layout.findViewById(R.id.checker);
                                 if (check.getText().toString().equals("1"))
-                                    step_iscompleted=true;
+                                    step_isCompleted =true;
                                 else
-                                    step_iscompleted=false;
-//                                Log.d("TAG", "getDrawableState: "+step_sel.getdrawab;e().toString());
+                                    step_isCompleted =false;
                                 step_title=text.getText().toString();
                                 step_id++;
-                                stepsModel=new StepsModel(String.valueOf(step_id),step_title,step_iscompleted);
+                                stepsModel=new StepsModel(String.valueOf(step_id),step_title, step_isCompleted);
                                 stepsModelArrayList.add(stepsModel);
                             }
                         }else{
@@ -345,36 +334,34 @@ public class TodoList extends AppCompatActivity {
                                 TextView text=layout.findViewById(R.id.step_name);
                                 TextView check=layout.findViewById(R.id.checker);
                                 if (check.getText().toString().equals("1"))
-                                    step_iscompleted=true;
+                                    step_isCompleted =true;
                                 else
-                                    step_iscompleted=false;
-//                                Log.d("TAG", "getDrawableState: "+step_sel.getdrawab;e().toString());
+                                    step_isCompleted =false;
                                 step_title=text.getText().toString();
                                 step_id++;
-                                stepsModel=new StepsModel(String.valueOf(step_id),step_title,step_iscompleted);
+                                stepsModel=new StepsModel(String.valueOf(step_id),step_title, step_isCompleted);
                                 stepsModelArrayList.add(stepsModel);
                             }
 
                         }
                     }
                 });
-                text.setText(new_step_edttxt.getText().toString());
+                text.setText(new_step_edittext.getText().toString());
                 listview_steps.addView(step_layout);
 
                 next_step.setVisibility(View.VISIBLE);
                 add_step_layout.setVisibility(View.GONE);
-                ;
 
                 if (checker.getText().toString().equals("1"))
-                    step_iscompleted=true;
+                    step_isCompleted =true;
                 else
-                    step_iscompleted=false;
-                step_title=new_step_edttxt.getText().toString();
+                    step_isCompleted =false;
+                step_title= new_step_edittext.getText().toString();
                 step_id++;
-                stepsModel=new StepsModel(String.valueOf(step_id),step_title,step_iscompleted);
+                stepsModel=new StepsModel(String.valueOf(step_id),step_title, step_isCompleted);
                 stepsModelArrayList.add(stepsModel);
                 Log.d("TAG", "stepsModelArrayList: "+stepsModelArrayList.size());
-                new_step_edttxt.setText("");
+                new_step_edittext.setText("");
             }
         });
         next_step.setOnClickListener(new View.OnClickListener() {
@@ -385,11 +372,9 @@ public class TodoList extends AppCompatActivity {
 
 
                 // show soft keyboard
-                new_step_edttxt.requestFocus();
+                new_step_edittext.requestFocus();
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-//                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
             }
         });
         DatePickerDialog.OnDateSetListener date =new DatePickerDialog.OnDateSetListener() {
@@ -412,24 +397,24 @@ public class TodoList extends AppCompatActivity {
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isimportant){
+                if (isImportant){
                     favorite.setImageResource(R.drawable.ic_baseline_star_border_24);
-                    isimportant=false;
+                    isImportant =false;
                 }else{
                     favorite.setImageResource(R.drawable.star_filled);
-                    isimportant=true;
+                    isImportant =true;
                 }
             }
         });
         select_task.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (iscompleted){
+                if (isCompleted){
                     select_task.setBackgroundResource(R.drawable.unselected_circle_bg);
-                    iscompleted=false;
+                    isCompleted =false;
                 }else{
                     select_task.setBackgroundResource(R.drawable.selected_circle_bg);
-                    iscompleted=true;
+                    isCompleted =true;
                 }
             }
         });
@@ -463,8 +448,6 @@ public class TodoList extends AppCompatActivity {
                         String date_saved=date_txt.getText().toString();
                         date_txt.setText(date_saved+" - "+hourOfDay + ":" + minute);
                         date_time=date_saved+" "+hourOfDay+":"+minute+":"+"00";
-//                        Toast.makeText(TodoList.this, date_saved+" "+hourOfDay+":"+minute+":"+"00", Toast.LENGTH_SHORT).show();
-                        Log.d("TAG", "milliz: "+date_time);
                         date_to_mili(date_time);
 
                     }
@@ -478,44 +461,19 @@ public class TodoList extends AppCompatActivity {
         // Create a calendar object that will convert the date and time value in milliseconds to date.
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(milliSeconds);
-        Log.d("TAG", "millix: "+formatter.format(calendar.getTime()));
         return formatter.format(calendar.getTime());
     }
 
     private void date_to_mili(String givenDateString){
-//         givenDateString = "03/02/2023 12:25:00";
         String dateFormat = "MM/dd/yyyy hh:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
         try {
-            Log.d("TAG", "milli2: "+givenDateString);
             Date mDate = sdf.parse(givenDateString);
-            Log.d("TAG", "milli3: "+mDate.toString());
-            duedatetime = mDate.getTime();
-
-            Log.d("TAG","milli :: " + duedatetime);
-//                    militodate(duedatetime);
+            dueDateTime = mDate.getTime();
         } catch (ParseException e) {
             e.printStackTrace();
-            Log.d("TAG", "data_to_mili: "+e);
-
         }
     }
-  /*  public void createNotification (Long mili) {
-        Intent myIntent = new Intent(getApplicationContext() , NotifyService. class ) ;
-        AlarmManager alarmManager = (AlarmManager) getSystemService( ALARM_SERVICE ) ;
-        PendingIntent pendingIntent = PendingIntent. getService ( this, 0 , myIntent , PendingIntent.FLAG_CANCEL_CURRENT ) ;
-        Calendar calendar = Calendar.getInstance () ;
-        calendar.set(Calendar. SECOND , 0 ) ;
-        calendar.set(Calendar. MINUTE , 0 ) ;
-        calendar.set(Calendar. HOUR , 0 ) ;
-        calendar.set(Calendar. AM_PM , Calendar. AM ) ;
-        calendar.add(Calendar. DAY_OF_MONTH , 1 ) ;
-        Log.d("TAG", "createNotification: "+calendar.getTimeInMillis());
-        alarmManager.set(AlarmManager.RTC_WAKEUP , calendar.getTimeInMillis()  , pendingIntent) ;
-
-        Log.d("TAG", "createNotification: ");
-
-    }*/
 
     /** Adds Events and Reminders in Calendar. */
     private void addReminderInCalendar(Long mili) {
@@ -526,7 +484,7 @@ public class TodoList extends AppCompatActivity {
         ContentResolver cr = getContentResolver();
         TimeZone timeZone = TimeZone.getDefault();
 
-        /** Inserting an event in calendar. */
+        /* Inserting an event in calendar. */
         ContentValues values = new ContentValues();
         values.put(CalendarContract.Events.CALENDAR_ID, 1);
         values.put(CalendarContract.Events.TITLE, Title);
@@ -541,10 +499,8 @@ public class TodoList extends AppCompatActivity {
         Uri event = cr.insert(EVENTS_URI, values);
 
         Log.d("TAG", "addReminderInCalendar: ");
-        // Display event id
-//        Toast.makeText(getApplicationContext(), "Event added :: ID :: " + event.getLastPathSegment(), Toast.LENGTH_SHORT).show();
 
-        /** Adding reminder for event added. */
+        /* Adding reminder for event added. */
         Uri REMINDERS_URI = Uri.parse(getCalendarUriBase(true) + "reminders");
         values = new ContentValues();
         values.put(CalendarContract.Reminders.EVENT_ID, Long.parseLong(event.getLastPathSegment()));
@@ -575,10 +531,6 @@ public class TodoList extends AppCompatActivity {
             // Requesting the permission
             ActivityCompat.requestPermissions(TodoList.this, new String[] { permission }, requestCode);
         }
-        else {
-//            Toast.makeText(TodoList.this, "Permission already granted", Toast.LENGTH_SHORT).show();
-
-        }
     }
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -592,9 +544,6 @@ public class TodoList extends AppCompatActivity {
         if (requestCode == CALENDAR_WRITE_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(TodoList.this, "CALENDAR Permission Granted", Toast.LENGTH_SHORT) .show();
-            }
-            else {
-//                Toast.makeText(TodoList.this, "CALENDAR Permission Denied", Toast.LENGTH_SHORT) .show();
             }
         }
 

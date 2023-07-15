@@ -9,6 +9,11 @@
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+
 
     <application
         android:allowBackup="true"
@@ -44,9 +49,6 @@
             android:name=".TodoList"
             android:exported="false" />
         <activity
-            android:name=".groups.ChatActivity"
-            android:exported="false" />
-        <activity
             android:name=".groups.GroupsProfileActivity"
             android:exported="false" />
         <activity
@@ -56,19 +58,10 @@
             android:name=".groups.GroupChatActivity"
             android:exported="false" />
         <activity
-            android:name=".notes.EditNoteActivity"
-            android:exported="false" />
-        <activity
-            android:name=".notes.CreateNote"
-            android:exported="false" />
-        <activity
             android:name=".profile.EditProfileActivity"
             android:exported="false" />
         <activity
             android:name=".profile.ProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".notes.addDiary"
             android:exported="false" />
         <activity
             android:name=".Onboarding.OnBoardingScreensActivity"

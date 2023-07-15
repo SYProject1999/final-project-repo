@@ -1,6 +1,5 @@
 package com.example.finalproject;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -8,11 +7,7 @@ import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
@@ -35,9 +30,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         back.setOnClickListener(view -> finish());
 
-        resetPasswordBtn.setOnClickListener(view -> {
-            resetPassword();
-        });
+        resetPasswordBtn.setOnClickListener(view -> resetPassword());
     }
 
     private void resetPassword() {
@@ -56,15 +49,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             return;
         }
 
-        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    Toast.makeText(ForgotPasswordActivity.this, "Check Your Email", Toast.LENGTH_LONG).show();
-                    finish();
-                } else
-                    Toast.makeText(ForgotPasswordActivity.this, "Try Again! Something Wrong Happened", Toast.LENGTH_LONG).show();
-            }
+        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                Toast.makeText(ForgotPasswordActivity.this, "Check Your Email", Toast.LENGTH_LONG).show();
+                finish();
+            } else
+                Toast.makeText(ForgotPasswordActivity.this, "Try Again! Something Wrong Happened", Toast.LENGTH_LONG).show();
         });
 
     }
