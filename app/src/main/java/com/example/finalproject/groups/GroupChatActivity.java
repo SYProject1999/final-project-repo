@@ -170,7 +170,7 @@ public class GroupChatActivity extends AppCompatActivity {
 
             builder.setItems(options, (dialogInterface, i) -> {
                 if (i == 0) {
-                    checker = "image";
+                    checker = "Image";
                     Intent intent = new Intent();
                     intent.setType("image/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);

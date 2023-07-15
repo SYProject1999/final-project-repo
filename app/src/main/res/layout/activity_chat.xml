@@ -7,12 +7,9 @@
     android:layout_height="match_parent"
     android:background="@android:color/darker_gray"
     tools:context=".groups.ChatActivity">
-
     <include
         android:id="@+id/chat_toolbar"
         layout="@layout/app_bar_layout" />
-
-
     <ScrollView
         android:id="@+id/chat_scroll_view"
         android:layout_width="match_parent"
@@ -20,14 +17,13 @@
         android:layout_above="@+id/chat_linear_layout"
         android:layout_below="@id/chat_toolbar"
         tools:ignore="SpeakableTextPresentCheck" />
-
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="10dp"
         android:id="@+id/private_messages_list_of_users"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/chat_linear_layout"
         android:layout_below="@+id/chat_toolbar"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="6dp" />
 
 

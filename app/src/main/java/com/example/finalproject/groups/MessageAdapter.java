@@ -119,12 +119,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 holder.receiverMessageText.setTextColor(Color.BLACK);
                 holder.receiverMessageText.setText(messages.getMessage() + "\n \n" + messages.getTime() + " - " + messages.getDate());
             }
-        } else if (fromMessageType.equals("image")) {
+        } else if (fromMessageType.equals("Image")) {
             if (fromUserID.equals(messageSenderId)) {
                 holder.messageSenderPicture.setVisibility(View.VISIBLE);
+                holder.tvFileMessage.setVisibility(View.VISIBLE);
                 holder.tvFileMessage.setText(userMessagesList.get(position).getFileMessage());
                 GlideApp.with(holder.itemView.getContext().getApplicationContext()).load(messages.getMessage()).into(holder.messageSenderPicture);
             } else {
+                holder.tvFileMessage.setVisibility(View.VISIBLE);
                 holder.receiverProfileImage.setVisibility(View.VISIBLE);
                 holder.messageReceiverPicture.setVisibility(View.VISIBLE);
                 GlideApp.with(holder.itemView.getContext().getApplicationContext()).load(messages.getMessage()).into(holder.messageReceiverPicture);
