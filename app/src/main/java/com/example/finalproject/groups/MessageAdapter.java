@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -104,6 +103,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         holder.senderMessageText.setVisibility(View.GONE);
         holder.messageSenderPicture.setVisibility(View.GONE);
         holder.messageReceiverPicture.setVisibility(View.GONE);
+        holder.tvFileMessage.setVisibility(View.GONE);
 
         if (fromMessageType.equals("text")) {
             if (fromUserID.equals(messageSenderId)) {
@@ -126,9 +126,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 holder.tvFileMessage.setText(userMessagesList.get(position).getFileMessage());
                 GlideApp.with(holder.itemView.getContext().getApplicationContext()).load(messages.getMessage()).into(holder.messageSenderPicture);
             } else {
-                holder.tvFileMessage.setVisibility(View.VISIBLE);
+                holder.tvFileMessage.setVisibility(View.GONE);
+                holder.tvFileRecMessage.setVisibility(View.VISIBLE);
                 holder.receiverProfileImage.setVisibility(View.VISIBLE);
                 holder.messageReceiverPicture.setVisibility(View.VISIBLE);
+                holder.tvFileRecMessage.setText(userMessagesList.get(position).getFileMessage());
                 GlideApp.with(holder.itemView.getContext().getApplicationContext()).load(messages.getMessage()).into(holder.messageReceiverPicture);
             }
         } else if (fromMessageType.equals("pdf") || fromMessageType.equals("docx")) {
@@ -166,11 +168,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                     holder.messageReceiverPicture.setBackgroundResource(R.drawable.ic_pdf);
 
                 } else if (fromMessageType.equals("docx")) {
-
                     holder.tvFileRecMessage.setVisibility(View.VISIBLE);
                     holder.messageReceiverPicture.setBackgroundResource(R.drawable.ic_word);
                     holder.tvFileRecMessage.setText(userMessagesList.get(position).getFileMessage());
 
+                } else if (fromMessageType.equals("Image")) {
+                    holder.tvFileMessage.setVisibility(View.GONE);
+                    holder.messageReceiverPicture.setVisibility(View.VISIBLE);
+                    GlideApp.with(holder.itemView.getContext().getApplicationContext()).load(messages.getMessage()).into(holder.messageReceiverPicture);
                 }
                 holder.itemView.setOnClickListener(view -> {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(position).getMessage()));

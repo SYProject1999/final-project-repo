@@ -209,7 +209,6 @@ public class GroupChatActivity extends AppCompatActivity {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                         Messages messages = snapshot.getValue(Messages.class);
-
                         messagesList.add(messages);
                         messageAdapter.notifyDataSetChanged();
                         userMessagesList.smoothScrollToPosition(Objects.requireNonNull(userMessagesList.getAdapter()).getItemCount());
