@@ -1,6 +1,7 @@
 package com.example.finalproject.groups;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.finalproject.FullImageActivity;
 import com.example.finalproject.GlideApp;
 import com.example.finalproject.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -69,6 +71,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
 
+        Context context = holder.itemView.getContext();
         String messageSenderId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
         Messages messages = userMessagesList.get(position);
         String fromUserID = messages.getFrom();
@@ -125,6 +128,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 holder.tvFileMessage.setVisibility(View.VISIBLE);
                 holder.tvFileMessage.setText(userMessagesList.get(position).getFileMessage());
                 GlideApp.with(holder.itemView.getContext().getApplicationContext()).load(messages.getMessage()).into(holder.messageSenderPicture);
+                holder.messageSenderPicture.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openFullImage(context,messages.getMessage());
+                    }
+                });
             } else {
                 holder.tvFileMessage.setVisibility(View.GONE);
                 holder.tvFileRecMessage.setVisibility(View.VISIBLE);
@@ -132,6 +141,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 holder.messageReceiverPicture.setVisibility(View.VISIBLE);
                 holder.tvFileRecMessage.setText(userMessagesList.get(position).getFileMessage());
                 GlideApp.with(holder.itemView.getContext().getApplicationContext()).load(messages.getMessage()).into(holder.messageReceiverPicture);
+                holder.messageReceiverPicture.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openFullImage(context,messages.getMessage());
+                    }
+                });
             }
         } else if (fromMessageType.equals("pdf") || fromMessageType.equals("docx")) {
             if (fromUserID.equals(messageSenderId)) {
@@ -176,6 +191,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                     holder.tvFileMessage.setVisibility(View.GONE);
                     holder.messageReceiverPicture.setVisibility(View.VISIBLE);
                     GlideApp.with(holder.itemView.getContext().getApplicationContext()).load(messages.getMessage()).into(holder.messageReceiverPicture);
+                    holder.messageReceiverPicture.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            openFullImage(context,messages.getMessage());
+                        }
+                    });
                 }
                 holder.itemView.setOnClickListener(view -> {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(position).getMessage()));
@@ -188,5 +209,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     @Override
     public int getItemCount() {
         return userMessagesList.size();
+    }
+
+    private void openFullImage(Context context, String url) {
+        Intent intent = new Intent(context, FullImageActivity.class);
+        intent.putExtra("pic", url);
+        context.startActivity(intent);
     }
 }

@@ -13,8 +13,6 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,6 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProject"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".FullImageActivity"
+            android:exported="false" />
         <activity
             android:name=".groups.ExploreMultimediaActivity"
             android:exported="false" />
@@ -95,7 +96,7 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <receiver android:name=".todolist.AlarmReceiver"/>
+        <receiver android:name=".todolist.AlarmReceiver" />
     </application>
 
 </manifest>
