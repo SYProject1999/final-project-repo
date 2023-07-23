@@ -16,7 +16,7 @@ public class FullImageActivity extends AppCompatActivity {
 
         String url = getIntent().getStringExtra("pic");
         ImageView imageView = findViewById(R.id.ivFullImage);
-        GlideApp.with(this).load(url).into(imageView);
+          GlideApp.with(this).load(url).into(imageView);
 
 
         findViewById(R.id.ivClose).setOnClickListener(new View.OnClickListener() {
