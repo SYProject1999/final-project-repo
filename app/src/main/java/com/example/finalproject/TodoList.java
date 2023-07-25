@@ -249,14 +249,14 @@ public class TodoList extends AppCompatActivity {
 
                         }else{
                            // id = new Date().getTime()+"";
-                            //id=snapshot.child("task_count").getValue(String.class);
+                            id=snapshot.child("task_count").getValue(String.class);
                             if (id==null){
                                 id="0";
                             }
                             id_int=Integer.parseInt(id);
                             id_int++;
                             id=String.valueOf(id_int);
-                           // myRef.child(userID).child("task_count").setValue(id);
+                            myRef.child(userID).child("task_count").setValue(id);
                         }*/
 
 
