@@ -33,6 +33,7 @@ import com.example.finalproject.models.StepsModel;
 import com.example.finalproject.models.TodoTaskModel;
 import com.example.finalproject.todolist.MyAlarmManager;
 import com.example.finalproject.todolist.TodolistFragment;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -74,7 +75,7 @@ public class TodoList extends AppCompatActivity {
     ImageView add_step;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("Users");
-    String userID=LoginActivity.userID;
+    String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private int mHour, mMinute;
     LinearLayout calendar_layout;
     LinearLayout listview_steps;
@@ -245,19 +246,19 @@ public class TodoList extends AppCompatActivity {
                 myRef.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                       /* if (its_edit){
+                        if (its_edit){
 
                         }else{
-                           // id = new Date().getTime()+"";
-                            id=snapshot.child("task_count").getValue(String.class);
+                            id = new Date().getTime()+"";
+                           /* id=snapshot.child("task_count").getValue(String.class);
                             if (id==null){
                                 id="0";
                             }
                             id_int=Integer.parseInt(id);
                             id_int++;
                             id=String.valueOf(id_int);
-                            myRef.child(userID).child("task_count").setValue(id);
-                        }*/
+                            myRef.child(userID).child("task_count").setValue(id);*/
+                        }
 
 
                         Title=task_title.getText().toString();
@@ -275,7 +276,7 @@ public class TodoList extends AppCompatActivity {
                                 Toast.makeText(TodoList.this, "Task Created Successfully!", Toast.LENGTH_SHORT).show();
                             }
                             if(reminder){
-                                MyAlarmManager.setAlarm(TodoList.this, Integer.parseInt(id) , task_title.getText().toString(), myCalendar);
+                                MyAlarmManager.setAlarm(TodoList.this, Utils.getIncrementedValue(TodoList.this) , task_title.getText().toString(), myCalendar);
                             }
                             finish();
                         }
