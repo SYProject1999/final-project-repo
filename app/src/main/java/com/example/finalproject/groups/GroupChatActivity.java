@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -202,7 +203,6 @@ public class GroupChatActivity extends AppCompatActivity {
 
     private void loadMessages() {
         messagesList.clear();
-
         RootRef.child(GROUP_MESSAGES).child(messageReceiverID)
                 .addChildEventListener(new ChildEventListener() {
                     @SuppressLint({"NotifyDataSetChanged", "ClickableViewAccessibility"})

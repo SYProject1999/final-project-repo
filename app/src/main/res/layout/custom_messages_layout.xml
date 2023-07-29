@@ -48,15 +48,26 @@
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="15dp"
         android:scaleType="centerCrop" />
+    <ImageView
+        android:id="@+id/sender_image_view"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:visibility="gone"
+        android:layout_marginBottom="15dp"
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/tvFileMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxWidth="200dp"
-        android:visibility="gone"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="-10dp"
+        android:layout_marginTop="110dp"
+        android:visibility="gone"
         android:layout_alignParentTop="@+id/receiver_message_text"
         android:layout_alignParentEnd="true"
         android:background="@drawable/sender_messages_layout"
@@ -64,7 +75,6 @@
         android:text="file Message"
         android:textColor="@android:color/white"
         android:textSize="14sp"
-        android:layout_below="@+id/message_sender_image_view"
         android:textStyle="bold" />
 
     <ImageView
@@ -79,6 +89,18 @@
         android:layout_toEndOf="@+id/message_profile_image"
         android:scaleType="centerCrop" />
 
+    <ImageView
+        android:id="@+id/image_view_receiver"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:padding="5dp"
+        android:visibility="gone"
+        android:layout_toEndOf="@+id/message_profile_image"
+        android:scaleType="centerCrop" />
     <TextView
         android:layout_below="@+id/message_receiver_image_view"
         android:id="@+id/tvFileRecMessage"
@@ -88,7 +110,6 @@
         android:layout_marginStart="25dp"
         android:layout_marginTop="110dp"
         android:visibility="gone"
-        android:layout_alignParentEnd="true"
         android:layout_toEndOf="@+id/message_profile_image"
         android:background="@drawable/receiver_messages_layout"
         android:maxWidth="200dp"
