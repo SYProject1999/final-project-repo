@@ -276,7 +276,7 @@ public class TodoList extends AppCompatActivity {
                                 Toast.makeText(TodoList.this, "Task Created Successfully!", Toast.LENGTH_SHORT).show();
                             }
                             if(reminder){
-                                MyAlarmManager.setAlarm(TodoList.this, Utils.getIncrementedValue(TodoList.this) , task_title.getText().toString(), myCalendar);
+                               MyAlarmManager.setAlarm(TodoList.this, Utils.getIncrementedValue(TodoList.this) , task_title.getText().toString(), myCalendar);
                             }
                             finish();
                         }
