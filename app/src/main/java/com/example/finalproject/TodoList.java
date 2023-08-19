@@ -11,6 +11,7 @@ import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -82,7 +83,7 @@ public class TodoList extends AppCompatActivity {
 
     Boolean its_edit=false;
 
-    ImageView back;
+    ImageView back,imvDelete;
     EditText new_step_edittext,task_title,note;
     LinearLayout next_step,add_step_layout;
     TodoTaskModel todoTaskModelSender = TodolistFragment.todoTaskModelSender;
@@ -110,6 +111,7 @@ public class TodoList extends AppCompatActivity {
         new_step_edittext =findViewById(R.id.new_step_edttxt);
         add_step=findViewById(R.id.add_step);
         listview_steps=findViewById(R.id.listview_steps);
+        imvDelete=findViewById(R.id.imvDelete);
 
         if (todoTaskModelSender !=null){
             its_edit=true;
@@ -181,14 +183,7 @@ public class TodoList extends AppCompatActivity {
                 listview_steps.addView(step_layout);
                 step_id=k;
 
-
-
-
-
-
             }
-
-
 
             if (todoTaskModelSender.getReminder()){
                 reminder_switch.setChecked(true);
@@ -276,7 +271,7 @@ public class TodoList extends AppCompatActivity {
                                 Toast.makeText(TodoList.this, "Task Created Successfully!", Toast.LENGTH_SHORT).show();
                             }
                             if(reminder){
-                               MyAlarmManager.setAlarm(TodoList.this, Utils.getIncrementedValue(TodoList.this) , task_title.getText().toString(), myCalendar);
+//                                MyAlarmManager.setAlarm(TodoList.this, Utils.getIncrementedValue(TodoList.this) , task_title.getText().toString(), myCalendar);
                             }
                             finish();
                         }
@@ -290,6 +285,18 @@ public class TodoList extends AppCompatActivity {
                 });
 
             }
+        });
+        imvDelete.setOnClickListener(v->{
+            myRef.child(userID).child("Tasks").child(id).removeValue().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(this, "deleted successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(TodoList.this,BottomNavigationBarActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
 
 

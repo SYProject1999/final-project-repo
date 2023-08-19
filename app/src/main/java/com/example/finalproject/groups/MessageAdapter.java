@@ -188,7 +188,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 holder.tvFileMessage.setText(userMessagesList.get(position).getFileMessage());
 
                 GlideApp.with(holder.itemView.getContext().getApplicationContext()).load(messages.getMessage()).into(holder.sender_image_view);
-                holder.sender_image_view.setOnClickListener(new View.OnClickListener() {
+                holder.messageSenderPicture.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         openFullImage(context, messages.getMessage());
@@ -204,7 +204,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 GlideApp.with(holder.itemView.getContext().getApplicationContext()).load(messages.getMessage()).into(holder.image_view_receiver);
                 holder.tvFileRecMessage.setText(userMessagesList.get(position).getFileMessage());
 
-                holder.image_view_receiver.setOnClickListener(new View.OnClickListener() {
+                holder.messageSenderPicture.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         openFullImage(context, messages.getMessage());
@@ -217,8 +217,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         if (fileMessage == null) {
             holder.tvFileMessage.setVisibility(View.GONE);
         }
-
-        /* holder.itemView.setOnClickListener(view -> {
+        holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(position).getMessage()));
             holder.itemView.getContext().startActivity(intent);
         });
@@ -226,7 +225,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(position).getMessage()));
             holder.itemView.getContext().startActivity(intent);
-        }); */
+        });
 
 
     }
