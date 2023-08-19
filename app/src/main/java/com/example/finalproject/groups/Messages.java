@@ -1,7 +1,6 @@
 package com.example.finalproject.groups;
 
-public class Messages
-{
+public class Messages {
     private String from, message, type, to, messageID, time, date, name,fileMessage;
 
     public Messages()

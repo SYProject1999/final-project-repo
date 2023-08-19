@@ -90,9 +90,4 @@ public class TodoTaskModel {
     public void setDuedatetime(Long duedatetime) {
         this.duedatetime = duedatetime;
     }
-
-
-
-
-
 }

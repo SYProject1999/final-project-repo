@@ -47,11 +47,9 @@ public class MainActivity extends AppCompatActivity {
                     String alreadyUsedTheApp = String.valueOf(snapshot.getValue(Boolean.class));
 
                     if (alreadyUsedTheApp.equals("true")) {
-                        System.out.println(alreadyUsedTheApp);
                         finish();
                         startActivity(new Intent(MainActivity.this, BottomNavigationBarActivity.class));
                     } else {
-                        System.out.println(alreadyUsedTheApp);
                         finish();
                         startActivity(new Intent(MainActivity.this, OnBoardingScreensActivity.class));
                     }

@@ -9,34 +9,20 @@
     <string name="bottomnav">BottomNav</string>
     <string name="mark_your_dates">Mark Your Dates</string>
 
-    <string-array name="focusTime">
-        <item>25 minutes</item>
-        <item>30 minutes</item>
-        <item>40 minutes</item>
-        <item>50 minutes</item>
-        <item>60 minutes</item>
-        <item>90 minutes</item>
+    <string name="minute_spinner_description">Select minute</string>
+    <string-array name="minutes">
+        <item>1</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>35</item>
+        <item>40</item>
+        <item>45</item>
+        <item>50</item>
+        <item>55</item>
+        <item>60</item>
     </string-array>
 
-    <string-array name="shortBreak">
-        <item>5 minutes</item>
-        <item>8 minutes</item>
-        <item>10 minutes</item>
-    </string-array>
-
-    <string-array name="longBreak">
-        <item>15 minutes</item>
-        <item>20 minutes</item>
-        <item>25 minutes</item>
-        <item>30 minutes</item>
-    </string-array>
-
-    <string-array name="Sections">
-        <item>3 intervals</item>
-        <item>4 intervals</item>
-        <item>5 intervals</item>
-        <item>6 intervals</item>
-    </string-array>
     <string name="title_activity_add_diary_img">AddDiaryImg</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

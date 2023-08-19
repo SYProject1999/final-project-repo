@@ -20,34 +20,46 @@
         android:id="@+id/work_break"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Work Time"
+        android:text="Select Time:"
         android:textSize="40sp"
         android:textColor="@color/white"
-        android:visibility="invisible"
         android:layout_gravity="top"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="70dp"/>
 
-    <EditText
-        android:id="@+id/edit_text_input"
-        android:layout_width="120dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="350dp"
-        android:layout_gravity="center"
-        android:layout_centerHorizontal="true"
-        android:hint="Minutes"
-        android:inputType="number"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:maxLength="4" />
-
-    <Button
-        android:id="@+id/button_set"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="350dp"
-        android:layout_marginStart="212dp"
-        android:text="Set" />
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="150dp">
+
+        <TextView
+            android:id="@+id/minute_text_spinner"
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:text="Minutes:"
+            android:textColor="@color/white"
+            android:textSize="25sp"/>
+
+        <Spinner
+            android:id="@+id/minute_spinner"
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/white"
+            android:foregroundTint="@color/white"
+            android:spinnerMode="dropdown"
+            android:contentDescription="@string/minute_spinner_description" />
+
+        <Button
+            android:id="@+id/button_set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Set" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/chronometer"
@@ -58,6 +70,23 @@
         android:text="00:00"
         android:layout_gravity="center"/>
 
+    <ProgressBar
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:indeterminateOnly="false"
+        android:progressDrawable="@drawable/circle"
+        android:progress="100"
+        android:layout_gravity="center"/>
+
+    <ProgressBar
+        android:id="@+id/timer_progress_bar"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:indeterminateOnly="false"
+        android:progressDrawable="@drawable/determinate_circle"
+        android:progress="100"
+        android:max="100"
+        android:layout_gravity="center"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_reset"
@@ -82,7 +111,5 @@
         android:src="@drawable/ic_baseline_play_arrow_24"
         app:maxImageSize="70dp"
         tools:ignore="SpeakableTextPresentCheck" />
-
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

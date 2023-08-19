@@ -61,30 +61,36 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onStart();
 
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
+        if (user != null && user.isEmailVerified()) {
 
-             userID = user.getUid();
+                userID = user.getUid();
 
-            databaseReference.child(userID).child("alreadyUsedTheApp").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String alreadyUsedTheApp = String.valueOf(snapshot.getValue(Boolean.class));
+                databaseReference.child(userID).child("alreadyUsedTheApp").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String alreadyUsedTheApp = String.valueOf(snapshot.getValue(Boolean.class));
 
-                    if (alreadyUsedTheApp.equals("true")) {
-                        finish();
-                        Toast.makeText(LoginActivity.this, "User logged in successfully", Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(LoginActivity.this, BottomNavigationBarActivity.class));
-                    } else {
-                        finish();
-                        Toast.makeText(LoginActivity.this, "User logged in successfully", Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(LoginActivity.this, OnBoardingScreensActivity.class));
+                        if (alreadyUsedTheApp.equals("true")) {
+                            finish();
+                            Toast.makeText(LoginActivity.this, "User logged in successfully", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(LoginActivity.this, BottomNavigationBarActivity.class));
+                        } else {
+                            finish();
+                            Toast.makeText(LoginActivity.this, "User logged in successfully", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(LoginActivity.this, OnBoardingScreensActivity.class));
+                        }
                     }
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
 
-                }
-            });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+        } else {
+            if (user != null) {
+                user.sendEmailVerification();
+            }
+            Toast.makeText(LoginActivity.this, "Verify your email", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -139,11 +145,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                FirebaseUser user = mAuth.getCurrentUser();
-                assert user != null;
-
-                if (user.isEmailVerified()) {
-                    String userID = user.getUid();
+                if (mAuth.getCurrentUser().isEmailVerified()) {
+                    String userID = mAuth.getCurrentUser().getUid();
 
                     databaseReference.child(userID).child("alreadyUsedTheApp").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -169,7 +172,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     firebaseUser = mAuth.getCurrentUser();
                     firebaseUser.sendEmailVerification();
                     Toast.makeText(LoginActivity.this, "Verify your email", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(LoginActivity.this, OnBoardingScreensActivity.class));
                     loginProgressBar.setVisibility(View.INVISIBLE);
                 }
             } else {
