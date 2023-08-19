@@ -47,7 +47,6 @@ public class GroupTasksAdapter extends RecyclerView.Adapter<GroupTasksAdapter.My
         holder.tvTaskAssignedTo.setText(groupTask.getAssignedToName());
 
         if (groupTask.isCompleted()) {
-            // need to change icon for the completed
             holder.rlRow.setBackgroundColor(holder.itemView.getContext().getResources().getColor(R.color.color_input_2));
             holder.ivIsCompleted.setImageResource(R.drawable.ic_completed);
             holder.tvTaskTitle.setPaintFlags(holder.tvTaskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);

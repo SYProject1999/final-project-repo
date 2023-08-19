@@ -75,23 +75,23 @@ public class OnBoardingScreensActivity extends AppCompatActivity {
         List<OnboardingItem> onBoardingItems = new ArrayList<>();
 
         OnboardingItem itemPayOnline = new OnboardingItem();
-        itemPayOnline.setTitle("Pay Your");
-        itemPayOnline.setDescription("Electric bill");
-        itemPayOnline.setImage(R.drawable.todolist);
+        itemPayOnline.setTitle("Welcome to Daily Planner!");
+        itemPayOnline.setDescription("Boost your efficiency and achieve more with ProductivityMaster, your ultimate productivity companion. This powerful app is designed to streamline your tasks, organize your projects, and help you stay focused on what truly matters. With intuitive features and a user-friendly interface, ProductivityMaster is your key to unlocking your full potential. Let's get started on your journey to increased productivity!");
+        itemPayOnline.setImage(R.drawable.habits);
 
         OnboardingItem itemPayOnline2 = new OnboardingItem();
-        itemPayOnline2.setTitle("Pay Your");
-        itemPayOnline2.setDescription("Electric bill");
-        itemPayOnline2.setImage(R.drawable.habits);
+        itemPayOnline2.setTitle("Stay Organized with Todo List");
+        itemPayOnline2.setDescription("Effortlessly manage tasks and stay on top of your to-dos with our intuitive Todo List. Boost productivity and achieve your goals faster!");
+        itemPayOnline2.setImage(R.drawable.todolist);
 
         OnboardingItem itemPayOnline3 = new OnboardingItem();
-        itemPayOnline3.setTitle("Pay Your");
-        itemPayOnline3.setDescription("Electric bill");
+        itemPayOnline3.setTitle("Collaborate Seamlessly with Groups");
+        itemPayOnline3.setDescription("Work together effortlessly! Our Groups feature enables seamless collaboration and communication within teams and projects. Create, join, or manage groups to share ideas, files, and progress updates. Stay connected and boost productivity with real-time collaboration. Teamwork has never been easier with our Groups feature!");
         itemPayOnline3.setImage(R.drawable.diary);
 
         OnboardingItem itemPayOnline4 = new OnboardingItem();
-        itemPayOnline4.setTitle("Pay Your");
-        itemPayOnline4.setDescription("Electric bill");
+        itemPayOnline4.setTitle("Enhance Focus with Timer");
+        itemPayOnline4.setDescription("Achieve laser-sharp focus and improved time management using our Timer feature. Set customizable timers for work, study, or any activity, and watch your productivity soar. Stay in control of your time and accomplish tasks efficiently with our Timer. Make every second count towards success!");
         itemPayOnline4.setImage(R.drawable.timer);
 
         onBoardingItems.add(itemPayOnline);

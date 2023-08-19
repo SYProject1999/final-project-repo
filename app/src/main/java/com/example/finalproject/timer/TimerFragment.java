@@ -2,25 +2,31 @@ package com.example.finalproject.timer;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.finalproject.LoginActivity;
 import com.example.finalproject.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -28,32 +34,27 @@ import java.util.Locale;
 
 public class TimerFragment extends Fragment {
 
-    private EditText editTextInput;
-    private TextView textViewWorkBreak;
+
+    private static final String CHANNEL_ID = "Timer";
+    private static final int BREAK_PERCENTAGE = 30;
+    private static final long BREAK_TIME_FACTOR = 100 / BREAK_PERCENTAGE;
+    private Spinner minuteSpinner;
+    private TextView textViewWorkBreak, textViewMinuteSpinner;
     private TextView textViewCountDown;
-    private Button buttonSet, buttonDND;
+    private Button buttonSet;
     private FloatingActionButton buttonStartPause, buttonReset;
-
     private CountDownTimer countDownTimer;
-
-    private boolean isTimerRunning;
-
-    private long startTimeInMillis, timeLeftInMillis;
-    private long endTime;
-
-    private static int workCount = 0;
-    private static int shortBreakCount = 0;
-    private static int longBreakCount = 0;
-
-    private static final int MAX_LONG_BREAK_TOTAL = 1800000;
-    private static final int MAX_SHORT_BREAK_TOTAL = 900000;
+    private boolean isTimerRunning, isWorkMode = true;
+    private long startTimeInMillis, timeLeftInMillis, totalWorkTime, endTime;
+    private Uri notificationSoundUri;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_timer, container, false);
 
-        editTextInput = view.findViewById(R.id.edit_text_input);
+        minuteSpinner = view.findViewById(R.id.minute_spinner);
+        textViewMinuteSpinner = view.findViewById(R.id.minute_text_spinner);
         textViewWorkBreak = view.findViewById(R.id.work_break);
 
         textViewCountDown = view.findViewById(R.id.chronometer);
@@ -62,103 +63,63 @@ public class TimerFragment extends Fragment {
         buttonStartPause = view.findViewById(R.id.fab_start);
         buttonReset = view.findViewById(R.id.fab_reset);
 
-        buttonDND = view.findViewById(R.id.button_dnd);
+        createNotificationChannel();
+        notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        Button buttonDND = view.findViewById(R.id.button_dnd);
         buttonDND.setOnClickListener(view1 -> toggleDoNotDisturbMode());
+
+        buttonSet.setOnClickListener(view1 -> setWorkTime());
+        buttonReset.setOnClickListener(view2 -> resetTimer());
 
         buttonStartPause.setOnClickListener(view1 -> {
             if (isTimerRunning) {
                 pauseTimer();
             } else {
-                sessionStructure();
+                startTimer();
             }
-
         });
 
-        buttonSet.setOnClickListener(view12 -> {
-
-            String input = editTextInput.getText().toString();
-            if (input.length() == 0) {
-                Toast.makeText(requireContext(), "Field can't be empty", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            long millisInput = Long.parseLong(input);
-            if (millisInput == 0) {
-                Toast.makeText(requireContext(), "Please enter a positive number", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (millisInput < 20) {
-                Toast.makeText(requireContext(), "Work Time Can't Be Less Than 20 Minutes", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            millisInput *= 60000;
-
-            setTime(millisInput);
-            editTextInput.setText("");
-
-        });
-
-        buttonReset.setOnClickListener(view2 -> resetTimer());
+        setupMinuteSpinner();
 
         return view;
     }
 
-    private void sessionStructure() {
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "Channel Name",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+            channel.setDescription("Channel Description");
 
-        int workTotal, shortBreakTotal, longBreakTotal;
-
-        if (startTimeInMillis <= 1800000) {
-            workTotal = 1;
-            shortBreakTotal = 0;
-            longBreakTotal = 0;
-        } else if (startTimeInMillis <= 3600000) {
-            workTotal = 2;
-            shortBreakTotal = 1;
-            longBreakTotal = 0;
-        } else if (startTimeInMillis <= 10800000) {
-            workTotal = 4;
-            shortBreakTotal = 3;
-            longBreakTotal = 1;
-        } else if (startTimeInMillis <= 18000000) {
-            workTotal = 6;
-            shortBreakTotal = 6;
-            longBreakTotal = 2;
-        } else {
-            workTotal = 8;
-            shortBreakTotal = 8;
-            longBreakTotal = 3;
+            NotificationManager manager = requireContext().getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
         }
-
-        AlertDialog alertDialog = new AlertDialog.Builder(requireContext()).create();
-        alertDialog.setTitle("Session Structure");
-        if (shortBreakTotal == 0) {
-            alertDialog.setMessage(workTotal + " Work Session of " + (startTimeInMillis/60000) / workTotal + " Minutes \n" + shortBreakTotal + " Short Breaks " + "\n" + longBreakTotal + " long Break");
-        } else if (longBreakTotal == 0){
-            alertDialog.setMessage(workTotal + " Work Session of " + (startTimeInMillis/60000) / workTotal + " Minutes \n" + shortBreakTotal + " Short Breaks of " + (startTimeInMillis/60000)/ workTotal / (shortBreakTotal + 1) + " Minutes\n" + longBreakTotal + " long Break");
-        } else {
-            alertDialog.setMessage(workTotal + " Work Session of " + (startTimeInMillis/60000) / workTotal + " Minutes \n" + shortBreakTotal + " Short Breaks of " + (startTimeInMillis/60000)/ workTotal / shortBreakTotal + " Minutes\n" + longBreakTotal + " long Break of " + (startTimeInMillis/60000) / workTotal / (longBreakTotal + 1) + " Minutes\n");
-        }
-        alertDialog.setButton(Dialog.BUTTON_POSITIVE, "Start Session", (dialogInterface, i) -> {
-            startTimer();
-            isTimerRunning = true;
-            updateButtons();
-            textViewWorkBreak.setVisibility(View.VISIBLE);
-            textViewWorkBreak.setText("Work Time Stay Focused");
-        });
-        alertDialog.show();
-
     }
 
-    private void setTime(long milliseconds) {
-        startTimeInMillis = milliseconds;
-        resetTimer();
-        closeKeyboard();
+    private void setWorkTime() {
+
+        String selectedMinuteString = minuteSpinner.getSelectedItem().toString();
+        int selectedMinute = Integer.parseInt(selectedMinuteString);
+
+        timeLeftInMillis = (long) (selectedMinute) * 60 * 200;
+        startTimeInMillis = (long) (selectedMinute) * 60 * 200;
+
+        updateCountDownText();
+    }
+
+    private void setupMinuteSpinner() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(), R.array.minutes, R.layout.my_selected_item);
+        adapter.setDropDownViewResource(R.layout.my_dropdown_item);
+        minuteSpinner.setAdapter(adapter);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void startTimer() {
-        endTime = System.currentTimeMillis() + timeLeftInMillis;
 
+        endTime = System.currentTimeMillis() + timeLeftInMillis;
         countDownTimer = new CountDownTimer(timeLeftInMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -170,19 +131,13 @@ public class TimerFragment extends Fragment {
             public void onFinish() {
                 isTimerRunning = false;
 
-                AlertDialog alertDialog = new AlertDialog.Builder(requireContext()).create();
-                alertDialog.setMessage("Start Short Break?");
-                alertDialog.setButton(Dialog.BUTTON_POSITIVE, "Yes", (dialogInterface, i) -> {
-                    startShortBreak();
-                    isTimerRunning = true;
-                    updateButtons();
-                    textViewWorkBreak.setVisibility(View.VISIBLE);
-                    textViewWorkBreak.setText("Work Time");
-                });
-                alertDialog.setButton(Dialog.BUTTON_NEGATIVE, "No", (dialogInterface, i) -> {
-                    isTimerRunning = true;
-                });
-                alertDialog.show();
+                if (isWorkMode) {
+                    showBreakDialog();
+                } else {
+                    showNotification();
+                    showContinueDialog();
+                }
+
             }
         }.start();
 
@@ -191,28 +146,62 @@ public class TimerFragment extends Fragment {
 
     }
 
-    private void startShortBreak() {
-        updateButtons();
-        endTime = System.currentTimeMillis() + timeLeftInMillis;
+    private void showNotification() {
 
-        countDownTimer = new CountDownTimer(timeLeftInMillis, 1000) {
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                requireContext(),
+                0,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE
+        );
 
-            @Override
-            public void onTick(long millisUntilFinished) {
-                timeLeftInMillis = millisUntilFinished;
-                updateCountDownText();
-            }
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), CHANNEL_ID)
+                .setSmallIcon(R.drawable. ic_launcher_foreground )
+                .setContentTitle("Break is Over")
+                .setContentText("Get Back To Work And Stay Focused!")
+                .setContentIntent(pendingIntent)
+                .setSound(notificationSoundUri)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true);
 
-            @Override
-            public void onFinish() {
-                isTimerRunning = false;
-                updateButtons();
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(requireContext());
+        notificationManager.notify(1, builder.build());
+    }
 
-            }
-        }.start();
+    private void showBreakDialog() {
+        totalWorkTime += startTimeInMillis;
+        timeLeftInMillis = totalWorkTime / BREAK_TIME_FACTOR;
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Take a Break")
+                .setMessage("Do you want to take a break?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    totalWorkTime = 0;
+                    isWorkMode = false;
+                    startTimer();
+                })
+                .setNegativeButton("No", (dialog, which) -> showContinueDialog())
+                .setCancelable(false)
+                .show();
+    }
 
-        isTimerRunning = true;
-        updateButtons();
+    private void showContinueDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Continue?")
+                .setMessage("Do you want to start the next work session?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    isWorkMode = true;
+                    timeLeftInMillis = startTimeInMillis;
+                    startTimer();
+                })
+                .setNegativeButton("No", (dialog, which) -> {
+                    isWorkMode = true;
+                    timeLeftInMillis = startTimeInMillis;
+                    updateButtons();
+                    updateCountDownText();
+                })
+                .setCancelable(false)
+                .show();
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -224,6 +213,8 @@ public class TimerFragment extends Fragment {
 
     private void resetTimer() {
         timeLeftInMillis = startTimeInMillis;
+        isWorkMode = true;
+
         updateCountDownText();
         updateButtons();
     }
@@ -244,38 +235,29 @@ public class TimerFragment extends Fragment {
         textViewCountDown.setText(timeLeftFormatted);
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
     private void updateButtons() {
         if (isTimerRunning) {
-            editTextInput.setVisibility(View.INVISIBLE);
+            textViewMinuteSpinner.setVisibility(View.INVISIBLE);
+            textViewWorkBreak.setText("Stay Focused");
+            minuteSpinner.setVisibility(View.INVISIBLE);
             buttonSet.setVisibility(View.INVISIBLE);
             buttonReset.setVisibility(View.INVISIBLE);
             buttonStartPause.setVisibility(View.VISIBLE);
             buttonStartPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_pause_24, requireContext().getTheme()));
         } else {
-            editTextInput.setVisibility(View.VISIBLE);
+            textViewMinuteSpinner.setVisibility(View.VISIBLE);
+            minuteSpinner.setVisibility(View.VISIBLE);
             buttonSet.setVisibility(View.VISIBLE);
+            buttonReset.setVisibility(View.VISIBLE);
+            buttonStartPause.setVisibility(View.VISIBLE);
             buttonStartPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24, requireContext().getTheme()));
-
-            if (timeLeftInMillis < 1000) {
-                buttonStartPause.setVisibility(View.INVISIBLE);
-            } else {
-                buttonStartPause.setVisibility(View.VISIBLE);
-            }
 
             if (timeLeftInMillis < startTimeInMillis) {
                 buttonReset.setVisibility(View.VISIBLE);
             } else {
                 buttonReset.setVisibility(View.INVISIBLE);
             }
-        }
-    }
-
-    private void closeKeyboard() {
-        Context view = this.getContext();
-        if (view != null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(requireView().getWindowToken(), 0);
         }
     }
 
@@ -291,24 +273,20 @@ public class TimerFragment extends Fragment {
             if (notificationManager.isNotificationPolicyAccessGranted()) {
                 int currentFilter = notificationManager.getCurrentInterruptionFilter();
                 if (currentFilter == NotificationManager.INTERRUPTION_FILTER_NONE) {
-                    // Do Not Disturb is not currently active, so enable it
                     notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL);
+                    Toast.makeText(requireContext(), "Do Not Disturb mode was enabled", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Do Not Disturb is currently active, so disable it
                     notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE);
+                    Toast.makeText(requireContext(), "Do Not Disturb mode was disabled", Toast.LENGTH_SHORT).show();
                 }
 
-                // Update the current filter after toggling
                 int updatedFilter = notificationManager.getCurrentInterruptionFilter();
                 if (updatedFilter == NotificationManager.INTERRUPTION_FILTER_NONE) {
-                    // Do Not Disturb is currently active
                     Toast.makeText(requireContext(), "Do Not Disturb mode is active", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Do Not Disturb is not active
                     Toast.makeText(requireContext(), "Do Not Disturb mode is not active", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                // Ask the user to grant permission to access notification policy
                 Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
                 startActivity(intent);
             }
@@ -343,7 +321,7 @@ public class TimerFragment extends Fragment {
 
         SharedPreferences prefs = requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
-        startTimeInMillis = prefs.getLong("startTimeInMillis", 1500000);
+        startTimeInMillis = prefs.getLong("startTimeInMillis", startTimeInMillis);
         timeLeftInMillis = prefs.getLong("millisLeft", startTimeInMillis);
         isTimerRunning = prefs.getBoolean("timerRunning", false);
 
@@ -363,6 +341,5 @@ public class TimerFragment extends Fragment {
                 startTimer();
             }
         }
-
     }
 }

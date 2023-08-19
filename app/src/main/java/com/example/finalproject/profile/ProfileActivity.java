@@ -162,7 +162,9 @@ public class ProfileActivity extends AppCompatActivity {
                 if (snapshot.child("Gender").getValue() != null) {
                     userGenderTV.setText(snapshot.child("Gender").getValue(String.class));
                 }
-                GlideApp.with(getApplicationContext()).load(snapshot.child("imageUrl").getValue(String.class)).placeholder(R.drawable.ic_baseline_person_24).into(circleImageView);
+                if (snapshot.hasChild("imageUrl")) {
+                    GlideApp.with(getApplicationContext()).load(snapshot.child("imageUrl").getValue(String.class)).placeholder(R.drawable.ic_baseline_person_24).into(circleImageView);
+                }
             }
 
             @Override

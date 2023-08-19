@@ -164,11 +164,12 @@ public class TodolistFragment extends Fragment {
         myRef.child(userID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d("TAG", "onDataChange1: "+userID);
-                String url=snapshot.child("imageUrl").getValue(String.class);
                 String usernameString=snapshot.child("fullName").getValue(String.class);
                 username.setText(usernameString);
-                userImage(url);
+                if (snapshot.hasChild("imageUrl")) {
+                    String url=snapshot.child("imageUrl").getValue(String.class);
+                    userImage(url);
+                }
             }
 
             @Override
@@ -318,7 +319,6 @@ public class TodolistFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//        Toast.makeText(getContext(), "RESUME", Toast.LENGTH_SHORT).show();
 
         todoTaskModelSender =null    ;
         completedTodoTaskModelArrayList =new ArrayList<>();
